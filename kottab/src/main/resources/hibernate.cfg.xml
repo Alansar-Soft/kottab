@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!-- Main configuration file -->
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+		<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=kotab;trustServerCertificate=true</property>
+		<property name="hibernate.connection.username">sa</property>
+		<property name="hibernate.connection.password">@Aa01102137154</property>
+		<property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="hbm2ddl.auto">update </property>
+
+		<mapping class="entities.Address" />
+		<mapping class="entities.MemorizationTeacher" />
+		<mapping class="entities.Student" />
+		<mapping class="entities.MemorizationGroup" />
+		<mapping class="utilities.Surah" />
+		<mapping class="entities.RecitationInfo" />
+		<mapping class="entities.RecitationInfoWithGrade" />
+		<mapping class="entities.RecitationEntry" />
+		<mapping class="entities.GroupLevel" />
+
+	</session-factory>
+</hibernate-configuration>
