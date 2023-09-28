@@ -2,8 +2,11 @@ package ansarcontrols;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Function;
 
+import entities.AnsarBaseEntity;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.util.StringConverter;
@@ -40,6 +43,12 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 	@Override
 	public void reset() {
 		getSelectionModel().selectFirst();
+	}
+
+	public void config(List<T> items) {
+		setItems(FXCollections.observableArrayList(items));
+		if (ObjectChecker.isNotEmptyOrNull(items) && items.get(0) instanceof AnsarBaseEntity)
+			applyStringConverter(entity -> ((AnsarBaseEntity) entity).getName());
 	}
 
 	public void config(ObservableList<T> items, Function<T, String> toStrFun) {

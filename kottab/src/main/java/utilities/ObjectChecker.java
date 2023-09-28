@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import entities.AnsarBaseEntity;
-import application.Country;
 
 public class ObjectChecker {
 	@SuppressWarnings({ "rawtypes" })
@@ -70,8 +69,8 @@ public class ObjectChecker {
 		return value;
 	}
 
-	public static List<String> translateList(Object... values) {
-		List<String> list = new ArrayList();
+	public static <T> List<String> translateList(T... values) {
+		List<String> list = new ArrayList<>();
 		for (int i = 0; i < values.length; i++) {
 			list.add(ResourceUtility.id(values[i].toString()));
 		}

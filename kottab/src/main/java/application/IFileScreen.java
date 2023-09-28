@@ -29,7 +29,9 @@ public interface IFileScreen<T> {
 
 	T fetchFile();
 
-	void reset();
+	default void reset() {
+		fetchScene().reset();
+	}
 
 	AnsarTable<T> createTableView();
 

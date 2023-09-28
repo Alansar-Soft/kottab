@@ -42,10 +42,12 @@ public class RecitationNoteBookScreen implements IFileScreen<RecitationEntry> {
 				return;
 			String id = ObjectChecker.toString(studentId.fetchValue());
 			BigDecimal lastMemorizationPage = (BigDecimal) Persister
-					.searchFor("SELECT page.id FROM MemorizationPage page "
-							+ " JOIN MemorizationNoteBook notebook On page.notebook_id = notebook.id "
-							+ "JOIN Student student ON notebook.student_id = student.id ORDER BY page.creationDate ASC");
-			System.out.println(ObjectChecker.isEmptyOrNull(lastMemorizationPage) ? null
+					.searchFor("SELECT entry.id FROM RecitationEntry entry "
+							+ " JOIN Student std On entry.student_id = std.id " + " ORDER BY entry.creationDate DESC");
+			String q = "SELECT level.id FROM Student std JOIN MemorizationGroup g ON std.group_id = g.id"
+					+ " JOIN GroupLevel level ON g.groupLevel_id = level.id Where std.code = " + id;
+			BigDecimal level = (BigDecimal) Persister.searchFor(q);
+			System.out.println(ObjectChecker.isEmptyOrNull(lastMemorizationPage) ? "level is " + level
 					: Persister.findById(RecitationEntry.class, lastMemorizationPage.longValue()).toString());
 		});
 		studentName = new AnsarLabeledControlHBox("studentName", ControlType.TextField);

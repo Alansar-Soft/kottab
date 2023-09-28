@@ -3,13 +3,12 @@ package ansarcontrols;
 import java.util.List;
 
 import javafx.scene.Node;
-import javafx.scene.layout.Pane;
+import javafx.scene.Parent;
 
-public class AnsarPane extends Pane implements IAnsarParent {
+public class AnsarParent extends Parent implements IAnsarParent {
 
 	@Override
 	public List<? extends Node> fetchChildren() {
 		return getChildren();
 	}
-
 }

@@ -2,9 +2,13 @@ package ansarcontrols;
 
 import javafx.scene.control.TableView;
 
-public class AnsarTable<T> extends TableView<T> {
+public class AnsarTable<T> extends TableView<T> implements IAnsarNode {
 	public AnsarTable() {
 		setColumnResizePolicy(CONSTRAINED_RESIZE_POLICY);
-//		setEditable(false);
+	}
+
+	@Override
+	public void reset() {
+		refresh();
 	}
 }

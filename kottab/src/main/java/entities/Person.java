@@ -25,7 +25,7 @@ public abstract class Person extends AnsarBaseEntity {
 		this.registrationDate = registrationDate;
 	}
 
-	public LocalDate getBirthdate() {	
+	public LocalDate getBirthdate() {
 		return birthdate;
 	}
 

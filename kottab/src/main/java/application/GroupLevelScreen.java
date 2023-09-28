@@ -117,18 +117,8 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 
 	@Override
 	public void reset() {
+		IFileScreen.super.reset();
 		codeBox.insertValue(fetchCode());
-		creationDateBox.insertValue(LocalDateTime.now());
-		nameBox.reset();
-		fromSurah.reset();
-		toSurah.reset();
-		dailyRecitationInVerses.reset();
-		revisionFromSurah.reset();
-		revisionToSurah.reset();
-		revisionRecitationInVerses.reset();
-//		headerPane.getChildren.for
-//		control.reset()
-		table.refresh();
 	}
 
 	@Override

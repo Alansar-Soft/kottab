@@ -15,9 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import model.Persister;
-import utilities.CollectionsUtility;
-import utilities.ObjectChecker;
-import utilities.ResourceUtility;
 
 public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	private AnsarLabeledControlHBox<String> parentFirstPhoneNo;
@@ -35,14 +32,12 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	@Override
 	public Pane createHeaderBox() {
 		GridPane headerPane = (GridPane) super.createHeaderBox();
-		parentFirstPhoneNo = new AnsarLabeledControlHBox("parentFirstPhoneNo", ControlType.TextField);
-		parentSecondPhoneNo = new AnsarLabeledControlHBox("parentSecondPhoneNo", ControlType.TextField);
-		group = new AnsarLabeledControlHBox("group", ControlType.ComboBox);
-		AnsarComboBox<MemorizationGroup> groupsComboBox = (AnsarComboBox<MemorizationGroup>) group.getControl();
+		parentFirstPhoneNo = new AnsarLabeledControlHBox<>("parentFirstPhoneNo", ControlType.TextField);
+		parentSecondPhoneNo = new AnsarLabeledControlHBox<>("parentSecondPhoneNo", ControlType.TextField);
+		group = new AnsarLabeledControlHBox<>("group", ControlType.ComboBox);
 		List<MemorizationGroup> groups = Persister.list(MemorizationGroup.class);
-		groupsComboBox.getItems().addAll(groups);
-		groupsComboBox.setConverter(ResourceUtility.createStringConverter(g -> g.getName(), gName -> CollectionsUtility
-				.fetchFirstMatched(groups, g -> ObjectChecker.areEqual(g.getName(), gName))));
+		AnsarComboBox<MemorizationGroup> groupsComboBox = group.getControl();
+		groupsComboBox.config(groups);
 		int rowNo = headerPane.getRowCount() - 1;
 		headerPane.add(parentFirstPhoneNo, 2, rowNo);
 		headerPane.add(parentSecondPhoneNo, 3, rowNo);
@@ -58,7 +53,7 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 		parentSecondPhoneNoCol = new AnsarTableColumn<>("parentSecondPhoneNo");
 		parentSecondPhoneNoCol.setCellValueFactory(new PropertyValueFactory<>("parentsSecondPhoneNo"));
 		groupCol = new AnsarTableColumn<>("group");
-		groupCol.setCellValueFactory(new PropertyValueFactory<>("groupName"));
+		groupCol.useBaseEntityConfiguration("group");
 		table.getColumns().addAll(parentFirstPhoneNoCol, parentSecondPhoneNoCol, groupCol);
 		return table;
 	}
@@ -91,18 +86,8 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	}
 
 	@Override
-	public void reset() {
-		super.reset();
-		parentFirstPhoneNo.reset();
-		parentSecondPhoneNo.reset();
-		group.reset();
-	}
-
-	@Override
 	public AnsarScene refreshScreen() {
-		AnsarComboBox<MemorizationGroup> groupsComboBox = (AnsarComboBox<MemorizationGroup>) group.getControl();
-		List<MemorizationGroup> groups = Persister.list(MemorizationGroup.class);
-		groupsComboBox.insertItems(groups);
+		((AnsarComboBox<MemorizationGroup>) group.getControl()).insertItems(Persister.list(MemorizationGroup.class));
 		return fetchScene();
 	}
 }

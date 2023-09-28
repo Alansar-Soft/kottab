@@ -52,21 +52,24 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	@Override
 	public Pane createHeaderBox() {
 		headerPane = new AnsarGridPane();
-		code = new AnsarLabeledControlHBox("code", ControlType.Label);
+		code = new AnsarLabeledControlHBox<>("code", ControlType.Label);
 		code.insertValue(fetchCode());
-		registrationDateLabel = new AnsarLabeledControlHBox("registrationDate", ControlType.Label);
+		registrationDateLabel = new AnsarLabeledControlHBox<>("registrationDate", ControlType.Label);
 		registrationDateLabel.insertValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE).toString());
-		name = new AnsarLabeledControlHBox("name", ControlType.TextField);
-		birthdateDP = new AnsarLabeledControlHBox("birthdate", ControlType.DatePicker);
-		country = new AnsarLabeledControlHBox("country", ControlType.ComboBox);
-		city = new AnsarLabeledControlHBox("city", ControlType.ComboBox);
-		town = new AnsarLabeledControlHBox("town", ControlType.ComboBox);
-		((AnsarComboBox) country.getControl()).insertItems(ObjectChecker.translateList(Country.values()));
-		((AnsarComboBox) city.getControl()).insertItems(ObjectChecker.translateList(City.values()));
-		((AnsarComboBox) town.getControl()).insertItems(ObjectChecker.translateList(Town.values()));
-		firstPhoneNo = new AnsarLabeledControlHBox("firstPhoneNo", ControlType.TextField);
-		secondPhoneNo = new AnsarLabeledControlHBox("secondPhoneNo", ControlType.TextField);
-		studyInAzharBox = new AnsarLabeledControlHBox("azharStudent", ControlType.CheckBox);
+		name = new AnsarLabeledControlHBox<>("name", ControlType.TextField);
+		birthdateDP = new AnsarLabeledControlHBox<>("birthdate", ControlType.DatePicker);
+		country = new AnsarLabeledControlHBox<>("country", ControlType.ComboBox);
+		city = new AnsarLabeledControlHBox<>("city", ControlType.ComboBox);
+		town = new AnsarLabeledControlHBox<>("town", ControlType.ComboBox);
+		AnsarComboBox<String> countryCombo = country.getControl();
+		countryCombo.config(ObjectChecker.translateList(Country.values()));
+		AnsarComboBox<String> cityCombo = city.getControl();
+		cityCombo.config(ObjectChecker.translateList(City.values()));
+		AnsarComboBox<String> townCombo = town.getControl();
+		townCombo.config(ObjectChecker.translateList(Town.values()));
+		firstPhoneNo = new AnsarLabeledControlHBox<>("firstPhoneNo", ControlType.TextField);
+		secondPhoneNo = new AnsarLabeledControlHBox<>("secondPhoneNo", ControlType.TextField);
+		studyInAzharBox = new AnsarLabeledControlHBox<>("azharStudent", ControlType.CheckBox);
 		headerPane.add(code, 0, 0);
 		headerPane.add(registrationDateLabel, 1, 0);
 		headerPane.add(name, 0, 1);
@@ -144,6 +147,12 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	}
 
 	@Override
+	public void reset() {
+		IFileScreen.super.reset();
+		code.insertValue(fetchCode());
+	}
+
+	@Override
 	public T fetchFile() {
 		Long code = Long.valueOf(this.code.fetchValue());
 		Person person = table.getItems().stream().filter(p -> ObjectChecker.areEqual(p.getCode(), code)).findFirst()
@@ -168,21 +177,6 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	}
 
 	public abstract Person createEntity();
-
-	@Override
-	public void reset() {
-		code.insertValue(fetchCode());
-		registrationDateLabel.insertValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE).toString());
-		name.reset();
-		birthdateDP.reset();
-		country.reset();
-		city.reset();
-		town.reset();
-		firstPhoneNo.reset();
-		secondPhoneNo.reset();
-		studyInAzharBox.reset();
-		table.refresh();
-	}
 
 	@Override
 	public AnsarScene fetchScene() {

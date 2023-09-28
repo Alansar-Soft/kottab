@@ -10,22 +10,15 @@ import ansarcontrols.AnsarHBox;
 import ansarcontrols.AnsarLabeledControlHBox;
 import ansarcontrols.AnsarScene;
 import ansarcontrols.AnsarTable;
-import ansarcontrols.AnsarTableCell;
 import ansarcontrols.AnsarTableColumn;
 import ansarcontrols.AnsarTableRow;
 import ansarcontrols.ControlType;
-import ansarcontrols.IAnsarControl;
+import entities.GroupLevel;
 import entities.MemorizationGroup;
 import entities.MemorizationTeacher;
-import javafx.scene.Node;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
 import model.Persister;
-import utilities.CollectionsUtility;
 import utilities.ObjectChecker;
 import utilities.ResourceUtility;
 
@@ -35,6 +28,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	private AnsarLabeledControlHBox<String> nameBox;
 	private AnsarLabeledControlHBox<MemorizationTeacher> teacherBox;
 	private AnsarLabeledControlHBox<MemorizationTeacher> assistantBox;
+	private AnsarLabeledControlHBox<GroupLevel> groupLevel;
 	private AnsarGridPane headerPane;
 	private AnsarHBox btnsBox;
 	private AnsarTable<MemorizationGroup> table;
@@ -42,6 +36,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	private AnsarTableColumn<MemorizationGroup, String> nameCol;
 	private AnsarTableColumn<MemorizationGroup, MemorizationTeacher> teacherCol;
 	private AnsarTableColumn<MemorizationGroup, MemorizationTeacher> assistantCol;
+	private AnsarTableColumn<MemorizationGroup, GroupLevel> groupLevelCol;
 
 	public MemorizationGroupScreen() {
 		this.scene = constructScreen();
@@ -50,24 +45,25 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 
 	@Override
 	public Pane createHeaderBox() {
-		codeBox = new AnsarLabeledControlHBox("code", ControlType.Label);
+		codeBox = new AnsarLabeledControlHBox<>("code", ControlType.Label);
 		codeBox.insertValue(fetchCode());
-		nameBox = new AnsarLabeledControlHBox("name", ControlType.TextField);
-		teacherBox = new AnsarLabeledControlHBox("teacher", ControlType.ComboBox);
+		nameBox = new AnsarLabeledControlHBox<>("name", ControlType.TextField);
+		teacherBox = new AnsarLabeledControlHBox<>("teacher", ControlType.ComboBox);
 		List<MemorizationTeacher> teachers = Persister.list(MemorizationTeacher.class);
-		((AnsarComboBox<MemorizationTeacher>) (teacherBox.getControl())).insertItems(teachers);
-		StringConverter<MemorizationTeacher> teacherStrConverter = ResourceUtility.createStringConverter(
-				t -> t.getName(),
-				str -> CollectionsUtility.fetchFirstMatched(teachers, t -> ObjectChecker.areEqual(t.getName(), str)));
-		((AnsarComboBox<MemorizationTeacher>) (teacherBox.getControl())).setConverter(teacherStrConverter);
-		assistantBox = new AnsarLabeledControlHBox("assistant", ControlType.ComboBox);
-		((AnsarComboBox<MemorizationTeacher>) (assistantBox.getControl())).insertItems(teachers);
-		((AnsarComboBox<MemorizationTeacher>) (assistantBox.getControl())).setConverter(teacherStrConverter);
+		AnsarComboBox<MemorizationTeacher> teacherCombo = teacherBox.getControl();
+		teacherCombo.config(teachers);
+		assistantBox = new AnsarLabeledControlHBox<>("assistant", ControlType.ComboBox);
+		AnsarComboBox<MemorizationTeacher> assistantCombo = assistantBox.getControl();
+		assistantCombo.config(teachers);
+		groupLevel = new AnsarLabeledControlHBox<>("groupLevel", ControlType.ComboBox);
+		AnsarComboBox<GroupLevel> groupLevelCombo = groupLevel.getControl();
+		groupLevelCombo.config(Persister.list(GroupLevel.class));
 		headerPane = new AnsarGridPane();
 		headerPane.add(codeBox, 0, 0);
 		headerPane.add(nameBox, 1, 0);
 		headerPane.add(teacherBox, 0, 1);
 		headerPane.add(assistantBox, 1, 1);
+		headerPane.add(groupLevel, 0, 2);
 		return headerPane;
 	}
 
@@ -95,16 +91,15 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 		group.setName(nameBox.fetchValue());
 		group.setTeacher(teacherBox.fetchValue());
 		group.setAssistantTeacher(assistantBox.fetchValue());
+		group.setGroupLevel(groupLevel.fetchValue());
 		group.setStudents(new ArrayList<>());
 		return group;
 	}
 
 	@Override
 	public void reset() {
-		for (Node control : headerPane.getChildren()) {
-			((IAnsarControl<? extends Object>) control).reset();
-		}
-		table.refresh();
+		IFileScreen.super.reset();
+		codeBox.insertValue(fetchCode());
 	}
 
 	@Override
@@ -124,26 +119,12 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 		nameCol = new AnsarTableColumn<>("name");
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		teacherCol = new AnsarTableColumn<>("teacher");
-		teacherCol.setCellValueFactory(new PropertyValueFactory<>("teacher"));
-		Callback<TableColumn<MemorizationGroup, MemorizationTeacher>, TableCell<MemorizationGroup, MemorizationTeacher>> cellCallBack = col -> {
-			AnsarTableCell<MemorizationGroup, MemorizationTeacher> cell = new AnsarTableCell<>() {
-				@Override
-				protected void updateItem(MemorizationTeacher item, boolean empty) {
-					super.updateItem(item, empty);
-					if (empty || ObjectChecker.isEmptyOrNull(item)) {
-						setText(null);
-						return;
-					}
-					setText(item.getName());
-				}
-			};
-			return cell;
-		};
-		teacherCol.setCellFactory(cellCallBack);
+		teacherCol.useBaseEntityConfiguration("teacher");
 		assistantCol = new AnsarTableColumn<>("assistant");
-		assistantCol.setCellValueFactory(new PropertyValueFactory<>("assistantTeacher"));
-		assistantCol.setCellFactory(cellCallBack);
-		table.getColumns().addAll(codeCol, nameCol, teacherCol, assistantCol);
+		assistantCol.useBaseEntityConfiguration("assistantTeacher");
+		groupLevelCol = new AnsarTableColumn<>("groupLevel");
+		groupLevelCol.useBaseEntityConfiguration("groupLevel");
+		table.getColumns().addAll(codeCol, nameCol, teacherCol, assistantCol, groupLevelCol);
 		table.getItems().addAll(Persister.list(fetchDocumentClass()));
 		return table;
 	}
@@ -154,7 +135,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 		nameBox.insertValue(item.getName());
 		teacherBox.insertValue(item.getTeacher());
 		assistantBox.insertValue(item.getAssistantTeacher());
-
+		groupLevel.insertValue(item.getGroupLevel());
 	}
 
 	@Override
@@ -171,8 +152,8 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	public AnsarScene refreshScreen() {
 //		registrationDateLabel.insertValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE).toString());
 		List<MemorizationTeacher> teachers = Persister.list(MemorizationTeacher.class);
-		((AnsarComboBox<MemorizationTeacher>) (teacherBox.getControl())).insertItems(teachers);
-		((AnsarComboBox<MemorizationTeacher>) (assistantBox.getControl())).insertItems(teachers);
+		((AnsarComboBox<MemorizationTeacher>) teacherBox.getControl()).insertItems(teachers);
+		((AnsarComboBox<MemorizationTeacher>) assistantBox.getControl()).insertItems(teachers);
 		return scene;
 	}
 

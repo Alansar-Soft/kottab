@@ -1,13 +1,19 @@
 package ansarcontrols;
 
-import javafx.geometry.Insets;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.layout.HBox;
+import java.util.List;
 
-public class AnsarHBoxRoot extends HBox {
+import javafx.scene.Node;
+
+public class AnsarHBoxRoot extends AnsarHBox {
 	public AnsarHBoxRoot() {
-		setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
-		setSpacing(5);
-		setPadding(new Insets(5));
+		super();
+	}
+
+	public AnsarHBoxRoot(Node... nodes) {
+		super(nodes);
+	}
+
+	public AnsarHBoxRoot(List<? extends Node> nodes) {
+		super(nodes);
 	}
 }

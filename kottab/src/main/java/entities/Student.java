@@ -3,7 +3,6 @@ package entities;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
 
 @Entity
 public class Student extends Person {
@@ -36,10 +35,4 @@ public class Student extends Person {
 	public void setGroup(MemorizationGroup group) {
 		this.group = group;
 	}
-
-	@Transient
-	public String getGroupName() {
-		return group != null ? group.getName() : "";
-	}
-
 }

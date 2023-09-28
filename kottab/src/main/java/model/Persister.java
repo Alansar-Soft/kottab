@@ -1,6 +1,5 @@
 package model;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,10 +8,8 @@ import java.util.Map.Entry;
 import javax.persistence.Query;
 
 import org.hibernate.FlushMode;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -85,6 +82,8 @@ public class Persister {
 		Session session = factory.openSession();
 		List<T> list = session.createNativeQuery(sqlString).list();
 		session.close();
+		if (ObjectChecker.isEmptyOrNull(list))
+			return null;
 		return list.get(0);
 	}
 

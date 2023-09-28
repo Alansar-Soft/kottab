@@ -161,7 +161,7 @@ public class ResourceUtility {
 		Reader r;
 		try {
 			r = new FileReader(
-					new File("C:\\Users\\MTRX\\eclipse-workspace\\kottab\\src\\main\\resources\\ar.propreties"),
+					new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar.propreties"),
 					StandardCharsets.UTF_8);
 			arTranslation.load(r);
 		} catch (FileNotFoundException e) {

@@ -1,5 +1,7 @@
 package entities;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +14,7 @@ public class AnsarBaseEntity {
 	private Long id;
 	private Long code;
 	private String name;
+	private LocalDateTime creationDate;
 
 	@Id
 	@GeneratedValue
@@ -41,4 +44,11 @@ public class AnsarBaseEntity {
 		this.name = name;
 	}
 
+	public LocalDateTime getCreationDate() {
+		return creationDate;
+	}
+
+	public void setCreationDate(LocalDateTime creationDate) {
+		this.creationDate = creationDate;
+	}
 }

@@ -5,9 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import utilities.ResourceUtility;
 
-public class AnsarScene extends Scene {
+public class AnsarScene extends Scene implements IAnsarNode {
 
-	public AnsarScene(Parent root) {
+	public AnsarScene(AnsarParent root) {
 		super(root, ResourceUtility.fetchScreenWidth(), ResourceUtility.fetchScreenHeight());
 		setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 	}
@@ -17,4 +17,9 @@ public class AnsarScene extends Scene {
 		setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 	}
 
+	@Override
+	public void reset() {
+		if (getRoot() instanceof IAnsarParent)
+			((IAnsarParent) getRoot()).reset();
+	}
 }
