@@ -1,7 +1,5 @@
 package application;
 
-import java.util.List;
-
 import ansarcontrols.AnsarComboBox;
 import ansarcontrols.AnsarLabeledControlHBox;
 import ansarcontrols.AnsarScene;
@@ -11,7 +9,6 @@ import ansarcontrols.ControlType;
 import entities.MemorizationGroup;
 import entities.Person;
 import entities.Student;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import model.Persister;
@@ -35,9 +32,8 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 		parentFirstPhoneNo = new AnsarLabeledControlHBox<>("parentFirstPhoneNo", ControlType.TextField);
 		parentSecondPhoneNo = new AnsarLabeledControlHBox<>("parentSecondPhoneNo", ControlType.TextField);
 		group = new AnsarLabeledControlHBox<>("group", ControlType.ComboBox);
-		List<MemorizationGroup> groups = Persister.list(MemorizationGroup.class);
 		AnsarComboBox<MemorizationGroup> groupsComboBox = group.getControl();
-		groupsComboBox.config(groups);
+		groupsComboBox.config(Persister.list(MemorizationGroup.class));
 		int rowNo = headerPane.getRowCount() - 1;
 		headerPane.add(parentFirstPhoneNo, 2, rowNo);
 		headerPane.add(parentSecondPhoneNo, 3, rowNo);
@@ -49,9 +45,9 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	public AnsarTable<Student> createTableView() {
 		AnsarTable<Student> table = super.createTableView();
 		parentFirstPhoneNoCol = new AnsarTableColumn<>("parentFirstPhoneNo");
-		parentFirstPhoneNoCol.setCellValueFactory(new PropertyValueFactory<Student, String>("parentsFirstPhoneNo"));
+		parentFirstPhoneNoCol.config("parentsFirstPhoneNo");
 		parentSecondPhoneNoCol = new AnsarTableColumn<>("parentSecondPhoneNo");
-		parentSecondPhoneNoCol.setCellValueFactory(new PropertyValueFactory<>("parentsSecondPhoneNo"));
+		parentSecondPhoneNoCol.config("parentsSecondPhoneNo");
 		groupCol = new AnsarTableColumn<>("group");
 		groupCol.useBaseEntityConfiguration("group");
 		table.getColumns().addAll(parentFirstPhoneNoCol, parentSecondPhoneNoCol, groupCol);
@@ -88,6 +84,7 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	@Override
 	public AnsarScene refreshScreen() {
 		((AnsarComboBox<MemorizationGroup>) group.getControl()).insertItems(Persister.list(MemorizationGroup.class));
+		super.refreshScreen();
 		return fetchScene();
 	}
 }

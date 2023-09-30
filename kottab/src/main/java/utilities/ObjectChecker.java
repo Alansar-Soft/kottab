@@ -80,5 +80,4 @@ public class ObjectChecker {
 	public static int toZeroIfNull(Byte numberOfSurah) {
 		return numberOfSurah == null ? 0 : numberOfSurah;
 	}
-
 }

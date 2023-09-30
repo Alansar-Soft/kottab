@@ -1,8 +1,6 @@
 package application;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import ansarcontrols.AnsarButton;
@@ -20,13 +18,14 @@ import entities.Person;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import model.Persister;
+import utilities.DateTimeUtility;
 import utilities.ObjectChecker;
 import utilities.ResourceUtility;
 
 public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T> {
 	private AnsarScene scene;
 	private AnsarLabeledControlHBox<String> code;
-	private AnsarLabeledControlHBox<LocalDateTime> registrationDateLabel;
+	private AnsarLabeledControlHBox<String> registrationDateLabel;
 	private AnsarLabeledControlHBox<String> name;
 	private AnsarLabeledControlHBox<LocalDate> birthdateDP;
 	private AnsarLabeledControlHBox<Boolean> studyInAzharBox;
@@ -55,7 +54,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 		code = new AnsarLabeledControlHBox<>("code", ControlType.Label);
 		code.insertValue(fetchCode());
 		registrationDateLabel = new AnsarLabeledControlHBox<>("registrationDate", ControlType.Label);
-		registrationDateLabel.insertValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE).toString());
+		registrationDateLabel.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 		name = new AnsarLabeledControlHBox<>("name", ControlType.TextField);
 		birthdateDP = new AnsarLabeledControlHBox<>("birthdate", ControlType.DatePicker);
 		country = new AnsarLabeledControlHBox<>("country", ControlType.ComboBox);
@@ -98,7 +97,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 		codeCol = new AnsarTableColumn<>("code");
 		codeCol.setCellValueFactory(new PropertyValueFactory<Person, Long>("code"));
 		registrationDateCol = new AnsarTableColumn<>("registrationDate");
-		registrationDateCol.setCellValueFactory(new PropertyValueFactory<Person, String>("registrationDate"));
+		registrationDateCol.config("creationDate");
 		nameCol = new AnsarTableColumn<>("name");
 		nameCol.setCellValueFactory(new PropertyValueFactory<Person, String>("name"));
 		birthdateCol = new AnsarTableColumn<>("birthdate");
@@ -124,7 +123,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 
 	public void selectRowDefaultAction(Person item) {
 		code.insertValue(item.getCode());
-		registrationDateLabel.insertValue(item.getRegistrationDate());
+		registrationDateLabel.insertValue(DateTimeUtility.formatDateTime(item.getCreationDate()));
 		name.insertValue(item.getName());
 		birthdateDP.insertValue(item.getBirthdate());
 		country.insertValue(item.getCountry());
@@ -150,6 +149,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	public void reset() {
 		IFileScreen.super.reset();
 		code.insertValue(fetchCode());
+		registrationDateLabel.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 	}
 
 	@Override
@@ -164,7 +164,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 		person.setCode(code);
 		person.setName(name.fetchValue());
 		person.setBirthdate((LocalDate) birthdateDP.fetchValue());
-		person.setRegistrationDate(LocalDateTime.now());
+		person.setCreationDate(DateTimeUtility.parseDateTime(registrationDateLabel.fetchValue()));
 		person.setFirstPhoneNo(ObjectChecker.toString(firstPhoneNo.fetchValue()));
 		person.setSecondPhoneNo(ObjectChecker.toString(secondPhoneNo.fetchValue()));
 		Address address = new Address();
@@ -189,7 +189,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 
 	@Override
 	public AnsarScene refreshScreen() {
-		registrationDateLabel.insertValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE).toString());
+		reset();
 		return scene;
 	}
 }

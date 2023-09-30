@@ -1,7 +1,6 @@
 package entities;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -10,20 +9,11 @@ import utilities.ObjectChecker;
 
 @MappedSuperclass
 public abstract class Person extends AnsarBaseEntity {
-	private LocalDateTime registrationDate;
 	private LocalDate birthdate;
 	private Address address;
 	private String firstPhoneNo;
 	private String secondPhoneNo;
 	private Boolean azharStudent;
-
-	public LocalDateTime getRegistrationDate() {
-		return registrationDate;
-	}
-
-	public void setRegistrationDate(LocalDateTime registrationDate) {
-		this.registrationDate = registrationDate;
-	}
 
 	public LocalDate getBirthdate() {
 		return birthdate;

@@ -4,6 +4,7 @@ addTeacher=إضافة شيخ
 code=الرقم التعريفي
 name=الأسم
 registrationDate=تاريخ التسجيل
+creationDate=تاريخ الإنشاء
 birthdate=تاريخ الميلاد
 Ok=موافق
 Cancel=إلغاء

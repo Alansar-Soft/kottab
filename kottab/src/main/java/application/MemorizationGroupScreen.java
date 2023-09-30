@@ -1,5 +1,6 @@
 package application;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,15 +17,16 @@ import ansarcontrols.ControlType;
 import entities.GroupLevel;
 import entities.MemorizationGroup;
 import entities.MemorizationTeacher;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import model.Persister;
+import utilities.DateTimeUtility;
 import utilities.ObjectChecker;
 import utilities.ResourceUtility;
 
 public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	private AnsarScene scene;
 	private AnsarLabeledControlHBox<String> codeBox;
+	private AnsarLabeledControlHBox<String> creationDateBox;
 	private AnsarLabeledControlHBox<String> nameBox;
 	private AnsarLabeledControlHBox<MemorizationTeacher> teacherBox;
 	private AnsarLabeledControlHBox<MemorizationTeacher> assistantBox;
@@ -33,6 +35,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	private AnsarHBox btnsBox;
 	private AnsarTable<MemorizationGroup> table;
 	private AnsarTableColumn<MemorizationGroup, Long> codeCol;
+	private AnsarTableColumn<MemorizationGroup, LocalDateTime> creationDateCol;
 	private AnsarTableColumn<MemorizationGroup, String> nameCol;
 	private AnsarTableColumn<MemorizationGroup, MemorizationTeacher> teacherCol;
 	private AnsarTableColumn<MemorizationGroup, MemorizationTeacher> assistantCol;
@@ -47,6 +50,8 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	public Pane createHeaderBox() {
 		codeBox = new AnsarLabeledControlHBox<>("code", ControlType.Label);
 		codeBox.insertValue(fetchCode());
+		creationDateBox = new AnsarLabeledControlHBox<>("creationDate", ControlType.Label);
+		creationDateBox.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 		nameBox = new AnsarLabeledControlHBox<>("name", ControlType.TextField);
 		teacherBox = new AnsarLabeledControlHBox<>("teacher", ControlType.ComboBox);
 		List<MemorizationTeacher> teachers = Persister.list(MemorizationTeacher.class);
@@ -60,10 +65,11 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 		groupLevelCombo.config(Persister.list(GroupLevel.class));
 		headerPane = new AnsarGridPane();
 		headerPane.add(codeBox, 0, 0);
-		headerPane.add(nameBox, 1, 0);
-		headerPane.add(teacherBox, 0, 1);
-		headerPane.add(assistantBox, 1, 1);
-		headerPane.add(groupLevel, 0, 2);
+		headerPane.add(creationDateBox, 1, 0);
+		headerPane.add(nameBox, 0, 1);
+		headerPane.add(groupLevel, 1, 1);
+		headerPane.add(teacherBox, 0, 2);
+		headerPane.add(assistantBox, 1, 2);
 		return headerPane;
 	}
 
@@ -88,6 +94,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 			table.getItems().add(group);
 		}
 		group.setCode(code);
+		group.setCreationDate(DateTimeUtility.parseDateTime(creationDateBox.fetchValue()));
 		group.setName(nameBox.fetchValue());
 		group.setTeacher(teacherBox.fetchValue());
 		group.setAssistantTeacher(assistantBox.fetchValue());
@@ -100,6 +107,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	public void reset() {
 		IFileScreen.super.reset();
 		codeBox.insertValue(fetchCode());
+		creationDateBox.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 	}
 
 	@Override
@@ -115,16 +123,18 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 		});
 
 		codeCol = new AnsarTableColumn<>("code");
-		codeCol.setCellValueFactory(new PropertyValueFactory<>("code"));
+		codeCol.config("code");
+		creationDateCol = new AnsarTableColumn<>("creationDate");
+		creationDateCol.config("creationDate");
 		nameCol = new AnsarTableColumn<>("name");
-		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+		nameCol.config("name");
 		teacherCol = new AnsarTableColumn<>("teacher");
 		teacherCol.useBaseEntityConfiguration("teacher");
 		assistantCol = new AnsarTableColumn<>("assistant");
 		assistantCol.useBaseEntityConfiguration("assistantTeacher");
 		groupLevelCol = new AnsarTableColumn<>("groupLevel");
 		groupLevelCol.useBaseEntityConfiguration("groupLevel");
-		table.getColumns().addAll(codeCol, nameCol, teacherCol, assistantCol, groupLevelCol);
+		table.getColumns().addAll(codeCol, creationDateCol, nameCol, teacherCol, assistantCol, groupLevelCol);
 		table.getItems().addAll(Persister.list(fetchDocumentClass()));
 		return table;
 	}
@@ -133,6 +143,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	public void selectRowAction(MemorizationGroup item) {
 		codeBox.insertValue(item.getCode());
 		nameBox.insertValue(item.getName());
+		creationDateBox.insertValue(DateTimeUtility.formatDateTime(item.getCreationDate()));
 		teacherBox.insertValue(item.getTeacher());
 		assistantBox.insertValue(item.getAssistantTeacher());
 		groupLevel.insertValue(item.getGroupLevel());
@@ -150,10 +161,10 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 
 	@Override
 	public AnsarScene refreshScreen() {
-//		registrationDateLabel.insertValue(LocalDateTime.now().format(DateTimeFormatter.ISO_DATE).toString());
 		List<MemorizationTeacher> teachers = Persister.list(MemorizationTeacher.class);
 		((AnsarComboBox<MemorizationTeacher>) teacherBox.getControl()).insertItems(teachers);
 		((AnsarComboBox<MemorizationTeacher>) assistantBox.getControl()).insertItems(teachers);
+		reset();
 		return scene;
 	}
 

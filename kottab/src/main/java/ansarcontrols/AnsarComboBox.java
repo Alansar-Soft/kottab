@@ -7,7 +7,6 @@ import java.util.function.Function;
 
 import entities.AnsarBaseEntity;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.util.StringConverter;
 import utilities.CollectionsUtility;
@@ -51,8 +50,8 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 			applyStringConverter(entity -> ((AnsarBaseEntity) entity).getName());
 	}
 
-	public void config(ObservableList<T> items, Function<T, String> toStrFun) {
-		setItems(items);
+	public void config(List<T> items, Function<T, String> toStrFun) {
+		setItems(FXCollections.observableArrayList(items));
 		applyStringConverter(toStrFun);
 	}
 

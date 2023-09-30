@@ -19,6 +19,14 @@ public class AnsarTableColumn<S, T> extends TableColumn<S, T> {
 		config(new PropertyValueFactory<>(propertyName), e -> ((AnsarBaseEntity) e).getName());
 	}
 
+	public void config(String propertyName) {
+		config(propertyName, e -> e.toString());
+	}
+
+	public void config(String propertyName, Function<T, String> toStrFun) {
+		config(new PropertyValueFactory<>(propertyName), toStrFun);
+	}
+
 	public void config(Callback<CellDataFeatures<S, T>, ObservableValue<T>> cellValueFactory,
 			Function<T, String> toStrFun) {
 		setCellValueFactory(cellValueFactory);
