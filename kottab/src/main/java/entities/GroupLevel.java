@@ -7,19 +7,22 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
+import utilities.NumbersUtility;
 import utilities.ObjectChecker;
 import utilities.ResourceUtility;
+import utilities.Result;
 import utilities.Surah;
 
 @Entity
 public class GroupLevel extends AnsarBaseEntity {
 	private Surah fromSurah;
 	private Surah toSurah;
-	private Integer dailyRecitationInVerses;
+	private Short dailyRecitationInVerses;
 	private Surah revisionFromSurah;
 	private Surah revisionToSurah;
-	private Integer revisionRecitationInVerses;
+	private Short revisionRecitationInVerses;
 	private List<MemorizationGroup> groups;
 
 	@Override
@@ -48,11 +51,13 @@ public class GroupLevel extends AnsarBaseEntity {
 		this.toSurah = toSurah;
 	}
 
-	public Integer getDailyRecitationInVerses() {
+	public Short getDailyRecitationInVerses() {
+		if (dailyRecitationInVerses == null)
+			dailyRecitationInVerses = NumbersUtility.castToShort(0);
 		return dailyRecitationInVerses;
 	}
 
-	public void setDailyRecitationInVerses(Integer dailyRecitationInVerses) {
+	public void setDailyRecitationInVerses(Short dailyRecitationInVerses) {
 		this.dailyRecitationInVerses = dailyRecitationInVerses;
 	}
 
@@ -76,11 +81,13 @@ public class GroupLevel extends AnsarBaseEntity {
 		this.revisionToSurah = revisionToSurah;
 	}
 
-	public Integer getRevisionRecitationInVerses() {
+	public Short getRevisionRecitationInVerses() {
+		if (revisionRecitationInVerses == null)
+			revisionRecitationInVerses = NumbersUtility.castToShort(0);
 		return revisionRecitationInVerses;
 	}
 
-	public void setRevisionRecitationInVerses(Integer revisionRecitationInVerses) {
+	public void setRevisionRecitationInVerses(Short revisionRecitationInVerses) {
 		this.revisionRecitationInVerses = revisionRecitationInVerses;
 	}
 
@@ -91,5 +98,23 @@ public class GroupLevel extends AnsarBaseEntity {
 
 	public void setGroups(List<MemorizationGroup> groups) {
 		this.groups = groups;
+	}
+
+	@Override
+	@Transient
+	public Result isValidForCommit() {
+		Result result = super.isValidForCommit();
+		checkIfRequired(fromSurah, "You must choose from surah", result);
+		checkIfRequired(toSurah, "You must choose to surah", result);
+		checkIfRequired(dailyRecitationInVerses, "You must enter count of verses of recitation", result);
+		checkIfRequired(revisionFromSurah, "You must choose revision from surah", result);
+		checkIfRequired(revisionToSurah, "You must choose revision to surah", result);
+		checkIfRequired(revisionRecitationInVerses, "You must enter count of verses of revision", result);
+		return result;
+	}
+
+	public void checkIfRequired(Object field, String message, Result result) {
+		if (ObjectChecker.isEmptyOrZeroOrNull(field))
+			result.accmulate(Result.createFailureResult(message));
 	}
 }

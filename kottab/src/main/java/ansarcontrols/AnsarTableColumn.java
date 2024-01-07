@@ -12,7 +12,7 @@ import utilities.ResourceUtility;
 
 public class AnsarTableColumn<S, T> extends TableColumn<S, T> {
 	public AnsarTableColumn(String name) {
-		setText(ResourceUtility.id(name));
+		setText(ResourceUtility.translate(name));
 	}
 
 	public void useBaseEntityConfiguration(String propertyName) {
@@ -36,7 +36,7 @@ public class AnsarTableColumn<S, T> extends TableColumn<S, T> {
 				@Override
 				protected void updateItem(T item, boolean empty) {
 					super.updateItem(item, empty);
-					if (empty || ObjectChecker.isEmptyOrNull(item)) {
+					if (empty || ObjectChecker.isEmptyOrZeroOrNull(item)) {
 						setText("");
 						return;
 					}

@@ -19,6 +19,7 @@ public class AnsarHBox extends HBox implements IAnsarParent {
 	}
 
 	public AnsarHBox(List<? extends Node> nodes) {
+		getStyleClass().add("h-box");
 		setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 		setPadding(new Insets(5));
 		setSpacing(5);

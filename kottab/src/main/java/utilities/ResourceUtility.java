@@ -6,9 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,14 +14,18 @@ import java.util.Properties;
 import java.util.function.Function;
 
 import ansarcontrols.AnsarScene;
+import ansarcontrols.AnsarToolTip;
 import application.GroupLevelScreen;
-import application.IFileScreen;
+import application.IAnsarScreen;
 import application.MemorizationGroupScreen;
 import application.RecitationNoteBookScreen;
 import application.ScreensNames;
 import application.StudentScreen;
 import application.TeacherScreen;
+import entities.AbsRecitationInfo;
+import entities.RecitationInfo;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -33,7 +34,7 @@ public class ResourceUtility {
 	private static List<Surah> surahs;
 
 	public static List<Surah> getSurahs() {
-		if (ObjectChecker.isNotEmptyOrNull(surahs))
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(surahs))
 			return surahs;
 		surahs = new ArrayList<>();
 		surahs.add(new Surah("", 0, 0));
@@ -68,7 +69,7 @@ public class ResourceUtility {
 		surahs.add(new Surah("Al-'Ankabut", 29, 69));
 		surahs.add(new Surah("Ar-Rum", 30, 60));
 		surahs.add(new Surah("Luqman", 31, 34));
-		surahs.add(new Surah("Luqman", 32, 30));
+		surahs.add(new Surah("As-Sajdah", 32, 30));
 		surahs.add(new Surah("Al-Ahzab", 33, 73));
 		surahs.add(new Surah("Saba'", 34, 54));
 		surahs.add(new Surah("Fatir", 35, 45));
@@ -86,7 +87,7 @@ public class ResourceUtility {
 		surahs.add(new Surah("Muhammad", 47, 38));
 		surahs.add(new Surah("Al-Fath", 48, 29));
 		surahs.add(new Surah("Al-Hujurat", 49, 18));
-		surahs.add(new Surah("surah Qaf", 50, 45));
+		surahs.add(new Surah("Qaf", 50, 45));
 		surahs.add(new Surah("Ad-Dhariyat", 51, 60));
 		surahs.add(new Surah("At-Tur", 52, 49));
 		surahs.add(new Surah("An-Najm", 53, 62));
@@ -124,7 +125,6 @@ public class ResourceUtility {
 		surahs.add(new Surah("Al-Buruj", 85, 22));
 		surahs.add(new Surah("At-Tariq", 86, 17));
 		surahs.add(new Surah("Al-A'la", 87, 19));
-
 		surahs.add(new Surah("Al-Ghashiyah", 88, 26));
 		surahs.add(new Surah("Al-Fajr", 89, 30));
 		surahs.add(new Surah("Al-Balad", 90, 20));
@@ -134,7 +134,6 @@ public class ResourceUtility {
 		surahs.add(new Surah("Ash-Sharh", 94, 8));
 		surahs.add(new Surah("At-Tin", 95, 8));
 		surahs.add(new Surah("Al-'Alaq", 96, 19));
-
 		surahs.add(new Surah("Al-Qadr", 97, 5));
 		surahs.add(new Surah("Al-Bayyinah", 98, 8));
 		surahs.add(new Surah("Al-Zilzal", 99, 8));
@@ -164,27 +163,54 @@ public class ResourceUtility {
 		Reader r;
 		try {
 			r = new FileReader(
-					new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar.propreties"),
+					new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar.properties"),
 					StandardCharsets.UTF_8);
 			arTranslation.load(r);
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public static String id(String key) {
-		if (ObjectChecker.isEmptyOrNull(arTranslation))
+	public static String translate(String key) {
+		if (key == null)
+			return "";
+		if (ObjectChecker.isEmptyOrZeroOrNull(arTranslation))
 			iniArTranslation();
 		String value = key;
-		if (ObjectChecker.isNotEmptyOrNull(arTranslation.get(key)))
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(arTranslation.get(key)))
 			value = arTranslation.get(key).toString();
 		return value;
 	}
 
+	private static Properties arMessageTranslation;
+
+	private static void iniArMessageTranslation() {
+		arMessageTranslation = new Properties();
+		Reader r;
+		try {
+			r = new FileReader(
+					new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar-message.properties"),
+					StandardCharsets.UTF_8);
+			arMessageTranslation.load(r);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static String translateMessage(String key) {
+		if (key == null)
+			return "";
+		if (ObjectChecker.isEmptyOrZeroOrNull(arMessageTranslation))
+			iniArMessageTranslation();
+		String value = key;
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(arMessageTranslation.get(key)))
+			value = arMessageTranslation.get(key).toString();
+		return value;
+	}
 //	public static String fetchTranslationKey(String val) {
 //		if (ObjectChecker.isEmptyOrNull(arTranslation)) {
 //			iniArTranslation();
@@ -202,13 +228,13 @@ public class ResourceUtility {
 
 	public static double fetchScreenWidth() {
 		if (screenWidth == 0)
-			screenWidth = Screen.getPrimary().getVisualBounds().getWidth() - 100;
+			screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
 		return screenWidth;
 	}
 
 	public static double fetchScreenHeight() {
 		if (screenHeight == 0)
-			screenHeight = Screen.getPrimary().getVisualBounds().getHeight() - 100;
+			screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
 		return screenHeight;
 	}
 
@@ -222,7 +248,7 @@ public class ResourceUtility {
 		return primaryStage;
 	}
 
-	private static Map<ScreensNames, IFileScreen> cachedScreens = new LinkedHashMap<>();
+	private static Map<ScreensNames, IAnsarScreen> cachedScreens = new LinkedHashMap<>();
 
 	public static Scene fetchCachedScreen(ScreensNames screen) {
 		return cachedScreens.get(screen) == null ? createScreen(screen) : cachedScreens.get(screen).refreshScreen();
@@ -263,7 +289,7 @@ public class ResourceUtility {
 
 			@Override
 			public String toString(T item) {
-				if (ObjectChecker.isEmptyOrNull(item))
+				if (ObjectChecker.isEmptyOrZeroOrNull(item))
 					return "";
 				return toStrFun.apply(item);
 			}
@@ -274,4 +300,57 @@ public class ResourceUtility {
 			}
 		};
 	}
+
+	public static Surah fetchSurah(byte numberOfSurah) {
+		return getSurahs().get(numberOfSurah);
+	}
+
+	public static Surah fetchSurah(String surahName) {
+		return getSurahs().stream()
+				.filter(s -> ObjectChecker.areEqual(ResourceUtility.translate(s.getName()), surahName)).findFirst()
+				.orElse(null);
+	}
+
+	public static Surah calcSurah(Surah fromSurah, Integer fromAya, Integer versesCount) {
+
+		if (fromAya == null)
+			fromAya = 0;
+		if (fromAya + versesCount < fromSurah.getVersesCount())
+			return fromSurah;
+		return ResourceUtility.fetchSurah(NumbersUtility.castToByte((fromSurah.getNumberOfSurah() + 1)));
+	}
+
+	public static Short calcAya(Surah fromSurah, Integer fromAya, Integer versesCount) {
+
+		if (fromAya == null)
+			fromAya = 0;
+
+		int toAya = fromAya + versesCount;
+		short surahVersesCount = fromSurah.getVersesCount();
+		if (toAya <= surahVersesCount)
+			return NumbersUtility.castToShort(toAya);
+		return NumbersUtility.castToShort(toAya - surahVersesCount);
+	}
+
+	public static RecitationInfo calcNextRecitationInfo(AbsRecitationInfo lastRecitationInfo, Integer versesCount) {
+		RecitationInfo nextRecitation = new RecitationInfo();
+		Integer lastRecitatedAya = lastRecitationInfo.getToAya().intValue();
+		nextRecitation.setFromSurah(calcSurah(lastRecitationInfo.getToSurah(), lastRecitatedAya + 1, 0));
+		nextRecitation.setFromAya(calcAya(lastRecitationInfo.getToSurah(), lastRecitatedAya + 1, 0));
+		nextRecitation.setToSurah(calcSurah(nextRecitation.getFromSurah(), lastRecitatedAya, versesCount));
+		nextRecitation.setToAya(calcAya(nextRecitation.getFromSurah(), lastRecitatedAya, versesCount));
+		return nextRecitation;
+	}
+
+	public static void showError(Result result) {
+		AnsarToolTip messageWindow = new AnsarToolTip(result.getMessage());
+		messageWindow.setAutoFix(true);
+		messageWindow.setAutoHide(true);
+		messageWindow.setMinWidth(250);
+		messageWindow.setMinHeight(30);
+		messageWindow.setFont(Font.font("Times New Romans", 20));
+		messageWindow.setStyle("-fx-background-color: #ff8080;-fx-text-fill: black;");
+		messageWindow.show(fetchStage());
+	}
+
 }

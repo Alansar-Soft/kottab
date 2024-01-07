@@ -8,6 +8,8 @@ import java.util.function.Function;
 import entities.AnsarBaseEntity;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
 import utilities.CollectionsUtility;
 import utilities.ObjectChecker;
@@ -16,6 +18,7 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 	public AnsarComboBox() {
 		setId("ansarComboBox");
 		setPrefWidth(200);
+		getEditor().setFont(Font.font("Times New Roman", FontWeight.BLACK, 14));
 	}
 
 	public void insertItems(Collection<T> items) {
@@ -45,14 +48,18 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 	}
 
 	public void config(List<T> items) {
-		setItems(FXCollections.observableArrayList(items));
-		if (ObjectChecker.isNotEmptyOrNull(items) && items.get(0) instanceof AnsarBaseEntity)
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(items) && items.get(0) instanceof AnsarBaseEntity)
 			applyStringConverter(entity -> ((AnsarBaseEntity) entity).getName());
+		insertItems(FXCollections.observableArrayList(items));
 	}
 
 	public void config(List<T> items, Function<T, String> toStrFun) {
-		setItems(FXCollections.observableArrayList(items));
 		applyStringConverter(toStrFun);
+		insertItems(FXCollections.observableArrayList(items));
+	}
+
+	public void applyStringConverter(Function<T, String> toStrFun) {
+		applyStringConverter(toStrFun, i -> getValue());
 	}
 
 	public void applyStringConverter(Function<T, String> toStrFun, Function<String, T> fromStrFun) {
@@ -60,31 +67,14 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 
 			@Override
 			public String toString(T item) {
-				if (ObjectChecker.isEmptyOrNull(item))
-					return "";
-				return toStrFun.apply(item);
-			}
-
-			@Override
-			public T fromString(String str) {
-				return fromStrFun.apply(str);
-			}
-		});
-	}
-
-	public void applyStringConverter(Function<T, String> toStrFun) {
-		setConverter(new StringConverter<T>() {
-
-			@Override
-			public String toString(T item) {
-				if (ObjectChecker.isEmptyOrNull(item))
+				if (ObjectChecker.isEmptyOrZeroOrNull(item))
 					return "";
 				return ObjectChecker.toString(toStrFun.apply(item));
 			}
 
 			@Override
 			public T fromString(String str) {
-				return getValue();
+				return fromStrFun.apply(str);
 			}
 		});
 	}

@@ -6,11 +6,16 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Nationalized;
 
+import utilities.IFile;
+import utilities.ObjectChecker;
+import utilities.Result;
+
 @MappedSuperclass
-public class AnsarBaseEntity {
+public abstract class AnsarBaseEntity implements IFile {
 	private Long id;
 	private Long code;
 	private String name;
@@ -50,5 +55,19 @@ public class AnsarBaseEntity {
 
 	public void setCreationDate(LocalDateTime creationDate) {
 		this.creationDate = creationDate;
+	}
+
+	@Override
+	@Transient
+	public Result isValidForCommit() {
+		Result result = new Result();
+		if (ObjectChecker.isEmptyOrZeroOrNull(name))
+			result.accmulate(Result.createFailureResult("You must enter name"));
+		return result;
+	}
+
+	@Override
+	public Result postCommit() {
+		return new Result();
 	}
 }

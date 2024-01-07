@@ -1,6 +1,9 @@
 package entities;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
+
+import utilities.ObjectChecker;
 
 @Embeddable
 public class RecitationInfoWithGrade extends AbsRecitationInfo {
@@ -14,4 +17,9 @@ public class RecitationInfoWithGrade extends AbsRecitationInfo {
 		this.grade = grade;
 	}
 
+	@Override
+	@Transient
+	public boolean isEmpty() {
+		return super.isEmpty() || ObjectChecker.isEmptyOrZeroOrNull(grade);
+	}
 }

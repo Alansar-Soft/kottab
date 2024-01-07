@@ -12,10 +12,10 @@ import ansarcontrols.AnsarScene;
 import ansarcontrols.AnsarTable;
 import ansarcontrols.AnsarTableColumn;
 import ansarcontrols.AnsarTableRow;
+import ansarcontrols.AnsarVBoxRoot;
 import ansarcontrols.ControlType;
 import entities.Address;
 import entities.Person;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import model.Persister;
 import utilities.DateTimeUtility;
@@ -24,8 +24,8 @@ import utilities.ResourceUtility;
 
 public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T> {
 	private AnsarScene scene;
-	private AnsarLabeledControlHBox<String> code;
-	private AnsarLabeledControlHBox<String> registrationDateLabel;
+	private AnsarLabeledControlHBox<String> codeBox;
+	private AnsarLabeledControlHBox<String> registrationDateBox;
 	private AnsarLabeledControlHBox<String> name;
 	private AnsarLabeledControlHBox<LocalDate> birthdateDP;
 	private AnsarLabeledControlHBox<Boolean> studyInAzharBox;
@@ -34,8 +34,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	private AnsarLabeledControlHBox<Country> country;
 	private AnsarLabeledControlHBox<City> city;
 	private AnsarLabeledControlHBox<Town> town;
-	private AnsarGridPane headerPane;
-	private AnsarHBox btnsBox;
+	private AnsarGridPane headerContentPane;
 	private AnsarTable<Person> table;
 	private AnsarTableColumn<Person, Long> codeCol;
 	private AnsarTableColumn<Person, String> registrationDateCol;
@@ -49,12 +48,12 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	private AnsarTableColumn<Person, String> townCol;
 
 	@Override
-	public Pane createHeaderBox() {
-		headerPane = new AnsarGridPane();
-		code = new AnsarLabeledControlHBox<>("code", ControlType.Label);
-		code.insertValue(fetchCode());
-		registrationDateLabel = new AnsarLabeledControlHBox<>("registrationDate", ControlType.Label);
-		registrationDateLabel.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
+	public Pane createHeaderContent() {
+		headerContentPane = new AnsarGridPane();
+		codeBox = new AnsarLabeledControlHBox<>("code", ControlType.Label);
+		codeBox.insertValue(fetchCode());
+		registrationDateBox = new AnsarLabeledControlHBox<>("registrationDate", ControlType.Label);
+		registrationDateBox.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 		name = new AnsarLabeledControlHBox<>("name", ControlType.TextField);
 		birthdateDP = new AnsarLabeledControlHBox<>("birthdate", ControlType.DatePicker);
 		country = new AnsarLabeledControlHBox<>("country", ControlType.ComboBox);
@@ -69,23 +68,22 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 		firstPhoneNo = new AnsarLabeledControlHBox<>("firstPhoneNo", ControlType.TextField);
 		secondPhoneNo = new AnsarLabeledControlHBox<>("secondPhoneNo", ControlType.TextField);
 		studyInAzharBox = new AnsarLabeledControlHBox<>("azharStudent", ControlType.CheckBox);
-		headerPane.add(code, 0, 0);
-		headerPane.add(registrationDateLabel, 1, 0);
-		headerPane.add(name, 0, 1);
-		headerPane.add(birthdateDP, 1, 1);
-		headerPane.add(studyInAzharBox, 2, 1);
-		headerPane.add(country, 0, 2);
-		headerPane.add(city, 1, 2);
-		headerPane.add(town, 2, 2);
-		headerPane.add(firstPhoneNo, 0, 3);
-		headerPane.add(secondPhoneNo, 1, 3);
-		return headerPane;
+		headerContentPane.add(codeBox, 0, 0);
+		headerContentPane.add(registrationDateBox, 1, 0);
+		headerContentPane.add(name, 0, 1);
+		headerContentPane.add(birthdateDP, 1, 1);
+		headerContentPane.add(studyInAzharBox, 2, 1);
+		headerContentPane.add(country, 0, 2);
+		headerContentPane.add(city, 1, 2);
+		headerContentPane.add(town, 2, 2);
+		headerContentPane.add(firstPhoneNo, 0, 3);
+		headerContentPane.add(secondPhoneNo, 1, 3);
+		return headerContentPane;
 	}
 
 	@Override
 	public AnsarTable<T> createTableView() {
 		table = new AnsarTable<>();
-		table.setPrefHeight(ResourceUtility.fetchScreenHeight() - (headerPane.getHeight() + btnsBox.getHeight()));
 		table.setRowFactory(t -> {
 			AnsarTableRow<Person> row = new AnsarTableRow<>();
 			row.setOnMouseClicked(e -> {
@@ -95,25 +93,25 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 			return row;
 		});
 		codeCol = new AnsarTableColumn<>("code");
-		codeCol.setCellValueFactory(new PropertyValueFactory<Person, Long>("code"));
+		codeCol.config("code");
 		registrationDateCol = new AnsarTableColumn<>("registrationDate");
 		registrationDateCol.config("creationDate");
 		nameCol = new AnsarTableColumn<>("name");
-		nameCol.setCellValueFactory(new PropertyValueFactory<Person, String>("name"));
+		nameCol.config("name");
 		birthdateCol = new AnsarTableColumn<>("birthdate");
-		birthdateCol.setCellValueFactory(new PropertyValueFactory<Person, LocalDate>("birthdate"));
+		birthdateCol.config("birthdate");
 		firstPhoneNoCol = new AnsarTableColumn<>("firstPhoneNo");
-		firstPhoneNoCol.setCellValueFactory(new PropertyValueFactory<Person, String>("firstPhoneNo"));
+		firstPhoneNoCol.config("firstPhoneNo");
 		secondPhoneNoCol = new AnsarTableColumn<>("secondPhoneNo");
-		secondPhoneNoCol.setCellValueFactory(new PropertyValueFactory<>("secondPhoneNo"));
+		secondPhoneNoCol.config("secondPhoneNo");
 		countryCol = new AnsarTableColumn<>("country");
-		countryCol.setCellValueFactory(new PropertyValueFactory<>("country"));
+		countryCol.config("country");
 		cityCol = new AnsarTableColumn<>("city");
-		cityCol.setCellValueFactory(new PropertyValueFactory<>("city"));
+		cityCol.config("city");
 		townCol = new AnsarTableColumn<>("town");
-		townCol.setCellValueFactory(new PropertyValueFactory<>("town"));
+		townCol.config("town");
 		azharStudentCol = new AnsarTableColumn<>("azharStudent");
-		azharStudentCol.setCellValueFactory(new PropertyValueFactory<>("azharStudentVal"));
+		azharStudentCol.config("azharStudentVal");
 		table.getColumns().addAll(codeCol, registrationDateCol, nameCol, birthdateCol, firstPhoneNoCol,
 				secondPhoneNoCol, countryCol, cityCol, townCol, azharStudentCol);
 		table.getItems().clear();
@@ -122,8 +120,8 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	}
 
 	public void selectRowDefaultAction(Person item) {
-		code.insertValue(item.getCode());
-		registrationDateLabel.insertValue(DateTimeUtility.formatDateTime(item.getCreationDate()));
+		codeBox.insertValue(item.getCode());
+		registrationDateBox.insertValue(DateTimeUtility.formatDateTime(item.getCreationDate()));
 		name.insertValue(item.getName());
 		birthdateDP.insertValue(item.getBirthdate());
 		country.insertValue(item.getCountry());
@@ -135,36 +133,21 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	}
 
 	@Override
-	public Pane createBtnsBox() {
-		btnsBox = new AnsarHBox();
-		AnsarButton saveBtn = new AnsarButton(ResourceUtility.id("Save"));
-		AnsarButton backBtn = new AnsarButton(ResourceUtility.id("Back"));
-		saveBtn.setOnAction(e -> submit());
-		backBtn.setOnAction(e -> ResourceUtility.fetchStage().setScene(HomeScreen.fetchScreen()));
-		btnsBox.getChildren().addAll(saveBtn, backBtn);
-		return btnsBox;
+	public AnsarTable<T> fetchTable() {
+		return (AnsarTable<T>) table;
 	}
 
 	@Override
-	public void reset() {
-		IFileScreen.super.reset();
-		code.insertValue(fetchCode());
-		registrationDateLabel.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
-	}
-
-	@Override
-	public T fetchFile() {
-		Long code = Long.valueOf(this.code.fetchValue());
-		Person person = table.getItems().stream().filter(p -> ObjectChecker.areEqual(p.getCode(), code)).findFirst()
-				.orElse(null);
-		if (ObjectChecker.isEmptyOrNull(person)) {
-			person = createEntity();
-			table.getItems().add(person);
-		}
+	public T createEntity() {
+		Person person = createPersonEntity();
+		Long code = Long.valueOf(this.codeBox.fetchValue());
+		Long id = table.getItems().stream().filter(i -> ObjectChecker.areEqual(i.getCode(), code)).map(i -> i.getId())
+				.findFirst().orElse(null);
+		person.setId(id);
 		person.setCode(code);
 		person.setName(name.fetchValue());
 		person.setBirthdate((LocalDate) birthdateDP.fetchValue());
-		person.setCreationDate(DateTimeUtility.parseDateTime(registrationDateLabel.fetchValue()));
+		person.setCreationDate(DateTimeUtility.parseDateTime(registrationDateBox.fetchValue()));
 		person.setFirstPhoneNo(ObjectChecker.toString(firstPhoneNo.fetchValue()));
 		person.setSecondPhoneNo(ObjectChecker.toString(secondPhoneNo.fetchValue()));
 		Address address = new Address();
@@ -176,7 +159,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 		return (T) person;
 	}
 
-	public abstract Person createEntity();
+	public abstract Person createPersonEntity();
 
 	@Override
 	public AnsarScene fetchScene() {
@@ -188,8 +171,13 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
 	}
 
 	@Override
-	public AnsarScene refreshScreen() {
-		reset();
-		return scene;
+	public AnsarLabeledControlHBox<String> fetchCodeBox() {
+		return codeBox;
 	}
+
+	@Override
+	public AnsarLabeledControlHBox<String> fetchRegistrationDateBox() {
+		return registrationDateBox;
+	}
+
 }

@@ -20,7 +20,7 @@ public class DateTimeUtility {
 	}
 
 	public static LocalDateTime parseDateTime(String dateTime) {
-		if (ObjectChecker.isEmptyOrNull(dateTime))
+		if (ObjectChecker.isEmptyOrZeroOrNull(dateTime))
 			return null;
 		return LocalDateTime.parse(dateTime, fetchDateTimeFormatter());
 	}

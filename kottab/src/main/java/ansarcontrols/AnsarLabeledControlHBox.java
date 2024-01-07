@@ -14,9 +14,8 @@ public class AnsarLabeledControlHBox<T> extends HBox implements IAnsarControl<T>
 	private IAnsarControl control;
 
 	public AnsarLabeledControlHBox(String title, ControlType controlType) {
-		titleLabel = new AnsarLabel(ResourceUtility.id(title) + " :");
+		titleLabel = new AnsarLabel(ResourceUtility.translate(title));
 		titleLabel.setPrefWidth(100);
-		titleLabel.setWrapText(true);
 		control = buildControl(controlType);
 		setNodeOrientation(NodeOrientation.RIGHT_TO_LEFT);
 		setPadding(new Insets(5));

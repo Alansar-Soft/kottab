@@ -1,7 +1,11 @@
 package entities;
 
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 
+import utilities.NumbersUtility;
+import utilities.ObjectChecker;
+import utilities.ResourceUtility;
 import utilities.Surah;
 
 @MappedSuperclass
@@ -12,6 +16,8 @@ public abstract class AbsRecitationInfo {
 	private Short toAya;
 
 	public Surah getFromSurah() {
+		if (fromSurah != null && fromSurah.isEmpty())
+			fromSurah.updateDataFrom(ResourceUtility.fetchSurah(fromSurah.getNumberOfSurah()));
 		return fromSurah;
 	}
 
@@ -20,6 +26,8 @@ public abstract class AbsRecitationInfo {
 	}
 
 	public Surah getToSurah() {
+		if (toSurah != null && toSurah.isEmpty())
+			toSurah.updateDataFrom(ResourceUtility.fetchSurah(toSurah.getNumberOfSurah()));
 		return toSurah;
 	}
 
@@ -31,16 +39,21 @@ public abstract class AbsRecitationInfo {
 		return fromAya;
 	}
 
-	public void setFromAya(Short fromAya) {
-		this.fromAya = fromAya;
+	public void setFromAya(Number fromAya) {
+		this.fromAya = NumbersUtility.castToShort(fromAya);
 	}
 
 	public Short getToAya() {
 		return toAya;
 	}
 
-	public void setToAya(Short toAya) {
-		this.toAya = toAya;
+	public void setToAya(Number toAya) {
+		this.toAya = NumbersUtility.castToShort(toAya);
+	}
+
+	@Transient
+	public boolean isEmpty() {
+		return ObjectChecker.areAllEmptyOrNull(fromSurah, fromAya, toSurah, toAya);
 	}
 
 }

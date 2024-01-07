@@ -1,7 +1,10 @@
 package ansarcontrols;
 
-public interface IAnsarControl<T extends Object> extends IAnsarNode {
-	public T fetchValue();
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
-	public void insertValue(T val);
+public interface IAnsarControl<T extends Object> extends IAnsarNode {
+	 T fetchValue();
+
+	 void insertValue(T val);
 }

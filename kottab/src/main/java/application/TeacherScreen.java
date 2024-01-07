@@ -12,7 +12,12 @@ public class TeacherScreen<T extends MemorizationTeacher> extends AbsPersonScree
 	}
 
 	@Override
-	public Person createEntity() {
+	public String fetchScreenTitle() {
+		return "TeachersScreen";
+	}
+
+	@Override
+	public Person createPersonEntity() {
 		return new MemorizationTeacher();
 	}
 

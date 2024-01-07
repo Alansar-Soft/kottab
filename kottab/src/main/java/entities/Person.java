@@ -6,6 +6,7 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
 import utilities.ObjectChecker;
+import utilities.Result;
 
 @MappedSuperclass
 public abstract class Person extends AnsarBaseEntity {
@@ -57,7 +58,7 @@ public abstract class Person extends AnsarBaseEntity {
 
 	@Transient
 	public String getCountry() {
-		if (ObjectChecker.isNotEmptyOrNull(address))
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
 			return ObjectChecker.toString(address.getCountry());
 
 		return "";
@@ -65,14 +66,14 @@ public abstract class Person extends AnsarBaseEntity {
 
 	@Transient
 	public String getCity() {
-		if (ObjectChecker.isNotEmptyOrNull(address))
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
 			return ObjectChecker.toString(address.getCity());
 		return "";
 	}
 
 	@Transient
 	public String getTown() {
-		if (ObjectChecker.isNotEmptyOrNull(address))
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
 			return ObjectChecker.toString(address.getTown());
 		return "";
 	}
@@ -81,4 +82,28 @@ public abstract class Person extends AnsarBaseEntity {
 	public String getAzharStudentVal() {
 		return ObjectChecker.toString(getAzharStudent());
 	}
+
+	@Override
+	@Transient
+	public Result isValidForCommit() {
+		Result result = super.isValidForCommit();
+		if (ObjectChecker.isEmptyOrZeroOrNull(birthdate))
+			result.accmulate(Result.createFailureResult("You must enter birthdate"));
+		validatePhoneNumber(firstPhoneNo, "First", result);
+		validatePhoneNumber(secondPhoneNo, "Second", result);
+		return result;
+	}
+
+	public void validatePhoneNumber(String phoneNum, String messagePrefix, Result result) {
+		if (ObjectChecker.isEmptyOrZeroOrNull(phoneNum))
+			return;
+		if (phoneNum.length() != 11)
+			result.accmulate(Result.createFailureResult(messagePrefix + " phone number must be 11 digits exactly"));
+		try {
+			Long.valueOf(phoneNum);
+		} catch (NumberFormatException e) {
+			result.accmulate(Result.createFailureResult(messagePrefix + " phone number must have numbers only"));
+		}
+	}
+
 }

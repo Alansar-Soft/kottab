@@ -1,59 +1,85 @@
 package application;
 
 import java.util.Arrays;
+import java.util.function.Consumer;
 
 import ansarcontrols.AnsarHBox;
 import ansarcontrols.AnsarLabel;
 import ansarcontrols.AnsarLabeledControlHBox;
+import ansarcontrols.AnsarTextField;
 import ansarcontrols.AnsarVBox;
 import ansarcontrols.ControlType;
+import entities.AbsRecitationInfo;
+import entities.RecitationInfo;
+import utilities.ObjectChecker;
+import utilities.ResourceUtility;
+import utilities.Surah;
 
 public class RecitationBox extends AnsarVBox {
 	private AnsarLabel title;
-	private AnsarLabeledControlHBox fromSurah;
-	private AnsarLabeledControlHBox toSurah;
-	private AnsarLabeledControlHBox fromAya;
-	private AnsarLabeledControlHBox toAya;
+	private AnsarLabeledControlHBox<String> fromSurah;
+	private AnsarLabeledControlHBox<String> toSurah;
+	private AnsarLabeledControlHBox<String> fromAya;
+	private AnsarLabeledControlHBox<String> toAya;
 
 	public RecitationBox(String title) {
 		this.title = new AnsarLabel(title);
-		fromSurah = new AnsarLabeledControlHBox("fromSurah", ControlType.TextField);
-		fromAya = new AnsarLabeledControlHBox("fromAya", ControlType.TextField);
-		toSurah = new AnsarLabeledControlHBox("toSurah", ControlType.TextField);
-		toAya = new AnsarLabeledControlHBox("toAya", ControlType.TextField);
+		fromSurah = new AnsarLabeledControlHBox<>("fromSurah", ControlType.TextField);
+		((AnsarTextField) fromSurah.getControl()).setEditable(false);
+		fromAya = new AnsarLabeledControlHBox<>("fromAya", ControlType.TextField);
+		((AnsarTextField) fromAya.getControl()).setEditable(false);
+		toSurah = new AnsarLabeledControlHBox<>("toSurah", ControlType.TextField);
+		toAya = new AnsarLabeledControlHBox<>("toAya", ControlType.TextField);
 		getChildren().addAll(Arrays.asList(new AnsarHBox(this.title), new AnsarHBox(fromSurah, fromAya),
 				new AnsarHBox(toSurah, toAya)));
 	}
 
-	public AnsarLabeledControlHBox getFromSurah() {
-		return fromSurah;
+	public Surah getFromSurah() {
+		return ResourceUtility.fetchSurah(fromSurah.fetchValue());
 	}
 
-	public void setFromSurah(AnsarLabeledControlHBox fromSurah) {
-		this.fromSurah = fromSurah;
+	public void setFromSurah(String fromSurah) {
+		this.fromSurah.insertValue(fromSurah);
 	}
 
-	public AnsarLabeledControlHBox getToSurah() {
-		return toSurah;
+	public Surah getToSurah() {
+		return ResourceUtility.fetchSurah(toSurah.fetchValue());
 	}
 
-	public void setToSurah(AnsarLabeledControlHBox toSurah) {
-		this.toSurah = toSurah;
+	public void setToSurah(String toSurah) {
+		this.toSurah.insertValue(toSurah);
 	}
 
-	public AnsarLabeledControlHBox getFromAya() {
-		return fromAya;
+	public Short getFromAya() {
+		return Short.valueOf(fromAya.fetchValue());
 	}
 
-	public void setFromAya(AnsarLabeledControlHBox fromAya) {
-		this.fromAya = fromAya;
+	public void setFromAya(Short fromAya) {
+		this.fromAya.insertValue(fromAya);
 	}
 
-	public AnsarLabeledControlHBox getToAya() {
-		return toAya;
+	public Short getToAya() {
+		return Short.valueOf(toAya.fetchValue());
 	}
 
-	public void setToAya(AnsarLabeledControlHBox toAya) {
-		this.toAya = toAya;
+	public void setToAya(Short toAya) {
+		this.toAya.insertValue(toAya);
+	}
+
+	public void toAyaCallback(Consumer<Short> callback) {
+		((AnsarTextField) toAya.getControl()).setOnAction(e -> callback.accept(getToAya()));
+	}
+
+	public boolean isEmpty() {
+		return ObjectChecker.areAllEmptyOrNull(getFromSurah(), getFromAya(), getToSurah(), getToAya());
+	}
+
+	public AbsRecitationInfo fetchRecitationInfo() {
+		RecitationInfo recitation = new RecitationInfo();
+		recitation.setFromSurah(getFromSurah());
+		recitation.setFromAya(getFromAya());
+		recitation.setToSurah(getToSurah());
+		recitation.setToAya(getToAya());
+		return recitation;
 	}
 }

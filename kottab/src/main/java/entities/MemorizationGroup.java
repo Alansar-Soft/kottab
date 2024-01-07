@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Transient;
+
+import utilities.Result;
 
 @Entity
 public class MemorizationGroup extends AnsarBaseEntity {
@@ -44,7 +47,7 @@ public class MemorizationGroup extends AnsarBaseEntity {
 		this.students = students;
 	}
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "groupLevel_id")
 	public GroupLevel getGroupLevel() {
 		return groupLevel;
@@ -52,6 +55,17 @@ public class MemorizationGroup extends AnsarBaseEntity {
 
 	public void setGroupLevel(GroupLevel groupLevel) {
 		this.groupLevel = groupLevel;
+	}
+
+	@Override
+	@Transient
+	public Result isValidForCommit() {
+		Result result = super.isValidForCommit();
+		if (getGroupLevel() == null)
+			result.accmulate(Result.createFailureResult("You must choose group level"));
+		if (getTeacher() == null)
+			result.accmulate(Result.createFailureResult("You must choose teacher"));
+		return result;
 	}
 
 }

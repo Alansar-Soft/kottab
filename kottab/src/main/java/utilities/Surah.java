@@ -27,7 +27,7 @@ public class Surah {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public byte getNumberOfSurah() {
 		return numberOfSurah;
 	}
@@ -43,6 +43,21 @@ public class Surah {
 
 	public void setVersesCount(short versesCount) {
 		this.versesCount = versesCount;
+	}
+
+	@Transient
+	public boolean isEmpty() {
+		return ObjectChecker.areAllEmptyOrNull(getName(), getVersesCount());
+	}
+
+	public void updateDataFrom(Surah surah) {
+		setName(surah.getName());
+		setNumberOfSurah(surah.getNumberOfSurah());
+		setVersesCount(surah.getVersesCount());
+	}
+
+	public String nameByLang() {
+		return ResourceUtility.translate(name);
 	}
 
 }

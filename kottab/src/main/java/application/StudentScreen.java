@@ -27,8 +27,13 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	}
 
 	@Override
-	public Pane createHeaderBox() {
-		GridPane headerPane = (GridPane) super.createHeaderBox();
+	public String fetchScreenTitle() {
+		return "StudentsScreen";
+	}
+
+	@Override
+	public Pane createHeaderContent() {
+		GridPane headerPane = (GridPane) super.createHeaderContent();
 		parentFirstPhoneNo = new AnsarLabeledControlHBox<>("parentFirstPhoneNo", ControlType.TextField);
 		parentSecondPhoneNo = new AnsarLabeledControlHBox<>("parentSecondPhoneNo", ControlType.TextField);
 		group = new AnsarLabeledControlHBox<>("group", ControlType.ComboBox);
@@ -55,7 +60,7 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	}
 
 	@Override
-	public Person createEntity() {
+	public Person createPersonEntity() {
 		return new Student();
 	}
 
@@ -65,8 +70,8 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 	}
 
 	@Override
-	public Student fetchFile() {
-		Student entityToSave = super.fetchFile();
+	public Student createEntity() {
+		Student entityToSave = super.createEntity();
 		entityToSave.setParentsFirstPhoneNo(parentFirstPhoneNo.fetchValue());
 		entityToSave.setParentsSecondPhoneNo((String) parentSecondPhoneNo.fetchValue());
 		entityToSave.setGroup(group.fetchValue());
@@ -79,12 +84,5 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 		parentFirstPhoneNo.insertValue(student.getParentsFirstPhoneNo());
 		parentSecondPhoneNo.insertValue(student.getParentsSecondPhoneNo());
 		group.insertValue(student.getGroup());
-	}
-
-	@Override
-	public AnsarScene refreshScreen() {
-		((AnsarComboBox<MemorizationGroup>) group.getControl()).insertItems(Persister.list(MemorizationGroup.class));
-		super.refreshScreen();
-		return fetchScene();
 	}
 }

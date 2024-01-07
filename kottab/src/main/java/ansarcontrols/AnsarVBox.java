@@ -13,6 +13,7 @@ public class AnsarVBox extends VBox implements IAnsarParent {
 	}
 
 	public AnsarVBox(Node... nodes) {
+		getStyleClass().add("v-box");
 		setPadding(new Insets(5));
 		setSpacing(5);
 		setNodeOrientation(NodeOrientation.INHERIT);

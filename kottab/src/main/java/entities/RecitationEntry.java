@@ -1,6 +1,7 @@
 package entities;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -11,14 +12,19 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
+
+import utilities.IFile;
+import utilities.Result;
 
 @Entity
-public class RecitationEntry {
+public class RecitationEntry implements IFile {
 	private Long id;
 	private LocalDate creationDate;
 	private RecitationInfoWithGrade recitation;
 	private RecitationInfoWithGrade revision;
-	private RecitationInfo memorization;
+	private RecitationInfo nextRecitation;
+	private RecitationInfo nextRevision;
 	private String remark;
 	private Student student;
 
@@ -72,16 +78,30 @@ public class RecitationEntry {
 
 	@Embedded
 	@AttributeOverrides(value = {
-			@AttributeOverride(name = "fromSurah.numberOfSurah", column = @Column(name = "memorization_fromSurah")),
-			@AttributeOverride(name = "toSurah.numberOfSurah", column = @Column(name = "memorization_toSurah")),
-			@AttributeOverride(name = "fromAya", column = @Column(name = "memorization_fromAya")),
-			@AttributeOverride(name = "toAya", column = @Column(name = "memorization_toAya")) })
-	public RecitationInfo getMemorization() {
-		return memorization;
+			@AttributeOverride(name = "fromSurah.numberOfSurah", column = @Column(name = "nextRecitation_fromSurah")),
+			@AttributeOverride(name = "toSurah.numberOfSurah", column = @Column(name = "nextRecitation_toSurah")),
+			@AttributeOverride(name = "fromAya", column = @Column(name = "nextRecitation_fromAya")),
+			@AttributeOverride(name = "toAya", column = @Column(name = "nextRecitation_toAya")) })
+	public RecitationInfo getNextRecitation() {
+		return nextRecitation;
 	}
 
-	public void setMemorization(RecitationInfo memorization) {
-		this.memorization = memorization;
+	public void setNextRecitation(RecitationInfo nextRecitation) {
+		this.nextRecitation = nextRecitation;
+	}
+
+	@Embedded
+	@AttributeOverrides(value = {
+			@AttributeOverride(name = "fromSurah.numberOfSurah", column = @Column(name = "nextRevision_fromSurah")),
+			@AttributeOverride(name = "toSurah.numberOfSurah", column = @Column(name = "nextRevision_toSurah")),
+			@AttributeOverride(name = "fromAya", column = @Column(name = "nextRevision_fromAya")),
+			@AttributeOverride(name = "toAya", column = @Column(name = "nextRevision_toAya")) })
+	public RecitationInfo getNextRevision() {
+		return nextRevision;
+	}
+
+	public void setNextRevision(RecitationInfo nextRevision) {
+		this.nextRevision = nextRevision;
 	}
 
 	public String getRemark() {
@@ -100,6 +120,28 @@ public class RecitationEntry {
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+	@Override
+	@Transient
+	public Result isValidForCommit() {
+		Result result = new Result();
+		if (recitation != null && recitation.isEmpty())
+			result.failure("You must enter all recitation data");
+		if (revision != null && revision.isEmpty())
+			result.failure("You must enter all revision data");
+		if (nextRecitation != null && nextRecitation.isEmpty())
+			result.failure("You must enter all next recitation data");
+		if (nextRevision != null && nextRevision.isEmpty())
+			result.failure("You must enter all next revision data");
+		if (student == null)
+			result.failure("You must enter student");
+		return result;
+	}
+
+	@Override
+	public Result postCommit() {
+		return new Result();
 	}
 
 }

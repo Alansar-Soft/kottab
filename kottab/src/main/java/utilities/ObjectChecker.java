@@ -9,12 +9,12 @@ import entities.AnsarBaseEntity;
 
 public class ObjectChecker {
 	@SuppressWarnings({ "rawtypes" })
-	public static boolean isNotEmptyOrNull(Object object) {
-		return !isEmptyOrNull(object);
+	public static boolean isNotEmptyOrZeroOrNull(Object object) {
+		return !isEmptyOrZeroOrNull(object);
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	public static boolean isEmptyOrNull(Object object) {
+	public static boolean isEmptyOrZeroOrNull(Object object) {
 		if (object == null)
 			return true;
 		if (object instanceof String)
@@ -23,23 +23,21 @@ public class ObjectChecker {
 			return ((Collection) object).isEmpty();
 		if (object instanceof Map)
 			return ((Map) object).isEmpty();
+		if (object instanceof Number && Double.valueOf(0.0).equals(((Number) object).doubleValue()))
+			return true;
 		return false;
 	}
 
 	public static boolean areEqual(Object object1, Object object2) {
 		if (object1 == object2)
 			return true;
+		if (object1.equals(object2))
+			return true;
 		if (isAnyEmptyOrNull(object1, object2))
 			return false;
 		if (object1 instanceof AnsarBaseEntity && object2 instanceof AnsarBaseEntity)
-			return areEqual((AnsarBaseEntity) object1, (AnsarBaseEntity) object2);
-		if (object1.equals(object2))
-			return true;
+			return areEqual(((AnsarBaseEntity) object1).getCode(), ((AnsarBaseEntity) object2).getCode());
 		return false;
-	}
-
-	private static boolean areEqual(AnsarBaseEntity object1, AnsarBaseEntity object2) {
-		return object1.getId().equals(object2.getId());
 	}
 
 	public static boolean areNotEqual(Object object1, Object object2) {
@@ -48,7 +46,7 @@ public class ObjectChecker {
 
 	private static boolean isAnyEmptyOrNull(Object... objs) {
 		for (int i = 0; i < objs.length; i++) {
-			if (isEmptyOrNull(objs[i]))
+			if (isEmptyOrZeroOrNull(objs[i]))
 				return true;
 		}
 		return false;
@@ -57,14 +55,14 @@ public class ObjectChecker {
 	public static String toString(Object value) {
 		if (value == null)
 			return "";
-		String val = ResourceUtility.id(value.toString());
-		if (ObjectChecker.isNotEmptyOrNull(val))
+		String val = ResourceUtility.translate(value.toString());
+		if (ObjectChecker.isNotEmptyOrZeroOrNull(val))
 			return val;
 		return value.toString();
 	}
 
 	public static Boolean toFalseIfNull(Boolean value) {
-		if (isEmptyOrNull(value))
+		if (isEmptyOrZeroOrNull(value))
 			return false;
 		return value;
 	}
@@ -72,12 +70,20 @@ public class ObjectChecker {
 	public static <T> List<String> translateList(T... values) {
 		List<String> list = new ArrayList<>();
 		for (int i = 0; i < values.length; i++) {
-			list.add(ResourceUtility.id(values[i].toString()));
+			list.add(ResourceUtility.translate(values[i].toString()));
 		}
 		return list;
 	}
 
 	public static int toZeroIfNull(Byte numberOfSurah) {
 		return numberOfSurah == null ? 0 : numberOfSurah;
+	}
+
+	public static boolean areAllEmptyOrNull(Object... objects) {
+		for (Object obj : objects) {
+			if (isNotEmptyOrZeroOrNull(obj))
+				return false;
+		}
+		return true;
 	}
 }

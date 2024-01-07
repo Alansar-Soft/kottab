@@ -12,12 +12,13 @@ import ansarcontrols.AnsarScene;
 import ansarcontrols.AnsarTable;
 import ansarcontrols.AnsarTableColumn;
 import ansarcontrols.AnsarTableRow;
+import ansarcontrols.AnsarVBoxRoot;
 import ansarcontrols.ControlType;
 import entities.GroupLevel;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import model.Persister;
 import utilities.DateTimeUtility;
+import utilities.NumbersUtility;
 import utilities.ObjectChecker;
 import utilities.ResourceUtility;
 import utilities.Surah;
@@ -26,7 +27,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	private AnsarScene scene;
 	private AnsarLabeledControlHBox<String> codeBox;
 	private AnsarLabeledControlHBox<String> nameBox;
-	private AnsarLabeledControlHBox<String> creationDateBox;
+	private AnsarLabeledControlHBox<String> registrationDateBox;
 	private AnsarLabeledControlHBox<Surah> fromSurah;
 	private AnsarLabeledControlHBox<Surah> toSurah;
 	private AnsarLabeledControlHBox<String> dailyRecitationInVerses;
@@ -41,39 +42,44 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	private AnsarTableColumn<GroupLevel, LocalDateTime> creationDateCol;
 	private AnsarTableColumn<GroupLevel, Surah> fromSurahCol;
 	private AnsarTableColumn<GroupLevel, Surah> toSurahCol;
-	private AnsarTableColumn<GroupLevel, Integer> dailyRecitationInVersesCol;
+	private AnsarTableColumn<GroupLevel, Short> dailyRecitationInVersesCol;
 	private AnsarTableColumn<GroupLevel, Surah> revisionFromSurahCol;
 	private AnsarTableColumn<GroupLevel, Surah> revisionToSurahCol;
-	private AnsarTableColumn<GroupLevel, Integer> revisionRecitationInVersesCol;
+	private AnsarTableColumn<GroupLevel, Short> revisionRecitationInVersesCol;
 
 	public GroupLevelScreen() {
 		this.scene = constructScreen();
 	}
 
 	@Override
-	public Pane createHeaderBox() {
+	public String fetchScreenTitle() {
+		return "LevelsScreen";
+	}
+
+	@Override
+	public Pane createHeaderContent() {
 		AnsarGridPane headerPane = new AnsarGridPane();
 		codeBox = new AnsarLabeledControlHBox<>("code", ControlType.Label);
 		codeBox.insertValue(fetchCode());
-		creationDateBox = new AnsarLabeledControlHBox<>("creationDate", ControlType.Label);
-		creationDateBox.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
+		registrationDateBox = new AnsarLabeledControlHBox<>("creationDate", ControlType.Label);
+		registrationDateBox.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 		nameBox = new AnsarLabeledControlHBox<>("name", ControlType.TextField);
 		fromSurah = new AnsarLabeledControlHBox<>("fromSurah", ControlType.ComboBox);
 		AnsarComboBox<Surah> fromSurahComboBox = fromSurah.getControl();
-		fromSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.getName());
+		fromSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.nameByLang());
 		toSurah = new AnsarLabeledControlHBox<>("toSurah", ControlType.ComboBox);
 		AnsarComboBox<Surah> toSurahComboBox = toSurah.getControl();
-		toSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.getName());
+		toSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.nameByLang());
 		dailyRecitationInVerses = new AnsarLabeledControlHBox<>("dailyRecitationInVerses", ControlType.TextField);
 		revisionFromSurah = new AnsarLabeledControlHBox<>("revisionFromSurah", ControlType.ComboBox);
 		AnsarComboBox<Surah> revisionFromSurahComboBox = revisionFromSurah.getControl();
-		revisionFromSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.getName());
+		revisionFromSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.nameByLang());
 		revisionToSurah = new AnsarLabeledControlHBox<>("revisionToSurah", ControlType.ComboBox);
 		AnsarComboBox<Surah> revisionToSurahComboBox = revisionToSurah.getControl();
-		revisionToSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.getName());
+		revisionToSurahComboBox.config(ResourceUtility.getSurahs(), s -> s.nameByLang());
 		revisionRecitationInVerses = new AnsarLabeledControlHBox<>("revisionRecitationInVerses", ControlType.TextField);
 		headerPane.add(codeBox, 0, 0);
-		headerPane.add(creationDateBox, 1, 0);
+		headerPane.add(registrationDateBox, 1, 0);
 		headerPane.add(nameBox, 0, 1);
 		headerPane.add(fromSurah, 0, 2);
 		headerPane.add(toSurah, 1, 2);
@@ -85,42 +91,26 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	}
 
 	@Override
-	public Pane createBtnsBox() {
-		AnsarHBox btnsBox = new AnsarHBox();
-		saveBtn = new AnsarButton("Save");
-		saveBtn.setOnAction(e -> submit());
-		backBtn = new AnsarButton("Back");
-		backBtn.setOnAction(e -> ResourceUtility.fetchStage().setScene(HomeScreen.fetchScreen()));
-		btnsBox.getChildren().addAll(saveBtn, backBtn);
-		return btnsBox;
-	}
-
-	@Override
-	public GroupLevel fetchFile() {
+	public GroupLevel createEntity() {
+		GroupLevel level = new GroupLevel();
 		Long code = Long.valueOf(codeBox.fetchValue());
-		GroupLevel level = table.getItems().stream().filter(i -> ObjectChecker.areEqual(i.getCode(), code)).findFirst()
-				.orElse(null);
-		if (ObjectChecker.isEmptyOrNull(level)) {
-			level = new GroupLevel();
-			table.getItems().add(level);
-		}
+		Long id = table.getItems().stream().filter(i -> ObjectChecker.areEqual(i.getCode(), code)).map(i -> i.getId())
+				.findFirst().orElse(null);
+		level.setId(id);
 		level.setCode(code);
 		level.setName(nameBox.fetchValue());
-		level.setCreationDate(DateTimeUtility.parseDateTime(creationDateBox.fetchValue()));
+		level.setCreationDate(DateTimeUtility.parseDateTime(registrationDateBox.fetchValue()));
 		level.setFromSurah(fromSurah.fetchValue());
 		level.setToSurah(toSurah.fetchValue());
-		level.setDailyRecitationInVerses(Integer.valueOf(dailyRecitationInVerses.fetchValue()));
+		level.setDailyRecitationInVerses(
+				Short.valueOf(ObjectChecker.isEmptyOrZeroOrNull(dailyRecitationInVerses.fetchValue()) ? "0"
+						: dailyRecitationInVerses.fetchValue()));
 		level.setRevisionFromSurah(revisionFromSurah.fetchValue());
 		level.setRevisionToSurah(revisionToSurah.fetchValue());
-		level.setRevisionRecitationInVerses(Integer.valueOf(revisionRecitationInVerses.fetchValue()));
+		level.setRevisionRecitationInVerses(
+				Short.valueOf(ObjectChecker.isEmptyOrZeroOrNull(revisionRecitationInVerses.fetchValue()) ? "0"
+						: revisionRecitationInVerses.fetchValue()));
 		return level;
-	}
-
-	@Override
-	public void reset() {
-		IFileScreen.super.reset();
-		codeBox.insertValue(fetchCode());
-		creationDateBox.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 	}
 
 	@Override
@@ -135,21 +125,21 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 			return row;
 		});
 		codeCol = new AnsarTableColumn<>("code");
-		codeCol.setCellValueFactory(new PropertyValueFactory<>("code"));
+		codeCol.config("code");
 		nameCol = new AnsarTableColumn<>("name");
-		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+		nameCol.config("name");
 		creationDateCol = new AnsarTableColumn<>("creationDate");
 		creationDateCol.config("creationDate");
 		fromSurahCol = new AnsarTableColumn<>("fromSurah");
-		fromSurahCol.config("fromSurah", s -> s.getName());
+		fromSurahCol.config("fromSurah", s -> s.nameByLang());
 		toSurahCol = new AnsarTableColumn<>("toSurah");
-		toSurahCol.config("toSurah", s -> s.getName());
+		toSurahCol.config("toSurah", s -> s.nameByLang());
 		dailyRecitationInVersesCol = new AnsarTableColumn<>("dailyRecitationInVerses");
 		dailyRecitationInVersesCol.config("dailyRecitationInVerses", v -> ObjectChecker.toString(v));
 		revisionFromSurahCol = new AnsarTableColumn<>("revisionFromSurah");
-		revisionFromSurahCol.config("revisionFromSurah", s -> s.getName());
+		revisionFromSurahCol.config("revisionFromSurah", s -> s.nameByLang());
 		revisionToSurahCol = new AnsarTableColumn<>("revisionToSurah");
-		revisionToSurahCol.config("revisionToSurah", s -> s.getName());
+		revisionToSurahCol.config("revisionToSurah", s -> s.nameByLang());
 		revisionRecitationInVersesCol = new AnsarTableColumn<>("revisionRecitationInVerses");
 		revisionRecitationInVersesCol.config("revisionRecitationInVerses", v -> ObjectChecker.toString(v));
 		table.getColumns().addAll(codeCol, creationDateCol, nameCol, fromSurahCol, toSurahCol,
@@ -162,7 +152,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	@Override
 	public void selectRowAction(GroupLevel item) {
 		codeBox.insertValue(item.getCode());
-		creationDateBox.insertValue(DateTimeUtility.formatDateTime(item.getCreationDate()));
+		registrationDateBox.insertValue(DateTimeUtility.formatDateTime(item.getCreationDate()));
 		nameBox.insertValue(item.getName());
 		fromSurah.insertValue(item.getFromSurah());
 		toSurah.insertValue(item.getToSurah());
@@ -170,6 +160,11 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 		revisionFromSurah.insertValue(item.getRevisionFromSurah());
 		revisionToSurah.insertValue(item.getRevisionToSurah());
 		revisionRecitationInVerses.insertValue(item.getRevisionRecitationInVerses());
+	}
+
+	@Override
+	public AnsarTable<GroupLevel> fetchTable() {
+		return table;
 	}
 
 	@Override
@@ -183,9 +178,13 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	}
 
 	@Override
-	public AnsarScene refreshScreen() {
-		reset();
-		return scene;
+	public AnsarLabeledControlHBox<String> fetchCodeBox() {
+		return codeBox;
+	}
+
+	@Override
+	public AnsarLabeledControlHBox<String> fetchRegistrationDateBox() {
+		return registrationDateBox;
 	}
 
 }
