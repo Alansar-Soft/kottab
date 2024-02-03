@@ -5,6 +5,9 @@ import ansarcontrols.AnsarLabel;
 import ansarcontrols.AnsarScene;
 import ansarcontrols.AnsarVBox;
 import ansarcontrols.AnsarVBoxRoot;
+import javafx.geometry.Orientation;
+import javafx.geometry.VPos;
+import javafx.scene.control.Separator;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
@@ -15,11 +18,14 @@ import utilities.Result;
 
 public interface IAnsarScreen<T> {
 
-	default AnsarScene constructScreen() {
+	default AnsarScene constructScreen() {	
 		AnsarVBoxRoot root = new AnsarVBoxRoot();
 		Pane contentBox = createContentBox();
 		AnsarVBox.setVgrow(contentBox, Priority.ALWAYS);
-		root.getChildren().addAll(createHeaderBox(), contentBox, createFooterBox());
+		Separator separator = new Separator(Orientation.HORIZONTAL);
+		separator.setPrefHeight(15);
+		separator.setValignment(VPos.TOP);
+		root.getChildren().addAll(createHeaderBox(), separator, contentBox, createFooterBox());
 		AnsarScene scene = new AnsarScene(root);
 		return scene;
 	}
@@ -27,7 +33,7 @@ public interface IAnsarScreen<T> {
 	default Pane createHeaderBox() {
 		AnsarLabel title = new AnsarLabel(ResourceUtility.translate(fetchScreenTitle()));
 		title.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 40));
-		return new AnsarHBox(title);
+		return new AnsarVBox(title);
 	}
 
 	String fetchScreenTitle();

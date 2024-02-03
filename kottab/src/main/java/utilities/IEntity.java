@@ -2,7 +2,7 @@ package utilities;
 
 import javax.persistence.Transient;
 
-public interface IFile {
+public interface IEntity {
 	@Transient
 	Result isValidForCommit();
 

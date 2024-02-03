@@ -1,43 +1,45 @@
 package application;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-
 import ansarcontrols.AnsarButton;
 import ansarcontrols.AnsarHBox;
 import ansarcontrols.AnsarLabel;
 import ansarcontrols.AnsarLabeledControlHBox;
-import ansarcontrols.AnsarPane;
 import ansarcontrols.AnsarScene;
+import ansarcontrols.AnsarSearchableTable;
 import ansarcontrols.AnsarTable;
 import ansarcontrols.AnsarVBox;
-import ansarcontrols.AnsarVBoxRoot;
 import entities.AnsarBaseEntity;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
 import model.Persister;
 import utilities.DateTimeUtility;
 import utilities.ObjectChecker;
 import utilities.ResourceUtility;
-import utilities.Result;
 
 public interface IFileScreen<T> extends IAnsarScreen<T> {
+
+	@Override
+	default AnsarScene constructScreen() {
+		AnsarScene screen = IAnsarScreen.super.constructScreen();
+		updateRefFieldsData();
+		return screen;
+
+	}
+
 	@Override
 	default Pane createHeaderBox() {
-		AnsarLabel title = new AnsarLabel(fetchScreenTitle());
-		return new AnsarVBox(title, createHeaderContent(), createHeaderBtns());
+		Pane headerBox = IAnsarScreen.super.createHeaderBox();
+		headerBox.getChildren().addAll(createHeaderContent(), createHeaderBtns());
+		return headerBox;
 	}
 
 	Pane createHeaderContent();
 
 	default Pane createHeaderBtns() {
 		AnsarHBox btnsBox = new AnsarHBox();
-		AnsarButton saveBtn = new AnsarButton(ResourceUtility.translate("save"));
-		AnsarButton newBtn = new AnsarButton(ResourceUtility.translate("new"));
-		AnsarButton backBtn = new AnsarButton(ResourceUtility.translate("back"));
+		AnsarButton saveBtn = new AnsarButton("save");
+		AnsarButton newBtn = new AnsarButton("new");
+		AnsarButton backBtn = new AnsarButton("back");
 		saveBtn.setOnAction(e -> submit());
 		newBtn.setOnAction(e -> reset());
 		backBtn.setOnAction(e -> ResourceUtility.fetchStage().setScene(HomeScreen.fetchScreen()));
@@ -66,9 +68,7 @@ public interface IFileScreen<T> extends IAnsarScreen<T> {
 
 	@Override
 	default Pane createContentBox() {
-		AnsarTable<T> table = createTableView();
-		AnsarVBox.setVgrow(table, Priority.ALWAYS);
-		return new AnsarVBox(table);
+		return new AnsarSearchableTable(fetchDocumentClass(), createTableView());
 	}
 
 	AnsarTable<T> createTableView();
@@ -80,25 +80,31 @@ public interface IFileScreen<T> extends IAnsarScreen<T> {
 	AnsarTable<T> fetchTable();
 
 	@Override
-	default T createEntity() {
-		return null;
-	}
-
-	@Override
 	default void reset() {
 		IAnsarScreen.super.reset();
 		fetchCodeBox().insertValue(fetchCode());
-		fetchRegistrationDateBox().insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
+		fetchCreationDateBox().insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
 	}
 
 	AnsarLabeledControlHBox<String> fetchCodeBox();
 
-	AnsarLabeledControlHBox<String> fetchRegistrationDateBox();
+	AnsarLabeledControlHBox<String> fetchCreationDateBox();
 
-	default Long fetchCode() {
-		BigDecimal lastCode = Persister.getSingleResultFromNativeQuery(
+	default String fetchCode() {
+		String lastCode = Persister.getSingleResultFromNativeQuery(
 				"SELECT code FROM " + fetchDocumentClass().getSimpleName() + " ORDER BY code DESC ",
 				Persister.params());
-		return ObjectChecker.isEmptyOrZeroOrNull(lastCode) ? 1L : lastCode.longValue() + 1;
+		return ObjectChecker
+				.toStringOrEmpty(ObjectChecker.isEmptyOrZeroOrNull(lastCode) ? 1L : Long.valueOf(lastCode) + 1);
+	}
+
+	@Override
+	default AnsarScene refreshScreen() {
+		updateRefFieldsData();
+		return IAnsarScreen.super.refreshScreen();
+	}
+
+	default void updateRefFieldsData() {
+		return;
 	}
 }

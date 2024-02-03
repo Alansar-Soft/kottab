@@ -10,14 +10,18 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Nationalized;
 
-import utilities.IFile;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
+import utilities.IEntity;
 import utilities.ObjectChecker;
 import utilities.Result;
 
 @MappedSuperclass
-public abstract class AnsarBaseEntity implements IFile {
+@JsonIncludeProperties(value = { "id", "code", "name" })
+public abstract class AnsarBaseEntity implements IEntity {
 	private Long id;
-	private Long code;
+	private String code;
 	private String name;
 	private LocalDateTime creationDate;
 
@@ -32,11 +36,11 @@ public abstract class AnsarBaseEntity implements IFile {
 	}
 
 	@Column(unique = true)
-	public Long getCode() {
+	public String getCode() {
 		return code;
 	}
 
-	public void setCode(Long code) {
+	public void setCode(String code) {
 		this.code = code;
 	}
 

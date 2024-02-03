@@ -5,7 +5,10 @@ import java.time.LocalDate;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import utilities.ObjectChecker;
+import utilities.ResourceUtility;
 import utilities.Result;
 
 @MappedSuperclass
@@ -59,7 +62,7 @@ public abstract class Person extends AnsarBaseEntity {
 	@Transient
 	public String getCountry() {
 		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
-			return ObjectChecker.toString(address.getCountry());
+			return ResourceUtility.translate(address.getCountry());
 
 		return "";
 	}
@@ -67,20 +70,20 @@ public abstract class Person extends AnsarBaseEntity {
 	@Transient
 	public String getCity() {
 		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
-			return ObjectChecker.toString(address.getCity());
+			return ResourceUtility.translate(address.getCity());
 		return "";
 	}
 
 	@Transient
 	public String getTown() {
 		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
-			return ObjectChecker.toString(address.getTown());
+			return ResourceUtility.translate(address.getTown());
 		return "";
 	}
 
 	@Transient
 	public String getAzharStudentVal() {
-		return ObjectChecker.toString(getAzharStudent());
+		return ObjectChecker.toStringOrEmpty(getAzharStudent());
 	}
 
 	@Override

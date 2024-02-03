@@ -15,6 +15,7 @@ import java.util.function.Function;
 
 import ansarcontrols.AnsarScene;
 import ansarcontrols.AnsarToolTip;
+import application.AbsenceScreen;
 import application.GroupLevelScreen;
 import application.IAnsarScreen;
 import application.MemorizationGroupScreen;
@@ -22,6 +23,7 @@ import application.RecitationNoteBookScreen;
 import application.ScreensNames;
 import application.StudentScreen;
 import application.TeacherScreen;
+import application.UserScreen;
 import entities.AbsRecitationInfo;
 import entities.RecitationInfo;
 import javafx.scene.Scene;
@@ -160,11 +162,9 @@ public class ResourceUtility {
 
 	private static void iniArTranslation() {
 		arTranslation = new Properties();
-		Reader r;
-		try {
-			r = new FileReader(
-					new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar.properties"),
-					StandardCharsets.UTF_8);
+		try (Reader r = new FileReader(
+				new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar.properties"),
+				StandardCharsets.UTF_8)) {
 			arTranslation.load(r);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -188,11 +188,9 @@ public class ResourceUtility {
 
 	private static void iniArMessageTranslation() {
 		arMessageTranslation = new Properties();
-		Reader r;
-		try {
-			r = new FileReader(
-					new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar-message.properties"),
-					StandardCharsets.UTF_8);
+		try (Reader r = new FileReader(
+				new File("C:\\Users\\MTRX\\git\\kottabRepo\\kottab\\src\\main\\resources\\ar-message.properties"),
+				StandardCharsets.UTF_8)) {
 			arMessageTranslation.load(r);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -279,6 +277,16 @@ public class ResourceUtility {
 			GroupLevelScreen groupLevelScreen = new GroupLevelScreen();
 			cachedScreens.put(screen, groupLevelScreen);
 			return groupLevelScreen.fetchScene();
+		}
+		if (ObjectChecker.areEqual(screen, ScreensNames.UserScreen)) {
+			UserScreen userScreen = new UserScreen();
+			cachedScreens.put(screen, userScreen);
+			return userScreen.fetchScene();
+		}
+		if (ObjectChecker.areEqual(screen, ScreensNames.AbsenceScreen)) {
+			AbsenceScreen absenceScreen = new AbsenceScreen();
+			cachedScreens.put(screen, absenceScreen);
+			return absenceScreen.fetchScene();
 		}
 		return null;
 	}

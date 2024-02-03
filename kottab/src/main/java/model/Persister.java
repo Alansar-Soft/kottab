@@ -16,10 +16,11 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import utilities.CollectionsUtility;
-import utilities.IFile;
+import utilities.IEntity;
 import utilities.ObjectChecker;
 import utilities.ObjectWrapper;
 import utilities.Result;
@@ -91,33 +92,56 @@ public class Persister {
 	public static Result saveOrUpdate(Object obj) {
 		Result result = new Result();
 		execute((r) -> {
-			if (obj instanceof IFile)
-				r.accmulate(((IFile) obj).isValidForCommit());
+			if (obj instanceof IEntity)
+				r.accmulate(((IEntity) obj).isValidForCommit());
 			if (r.isFailed())
 				return;
 			session.saveOrUpdate(obj);
-			if (obj instanceof IFile)
-				r.accmulate(((IFile) obj).postCommit());
+			if (obj instanceof IEntity)
+				r.accmulate(((IEntity) obj).postCommit());
 		}, result);
 		return result;
 	}
 
 	public static <T> List<T> list(Class<T> klass) {
-		List<T> list = new ArrayList<>();
-		try (Session session = factory.openSession()) {
-			list = session.createQuery("From " + klass.getSimpleName()).list();
-		}
-		return list;
+
+		return list(klass, "", new HashMap<>());
 	}
 
-	public static <T> T searchFor(String sqlString) {
+	public static <T> List<T> list(Class<T> klass, String condition, Map<String, Object> params) {
+		ObjectWrapper<List<T>> wrapper = new ObjectWrapper<>();
+		execute(r -> {
+			Query<T> query = session.createQuery("From " + klass.getSimpleName() + " " + condition);
+
+			setParameters(query, params);
+			List<T> resultedList = query.list();
+			wrapper.setObject(resultedList == null ? new ArrayList<>() : resultedList);
+		}, new Result());
+		return wrapper.getObject();
+	}
+
+	public static <T> List<T> list(Class<T> klass, String condition, Map<String, Object> params,
+			PaginationData paginationData) {
+		ObjectWrapper<List<T>> wrapper = new ObjectWrapper<>();
+		execute(r -> {
+			Query<T> query = session
+					.createQuery("From " + klass.getSimpleName() + " " + ObjectChecker.toStringOrEmpty(condition));
+			setPagination(paginationData, query);
+			setParameters(query, params);
+			System.out.println(query.getQueryString());
+			wrapper.setObject(query.list());
+		}, new Result());
+		return wrapper.getObject();
+	}
+
+	public static <T> List<T> searchFor(String sqlString) {
 		List<T> list = new ArrayList<>();
 		execute((r) -> {
-			list.addAll(session.createNativeQuery(sqlString).list());
+			list.addAll(session.createQuery(sqlString).list());
 		}, new Result());
 		if (ObjectChecker.isEmptyOrZeroOrNull(list))
 			return null;
-		return list.get(0);
+		return list;
 	}
 
 	public static <T> T getSingleResultFromNativeQuery(String sqlString, Map<String, Object> params) {
@@ -141,6 +165,11 @@ public class Persister {
 		return CollectionsUtility.fetchFirstElement(resultList);
 	}
 
+	public static <T> void setPagination(PaginationData paginationData, Query<T> query) {
+		query.setFirstResult(paginationData.getFirstResult());
+		query.setMaxResults(paginationData.getMaxResult());
+	}
+
 	private static void setParameters(Query q, Map<String, Object> params) {
 		for (Entry<String, Object> entry : params.entrySet()) {
 			q.setParameter(entry.getKey(), entry.getValue());
@@ -155,19 +184,38 @@ public class Persister {
 		return params;
 	}
 
-	public static int countOf(Class<?> klass, String query) {
+	public static int countOf(Class<?> klass) {
+		return countOf(klass, "");
+	}
+
+	public static int countOf(Class<?> klass, String condition) {
+		return countOf(klass.getSimpleName(), condition, new HashMap<>());
+	}
+
+	public static int countOf(String entity, String condition, Map<String, Object> params) {
 		ObjectWrapper<Integer> obj = new ObjectWrapper<>();
 		execute((r) -> {
-			System.out.println(query);
-			obj.setObject(
-					(Integer) session.createNativeQuery("SELECT COUNT(id) FROM " + klass.getSimpleName() + " " + query)
-							.getSingleResult());
+			NativeQuery query = session.createNativeQuery("SELECT COUNT(id) FROM " + entity + " " + condition);
+			setParameters(query, params);
+			obj.setObject((Integer) query.getSingleResult());
 		}, new Result());
 		return obj.getObject();
 	}
 
-	public static <T> T findByCode(Class<T> klass, Long code) {
-		return getSingleResult("FROM " + klass.getSimpleName() + " WHERE code = :code ", params("code", code));
+	public static <T> T findByCode(Class<T> klass, String code) {
+		return findByCode(klass.getSimpleName(), code);
+	}
 
+	public static <T> T findByCode(String entityType, String code) {
+		return getSingleResult("FROM " + entityType + " WHERE code = :code ", params("code", code));
+
+	}
+
+	public static void remove(Object obj) {
+		if (obj == null)
+			return;
+		execute(r -> {
+			session.remove(obj);
+		}, new Result());
 	}
 }

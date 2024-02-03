@@ -4,7 +4,7 @@ import ansarcontrols.AnsarScene;
 import entities.MemorizationTeacher;
 import entities.Person;
 
-public class TeacherScreen<T extends MemorizationTeacher> extends AbsPersonScreen<T> {
+public class TeacherScreen extends AbsPersonScreen<MemorizationTeacher> {
 
 	public TeacherScreen() {
 		AnsarScene scene = constructScreen();
@@ -13,7 +13,7 @@ public class TeacherScreen<T extends MemorizationTeacher> extends AbsPersonScree
 
 	@Override
 	public String fetchScreenTitle() {
-		return "TeachersScreen";
+		return "teachersScreen";
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class TeacherScreen<T extends MemorizationTeacher> extends AbsPersonScree
 	}
 
 	@Override
-	public void selectRowAction(T item) {
+	public void selectRowAction(MemorizationTeacher item) {
 		super.selectRowDefaultAction(item);
 	}
 }

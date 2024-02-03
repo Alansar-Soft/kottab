@@ -13,7 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import model.Persister;
 
-public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
+public class StudentScreen extends AbsPersonScreen<Student> {
 	private AnsarLabeledControlHBox<String> parentFirstPhoneNo;
 	private AnsarLabeledControlHBox<String> parentSecondPhoneNo;
 	private AnsarTableColumn<Student, String> parentFirstPhoneNoCol;
@@ -28,7 +28,7 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 
 	@Override
 	public String fetchScreenTitle() {
-		return "StudentsScreen";
+		return "studentsScreen";
 	}
 
 	@Override
@@ -37,13 +37,17 @@ public class StudentScreen<T extends Student> extends AbsPersonScreen<Student> {
 		parentFirstPhoneNo = new AnsarLabeledControlHBox<>("parentFirstPhoneNo", ControlType.TextField);
 		parentSecondPhoneNo = new AnsarLabeledControlHBox<>("parentSecondPhoneNo", ControlType.TextField);
 		group = new AnsarLabeledControlHBox<>("group", ControlType.ComboBox);
-		AnsarComboBox<MemorizationGroup> groupsComboBox = group.getControl();
-		groupsComboBox.config(Persister.list(MemorizationGroup.class));
 		int rowNo = headerPane.getRowCount() - 1;
 		headerPane.add(parentFirstPhoneNo, 2, rowNo);
 		headerPane.add(parentSecondPhoneNo, 3, rowNo);
 		headerPane.add(group, 0, ++rowNo);
 		return headerPane;
+	}
+
+	@Override
+	public void updateRefFieldsData() {
+		AnsarComboBox<MemorizationGroup> groupsComboBox = group.getControl();
+		groupsComboBox.config(Persister.list(MemorizationGroup.class));
 	}
 
 	@Override

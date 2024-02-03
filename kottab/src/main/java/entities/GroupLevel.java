@@ -25,12 +25,6 @@ public class GroupLevel extends AnsarBaseEntity {
 	private Short revisionRecitationInVerses;
 	private List<MemorizationGroup> groups;
 
-	@Override
-	@Column(unique = true)
-	public Long getCode() {
-		return super.getCode();
-	}
-
 	@Embedded
 	@AttributeOverride(name = "numberOfSurah", column = @Column(name = "fromSurah"))
 	public Surah getFromSurah() {

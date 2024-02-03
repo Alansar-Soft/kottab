@@ -19,7 +19,7 @@ public class AnsarTextField extends TextField implements IAnsarControl<Object> {
 
 	@Override
 	public void insertValue(Object val) {
-		setText(ObjectChecker.toString(val));
+		setText(ObjectChecker.toStringOrEmpty(val));
 	}
 
 	@Override

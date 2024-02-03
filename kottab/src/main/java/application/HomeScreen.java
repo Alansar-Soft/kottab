@@ -26,27 +26,38 @@ public class HomeScreen {
 		AnsarHBoxRoot root = new AnsarHBoxRoot();
 		if (stage == null)
 			stage = ResourceUtility.fetchStage();
-		AnsarButton addTeacherBtn = new AnsarButton(ResourceUtility.translate("addTeacher"));
-		addTeacherBtn.setOnAction(e -> {
+		AnsarButton teacherBtn = new AnsarButton(ResourceUtility.translate("teachersScreen"));
+		teacherBtn.setOnAction(e -> {
 			stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.TeacherScreen));
 		});
-		AnsarButton addStudentBtn = new AnsarButton(ResourceUtility.translate("addStudent"));
-		addStudentBtn.setOnAction(e -> {
+		AnsarButton studentBtn = new AnsarButton(ResourceUtility.translate("studentsScreen"));
+		studentBtn.setOnAction(e -> {
 			stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.StudentScreen));
 		});
-		AnsarButton addGroupBtn = new AnsarButton(ResourceUtility.translate("addGroup"));
-		addGroupBtn.setOnAction(e -> {
+		AnsarButton groupBtn = new AnsarButton(ResourceUtility.translate("groupsScreen"));
+		groupBtn.setOnAction(e -> {
 			stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.GroupScreen));
 		});
 		AnsarButton memorizationNoteBookBtn = new AnsarButton(ResourceUtility.translate("memorizationNoteBook"));
 		memorizationNoteBookBtn.setOnAction(e -> {
 			stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.NoteBookScreen));
 		});
-		AnsarButton groupLevelBtn = new AnsarButton(ResourceUtility.translate("groupLevel"));
+		AnsarButton groupLevelBtn = new AnsarButton(ResourceUtility.translate("levelsScreen"));
 		groupLevelBtn.setOnAction(e -> {
 			stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.GroupLevelScreen));
 		});
-		root.getChildren().addAll(addTeacherBtn, addStudentBtn, addGroupBtn, memorizationNoteBookBtn, groupLevelBtn);
+		AnsarButton userBtn = new AnsarButton(ResourceUtility.translate("usersScreen"));
+		userBtn.setOnAction(e -> {
+			stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.UserScreen));
+		});
+		AnsarButton absenceBtn = new AnsarButton(ResourceUtility.translate("absence"));
+		absenceBtn.setOnAction(e -> {
+			stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.AbsenceScreen));
+		});
+		AnsarButton logoutBtn = new AnsarButton("logout");
+		logoutBtn.setOnAction(e -> stage.setScene(LoginScreen.fetchScreen()));
+		root.getChildren().addAll(teacherBtn, studentBtn, groupBtn, memorizationNoteBookBtn, groupLevelBtn, userBtn,
+				absenceBtn, logoutBtn);
 		return root;
 	}
 }

@@ -1,24 +1,19 @@
 package application;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import ansarcontrols.AnsarButton;
 import ansarcontrols.AnsarComboBox;
 import ansarcontrols.AnsarGridPane;
-import ansarcontrols.AnsarHBox;
 import ansarcontrols.AnsarLabeledControlHBox;
 import ansarcontrols.AnsarScene;
 import ansarcontrols.AnsarTable;
 import ansarcontrols.AnsarTableColumn;
 import ansarcontrols.AnsarTableRow;
-import ansarcontrols.AnsarVBoxRoot;
 import ansarcontrols.ControlType;
 import entities.GroupLevel;
 import javafx.scene.layout.Pane;
-import model.Persister;
 import utilities.DateTimeUtility;
-import utilities.NumbersUtility;
 import utilities.ObjectChecker;
 import utilities.ResourceUtility;
 import utilities.Surah;
@@ -53,7 +48,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 
 	@Override
 	public String fetchScreenTitle() {
-		return "LevelsScreen";
+		return "levelsScreen";
 	}
 
 	@Override
@@ -93,7 +88,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	@Override
 	public GroupLevel createEntity() {
 		GroupLevel level = new GroupLevel();
-		Long code = Long.valueOf(codeBox.fetchValue());
+		String code = codeBox.fetchValue();
 		Long id = table.getItems().stream().filter(i -> ObjectChecker.areEqual(i.getCode(), code)).map(i -> i.getId())
 				.findFirst().orElse(null);
 		level.setId(id);
@@ -135,17 +130,15 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 		toSurahCol = new AnsarTableColumn<>("toSurah");
 		toSurahCol.config("toSurah", s -> s.nameByLang());
 		dailyRecitationInVersesCol = new AnsarTableColumn<>("dailyRecitationInVerses");
-		dailyRecitationInVersesCol.config("dailyRecitationInVerses", v -> ObjectChecker.toString(v));
+		dailyRecitationInVersesCol.config("dailyRecitationInVerses", v -> ObjectChecker.toStringOrEmpty(v));
 		revisionFromSurahCol = new AnsarTableColumn<>("revisionFromSurah");
 		revisionFromSurahCol.config("revisionFromSurah", s -> s.nameByLang());
 		revisionToSurahCol = new AnsarTableColumn<>("revisionToSurah");
 		revisionToSurahCol.config("revisionToSurah", s -> s.nameByLang());
 		revisionRecitationInVersesCol = new AnsarTableColumn<>("revisionRecitationInVerses");
-		revisionRecitationInVersesCol.config("revisionRecitationInVerses", v -> ObjectChecker.toString(v));
+		revisionRecitationInVersesCol.config("revisionRecitationInVerses", v -> ObjectChecker.toStringOrEmpty(v));
 		table.getColumns().addAll(codeCol, creationDateCol, nameCol, fromSurahCol, toSurahCol,
 				dailyRecitationInVersesCol, revisionFromSurahCol, revisionToSurahCol, revisionRecitationInVersesCol);
-		List<GroupLevel> groupLevels = Persister.list(GroupLevel.class);
-		table.getItems().addAll(groupLevels);
 		return table;
 	}
 
@@ -173,7 +166,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	}
 
 	@Override
-	public Class<?> fetchDocumentClass() {
+	public Class<GroupLevel> fetchDocumentClass() {
 		return GroupLevel.class;
 	}
 
@@ -183,7 +176,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel> {
 	}
 
 	@Override
-	public AnsarLabeledControlHBox<String> fetchRegistrationDateBox() {
+	public AnsarLabeledControlHBox<String> fetchCreationDateBox() {
 		return registrationDateBox;
 	}
 

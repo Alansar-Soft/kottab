@@ -13,6 +13,7 @@ import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
 import utilities.CollectionsUtility;
 import utilities.ObjectChecker;
+import utilities.ResourceUtility;
 
 public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 	public AnsarComboBox() {
@@ -48,8 +49,14 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 	}
 
 	public void config(List<T> items) {
-		if (ObjectChecker.isNotEmptyOrZeroOrNull(items) && items.get(0) instanceof AnsarBaseEntity)
+		if (ObjectChecker.isEmptyOrZeroOrNull(items))
+			return;
+		if (items.get(0) instanceof AnsarBaseEntity)
 			applyStringConverter(entity -> ((AnsarBaseEntity) entity).getName());
+		else if (items.get(0) instanceof String)
+			applyStringConverter(i -> ResourceUtility.translate((String) i));
+		else if (items.get(0) instanceof Enum)
+			applyStringConverter(i -> ResourceUtility.translate(((Enum<?>) i).name()));
 		insertItems(FXCollections.observableArrayList(items));
 	}
 
@@ -69,7 +76,7 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T> {
 			public String toString(T item) {
 				if (ObjectChecker.isEmptyOrZeroOrNull(item))
 					return "";
-				return ObjectChecker.toString(toStrFun.apply(item));
+				return ObjectChecker.toStringOrEmpty(toStrFun.apply(item));
 			}
 
 			@Override

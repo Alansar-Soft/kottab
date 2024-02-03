@@ -16,4 +16,10 @@ public class NumbersUtility {
 	public static Byte castToByte(Number num) {
 		return num.byteValue();
 	}
+
+	public static int toZeroIfNegativeOrNull(Integer i) {
+		if (i == null || i < 0)
+			return 0;
+		return i;
 	}
+}

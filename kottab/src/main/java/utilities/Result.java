@@ -20,6 +20,10 @@ public class Result {
 		this.message = massage;
 	}
 
+	public boolean succeeded() {
+		return !failed;
+	}
+
 	public static Result createFailureResult(String message) {
 		Result result = new Result();
 		result.setFailed(true);
@@ -28,8 +32,12 @@ public class Result {
 	}
 
 	public void failure(String message) {
+		failure(message, "");
+	}
+
+	public <T extends Object> void failure(String message, T obj) {
 		setFailed(true);
-		String newMessage = ResourceUtility.translateMessage(message);
+		String newMessage = ResourceUtility.translateMessage(message) + ResourceUtility.translate(obj.toString());
 		setMessage(ObjectChecker.isNotEmptyOrZeroOrNull(getMessage()) ? getMessage() + "\n" + newMessage : newMessage);
 	}
 

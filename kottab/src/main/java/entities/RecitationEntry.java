@@ -1,50 +1,24 @@
 package entities;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Transient;
 
-import utilities.IFile;
+import org.hibernate.annotations.Nationalized;
+
 import utilities.Result;
 
 @Entity
-public class RecitationEntry implements IFile {
-	private Long id;
-	private LocalDate creationDate;
+public class RecitationEntry extends StudentRelatedEntry {
+
 	private RecitationInfoWithGrade recitation;
 	private RecitationInfoWithGrade revision;
 	private RecitationInfo nextRecitation;
 	private RecitationInfo nextRevision;
 	private String remark;
-	private Student student;
-
-	@Id
-	@GeneratedValue
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public LocalDate getCreationDate() {
-		return creationDate;
-	}
-
-	public void setCreationDate(LocalDate creationDate) {
-		this.creationDate = creationDate;
-	}
 
 	@Embedded
 	@AttributeOverrides(value = {
@@ -104,6 +78,7 @@ public class RecitationEntry implements IFile {
 		this.nextRevision = nextRevision;
 	}
 
+	@Nationalized
 	public String getRemark() {
 		return remark;
 	}
@@ -112,20 +87,10 @@ public class RecitationEntry implements IFile {
 		this.remark = remark;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "student_id")
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
-
 	@Override
 	@Transient
 	public Result isValidForCommit() {
-		Result result = new Result();
+		Result result = super.isValidForCommit();
 		if (recitation != null && recitation.isEmpty())
 			result.failure("You must enter all recitation data");
 		if (revision != null && revision.isEmpty())
@@ -134,8 +99,6 @@ public class RecitationEntry implements IFile {
 			result.failure("You must enter all next recitation data");
 		if (nextRevision != null && nextRevision.isEmpty())
 			result.failure("You must enter all next revision data");
-		if (student == null)
-			result.failure("You must enter student");
 		return result;
 	}
 

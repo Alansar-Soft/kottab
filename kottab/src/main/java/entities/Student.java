@@ -1,26 +1,29 @@
 package entities;
 
-import java.lang.System.Logger.Level;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
 import model.Persister;
-import utilities.NumbersUtility;
+import utilities.ObjectChecker;
 import utilities.ResourceUtility;
 import utilities.Result;
-import utilities.Surah;
 
 @Entity
 public class Student extends Person {
 	private String parentsFirstPhoneNo;
 	private String parentsSecondPhoneNo;
 	private MemorizationGroup group;
+	private List<RecitationEntry> recitationEntries;
 
 	public String getParentsFirstPhoneNo() {
 		return parentsFirstPhoneNo;
@@ -46,6 +49,20 @@ public class Student extends Person {
 
 	public void setGroup(MemorizationGroup group) {
 		this.group = group;
+	}
+
+	@OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
+	public List<RecitationEntry> getRecitationEntries() {
+		return recitationEntries;
+	}
+
+	public void setRecitationEntries(List<RecitationEntry> recitationEntries) {
+		this.recitationEntries = recitationEntries;
+	}
+
+	@Transient
+	public String getGroupName() {
+		return ObjectChecker.isEmptyOrZeroOrNull(group) ? "" : ObjectChecker.toStringOrEmpty(group.getName());
 	}
 
 	@Override

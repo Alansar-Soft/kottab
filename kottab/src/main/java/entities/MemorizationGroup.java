@@ -20,7 +20,7 @@ public class MemorizationGroup extends AnsarBaseEntity {
 	private List<Student> students;
 	private GroupLevel groupLevel;
 
-	@OneToOne
+	@ManyToOne
 	public MemorizationTeacher getTeacher() {
 		return teacher;
 	}
@@ -38,7 +38,7 @@ public class MemorizationGroup extends AnsarBaseEntity {
 		this.assistantTeacher = assistantTeacher;
 	}
 
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY, mappedBy = "group")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
 	public List<Student> getStudents() {
 		return students;
 	}

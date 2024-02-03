@@ -1,7 +1,6 @@
 package application;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 import ansarcontrols.AnsarButton;
 import ansarcontrols.AnsarHBox;
@@ -55,7 +54,7 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
 		studentCode.setOnKeyPressed(e -> {
 			if (ObjectChecker.areNotEqual(e.getCode(), KeyCode.ENTER))
 				return;
-			student = Persister.findByCode(Student.class, Long.valueOf(studentCode.fetchValue()));
+			student = Persister.findByCode(Student.class, studentCode.fetchValue());
 			if (ObjectChecker.isEmptyOrZeroOrNull(student))
 				return;
 			studentName.insertValue(student.getName());
@@ -74,6 +73,8 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
 			updateRecitationBoxData(revision, revisionBox);
 			updateNextRecitationBoxData(revision, nextRevisionBox,
 					student.getGroup().getGroupLevel().getRevisionRecitationInVerses().intValue());
+			if (ObjectChecker.areEqual(LocalDate.now(), lastEntry.getCreationDate()))
+				remark.insertValue(lastEntry.getRemark());
 		});
 		studentName = new AnsarLabeledControlHBox<>("studentName", ControlType.TextField);
 		((AnsarTextField) studentName.getControl()).setEditable(false);
@@ -146,8 +147,8 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
 		RecitationEntry entry = Persister.getSingleResult(
 				"FROM RecitationEntry WHERE student=:student AND creationDate=:creationDate",
 				Persister.params("student", student, "creationDate", LocalDate.now()));
-//		RecitationEntry entry = new RecitationEntry();
-		System.out.println(entry);
+		if (entry == null)
+			entry = new RecitationEntry();
 		entry.setCreationDate(LocalDate.now());
 		entry.setStudent(student);
 		entry.setRecitation(recitation);

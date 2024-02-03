@@ -26,6 +26,8 @@ public class AnsarLabeledControlHBox<T> extends HBox implements IAnsarControl<T>
 	private IAnsarControl buildControl(ControlType controlType) {
 		if (ObjectChecker.areEqual(ControlType.TextField, controlType))
 			return new AnsarTextField();
+		if (ObjectChecker.areEqual(ControlType.PasswordField, controlType))
+			return new AnsarPasswordField();
 		if (ObjectChecker.areEqual(ControlType.DatePicker, controlType))
 			return new AnsarDatePicker();
 		if (ObjectChecker.areEqual(ControlType.ComboBox, controlType))

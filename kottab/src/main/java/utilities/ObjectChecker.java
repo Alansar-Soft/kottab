@@ -52,7 +52,7 @@ public class ObjectChecker {
 		return false;
 	}
 
-	public static String toString(Object value) {
+	public static String toStringOrEmpty(Object value) {
 		if (value == null)
 			return "";
 		String val = ResourceUtility.translate(value.toString());
