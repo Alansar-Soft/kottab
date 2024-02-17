@@ -62,22 +62,21 @@ public abstract class Person extends AnsarBaseEntity {
 	@Transient
 	public String getCountry() {
 		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
-			return ResourceUtility.translate(address.getCountry());
-
+			return address.getCountry();
 		return "";
 	}
 
 	@Transient
 	public String getCity() {
 		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
-			return ResourceUtility.translate(address.getCity());
+			return address.getCity();
 		return "";
 	}
 
 	@Transient
 	public String getTown() {
 		if (ObjectChecker.isNotEmptyOrZeroOrNull(address))
-			return ResourceUtility.translate(address.getTown());
+			return address.getTown();
 		return "";
 	}
 

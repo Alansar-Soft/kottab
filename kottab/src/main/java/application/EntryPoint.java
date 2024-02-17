@@ -2,6 +2,7 @@ package application;
 
 import java.util.HashMap;
 
+import com.sun.javafx.application.LauncherImpl;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,34 +13,42 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.Persister;
 import restfulcontrollers.MobileController;
-import utilities.ResourceUtility;
+import utilities.*;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses = MobileController.class)
-public class EntryPoint extends Application {
+public class EntryPoint extends Application
+{
+    @Override
+    public void init() throws Exception
+    {
+        Persister.startDBConnection();
+    }
 
-	@Override
-	public void start(Stage primaryStage) throws Exception {
-		HashMap<String, Object> params = new HashMap<>();
-		params.put("server.port", 8888);
-		new SpringApplicationBuilder().properties(params).sources(EntryPoint.class).headless(false).run();
-		ResourceUtility.cachePrimaryStage(primaryStage);
-		primaryStage.setTitle(ResourceUtility.translate("kotab"));
-		primaryStage.setScene(LoginScreen.fetchScreen());
-		primaryStage.setOnCloseRequest(e -> Persister.stopDBConnection());
-		primaryStage.setWidth(ResourceUtility.fetchScreenWidth());
-		primaryStage.setHeight(ResourceUtility.fetchScreenHeight());
-		primaryStage.setMaximized(true);
-		primaryStage.getIcons().add(new Image("/logo.jpg"));
-		primaryStage.setOnCloseRequest(e -> {
-			Platform.exit();
-			System.exit(0);
-		});
-		primaryStage.show();
-	}
+    @Override
+    public void start(Stage primaryStage) throws Exception
+    {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("server.port", 8888);
+        new SpringApplicationBuilder().properties(params).sources(EntryPoint.class).headless(false).run();
+        ResourceUtility.cachePrimaryStage(primaryStage);
+        primaryStage.setTitle(Translator.translate("kotab"));
+        primaryStage.setScene(LoginScreen.fetchScreen());
+        primaryStage.setOnCloseRequest(e -> Persister.stopDBConnection());
+        primaryStage.setWidth(ResourceUtility.fetchScreenWidth());
+        primaryStage.setHeight(ResourceUtility.fetchScreenHeight());
+        primaryStage.setMaximized(true);
+        primaryStage.getIcons().add(new Image("/logo.jpg"));
+        primaryStage.setOnCloseRequest(e ->
+        {
+            Platform.exit();
+            System.exit(0);
+        });
+        primaryStage.show();
+    }
 
-	public static void main(String[] args) {
-		Persister.startDBConnection();
-		launch(args);
-	}
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
 }

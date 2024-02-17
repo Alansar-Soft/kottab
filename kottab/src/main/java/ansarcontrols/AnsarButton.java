@@ -3,14 +3,16 @@ package ansarcontrols;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import utilities.ResourceUtility;
+import utilities.*;
 
-public class AnsarButton extends Button {
+public class AnsarButton extends Button
+{
 
-	public AnsarButton(String text) {
-		super(ResourceUtility.translate(text));
-		setId("ansarBtn");
-		setFont(Font.font("Times New Roman", FontWeight.BLACK, 15));
-	}
+    public AnsarButton(String text)
+    {
+        super(Translator.translate(text));
+        setId("ansarBtn");
+        setFont(Font.font("Times New Roman", FontWeight.BLACK, 15));
+    }
 
 }
