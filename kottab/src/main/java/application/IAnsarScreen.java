@@ -10,19 +10,28 @@ import utilities.*;
 
 public interface IAnsarScreen<T>
 {
-
     default AnsarScene constructScreen()
     {
-        AnsarVBoxRoot root = new AnsarVBoxRoot();
+        AnsarBorderPane root = new AnsarBorderPane();
+        Pane top = createHeaderBox();
+        Separator separator = new Separator(Orientation.HORIZONTAL);
+//        separator.setPrefHeight(15);
+        separator.setValignment(VPos.BOTTOM);
+        AnsarVBox node = new AnsarVBox(top, separator);
+        node.setStyle("-fx-background-color:#e4eee9;");
+
+        root.setTop(node);
+
         Pane contentBox = createContentBox();
         AnsarVBox.setVgrow(contentBox, Priority.ALWAYS);
-        Separator separator = new Separator(Orientation.HORIZONTAL);
-        separator.setPrefHeight(15);
-        separator.setValignment(VPos.TOP);
-        root.getChildren().addAll(createHeaderBox(), separator, contentBox, createFooterBox());
-        AnsarHBox menu = new AnsarHBox();
-        menu.setStyle("-fx-border-style:SOLID;-fx-border-size:5");
-        AnsarScene scene = new AnsarScene(new AnsarHBox(root, menu));
+        contentBox.setStyle("-fx-background-color:#e4e4ee;");
+        root.setCenter(contentBox);
+
+        root.setRight(new SideBar());
+
+        root.setBottom(createFooterBox());
+
+        AnsarScene scene = new AnsarScene(root);
         updateRefFieldsData();
         return scene;
     }
@@ -32,7 +41,9 @@ public interface IAnsarScreen<T>
         AnsarLabel title = new AnsarLabel(Translator.translate(fetchScreenTitle()));
         title.setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 40));
         AnsarButton listViewBtn = new AnsarButton("listView");
-        return new AnsarVBox(new AnsarHBox(title, listViewBtn));
+        AnsarHBox hBox = new AnsarHBox(title);
+        hBox.setAlignment(Pos.CENTER);
+        return new AnsarVBox(hBox);
     }
 
     String fetchScreenTitle();

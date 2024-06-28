@@ -115,9 +115,7 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
         saveBtn.setOnAction(e -> submit());
         AnsarButton newBtn = new AnsarButton("new");
         newBtn.setOnAction(e -> reset());
-        AnsarButton backBtn = new AnsarButton("back");
-        backBtn.setOnAction(e -> ResourceUtility.fetchStage().setScene(HomeScreen.fetchScreen()));
-        btnsBox.getChildren().addAll(saveBtn, newBtn, backBtn);
+        btnsBox.getChildren().addAll(saveBtn, newBtn);
         return btnsBox;
     }
 

@@ -46,7 +46,7 @@ public class LoginScreen
         Result result = validateCredentials();
         if (result.isFailed())
             ResourceUtility.showError(result);
-        else ResourceUtility.fetchStage().setScene(HomeScreen.fetchScreen());
+        else ResourceUtility.fetchStage().setScene(ResourceUtility.fetchCachedScreen(ScreensNames.NoteBookScreen));
     }
 
     private static Result validateCredentials()

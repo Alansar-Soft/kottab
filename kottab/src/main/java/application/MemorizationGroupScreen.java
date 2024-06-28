@@ -50,7 +50,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	}
 
 	@Override
-	public Pane createHeaderContent() {
+	public Pane createContent() {
 		codeBox = new AnsarLabeledControlHBox<>("code", ControlType.Label);
 		codeBox.insertValue(fetchCode());
 		registrationDateBox = new AnsarLabeledControlHBox<>("creationDate", ControlType.Label);

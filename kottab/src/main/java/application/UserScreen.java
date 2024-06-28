@@ -50,7 +50,7 @@ public class UserScreen implements IFileScreen<AnsarUser> {
 	}
 
 	@Override
-	public Pane createHeaderContent() {
+	public Pane createContent() {
 		code = new AnsarLabeledControlHBox<>("code", ControlType.Label);
 		code.insertValue(fetchCode());
 		name = new AnsarLabeledControlHBox<>("name", ControlType.TextField);

@@ -1,22 +1,14 @@
 package application;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import ansarcontrols.AnsarButton;
-import ansarcontrols.AnsarHBox;
-import ansarcontrols.AnsarScene;
-import ansarcontrols.AnsarSearchableTable;
-import ansarcontrols.AnsarTable;
-import ansarcontrols.AnsarTableColumn;
-import ansarcontrols.AnsarVBox;
-import entities.AbsenceEntry;
-import entities.Student;
+import ansarcontrols.*;
+import entities.*;
 import javafx.scene.control.TableCell;
 import javafx.scene.layout.Pane;
 import model.Persister;
 import utilities.ObjectChecker;
-import utilities.ResourceUtility;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public class AbsenceScreen implements IDocumentScreen<AbsenceEntry>
 {
@@ -130,16 +122,6 @@ public class AbsenceScreen implements IDocumentScreen<AbsenceEntry>
         entry.setStudent(student);
         entry.setGroup(student.getGroup());
         return entry;
-    }
-
-    @Override
-    public Pane createFooterBox()
-    {
-        AnsarHBox footerBox = (AnsarHBox) IDocumentScreen.super.createFooterBox();
-        AnsarButton backBtn = new AnsarButton("back");
-        backBtn.setOnAction(e -> ResourceUtility.fetchStage().setScene(HomeScreen.fetchScreen()));
-        footerBox.getChildren().add(backBtn);
-        return footerBox;
     }
 
     @Override

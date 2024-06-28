@@ -19,28 +19,8 @@ public interface IFileScreen<T> extends IAnsarScreen<T>
 
     }
 
-    @Override
-    default Pane createHeaderBox()
-    {
-        Pane headerBox = IAnsarScreen.super.createHeaderBox();
-        headerBox.getChildren().addAll(createHeaderContent(), createHeaderBtns());
-        return headerBox;
-    }
+    Pane createContent();
 
-    Pane createHeaderContent();
-
-    default Pane createHeaderBtns()
-    {
-        AnsarHBox btnsBox = new AnsarHBox();
-        AnsarButton saveBtn = new AnsarButton("save");
-        AnsarButton newBtn = new AnsarButton("new");
-        AnsarButton backBtn = new AnsarButton("back");
-        saveBtn.setOnAction(e -> submit());
-        newBtn.setOnAction(e -> reset());
-        backBtn.setOnAction(e -> ResourceUtility.fetchStage().setScene(HomeScreen.fetchScreen()));
-        btnsBox.getChildren().addAll(saveBtn, newBtn, backBtn);
-        return btnsBox;
-    }
 
     @Override
     default T submit()
@@ -66,7 +46,15 @@ public interface IFileScreen<T> extends IAnsarScreen<T>
     @Override
     default Pane createContentBox()
     {
-        return new Pane();
+        AnsarVBox contentBox = new AnsarVBox(createContent());
+        AnsarHBox btnsBox = new AnsarHBox();
+        AnsarButton saveBtn = new AnsarButton("save");
+        AnsarButton newBtn = new AnsarButton("new");
+        saveBtn.setOnAction(e -> submit());
+        newBtn.setOnAction(e -> reset());
+        btnsBox.getChildren().addAll(saveBtn, newBtn);
+        contentBox.getChildren().add(btnsBox);
+        return contentBox;
     }
 
     AnsarTable<T> createTableView();

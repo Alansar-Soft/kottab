@@ -52,7 +52,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel>
     }
 
     @Override
-    public Pane createHeaderContent()
+    public Pane createContent()
     {
         AnsarGridPane headerPane = new AnsarGridPane();
         codeBox = new AnsarLabeledControlHBox<>("code", ControlType.Label);

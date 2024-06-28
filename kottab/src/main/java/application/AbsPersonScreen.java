@@ -43,7 +43,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
     private AnsarTableColumn<Person, String> townCol;
 
     @Override
-    public Pane createHeaderContent()
+    public Pane createContent()
     {
         headerContentPane = new AnsarGridPane();
         codeBox = new AnsarLabeledControlHBox<>("code", ControlType.Label);

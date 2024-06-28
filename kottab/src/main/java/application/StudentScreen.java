@@ -32,8 +32,8 @@ public class StudentScreen extends AbsPersonScreen<Student> {
 	}
 
 	@Override
-	public Pane createHeaderContent() {
-		GridPane headerPane = (GridPane) super.createHeaderContent();
+	public Pane createContent() {
+		GridPane headerPane = (GridPane) super.createContent();
 		parentFirstPhoneNo = new AnsarLabeledControlHBox<>("parentFirstPhoneNo", ControlType.TextField);
 		parentSecondPhoneNo = new AnsarLabeledControlHBox<>("parentSecondPhoneNo", ControlType.TextField);
 		group = new AnsarLabeledControlHBox<>("group", ControlType.ComboBox);

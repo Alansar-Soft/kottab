@@ -32,7 +32,7 @@ public class EntryPoint extends Application
         params.put("server.port", 8888);
         new SpringApplicationBuilder().properties(params).sources(EntryPoint.class).headless(false).run();
         ResourceUtility.cachePrimaryStage(primaryStage);
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNIFIED);
         primaryStage.setTitle(Translator.translate("kotab"));
         primaryStage.setScene(LoginScreen.fetchScreen());
         primaryStage.setWidth(ResourceUtility.fetchScreenWidth());
