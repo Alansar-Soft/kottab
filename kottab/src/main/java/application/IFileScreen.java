@@ -66,7 +66,7 @@ public interface IFileScreen<T> extends IAnsarScreen<T>
     @Override
     default Pane createContentBox()
     {
-        return new AnsarSearchableTable(fetchDocumentClass(), createTableView());
+        return new Pane();
     }
 
     AnsarTable<T> createTableView();

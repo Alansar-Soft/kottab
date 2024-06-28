@@ -48,23 +48,16 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
             if (ObjectChecker.isEmptyOrZeroOrNull(student))
                 return;
             GroupLevel groupLevel = student.getGroup().getGroupLevel();
-            updateSurahs(groupLevel);
+            updateSurahsComboBoxes(groupLevel);
             studentName.insertValue(student.getName());
-            RecitationEntry lastEntry = Persister.getSingleResult(
-                    "FROM RecitationEntry WHERE student_id = :studentId ORDER BY creationDate DESC",
-                    Persister.params("studentId", student.getId()));
 
-            RecitationInfo recitation = lastEntry.getNextRecitation();
-            updateRecitationBoxData(recitation, recitationBox);
-            updateNextRecitationBoxData(recitation, nextRecitationBox,
-                    groupLevel.getDailyRecitationInVerses().intValue());
+            RecitationEntry entry = RecitationUtil.createRecitationEntryForStudent(student);
 
-            RecitationInfo revision = lastEntry.getNextRevision();
-            updateRecitationBoxData(revision, revisionBox);
-            updateNextRecitationBoxData(revision, nextRevisionBox,
-                    groupLevel.getRevisionRecitationInVerses().intValue());
-            if (ObjectChecker.areEqual(LocalDate.now(), lastEntry.getCreationDate()))
-                remark.insertValue(lastEntry.getRemark());
+            updateRecitationBoxData(entry.getRecitation(), recitationBox);
+            updateRecitationBoxData(entry.getNextRecitation(), nextRecitationBox);
+            updateRecitationBoxData(entry.getRevision(), revisionBox);
+            updateRecitationBoxData(entry.getNextRevision(), nextRevisionBox);
+            remark.insertValue(entry.getRemark());
         });
         studentName = new AnsarLabeledControlHBox<>("studentName", ControlType.TextField);
         ((AnsarTextField) studentName.getControl()).setEditable(false);
@@ -74,7 +67,7 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
             if (recitationBox.isEmpty())
                 return;
             updateNextRecitationBoxData(recitationBox.fetchRecitationInfo(), nextRecitationBox,
-                    student.getGroup().getGroupLevel().getDailyRecitationInVerses().intValue());
+                    student.getGroup().getGroupLevel().getDailyRecitationInVerses());
         });
         revisionBox = new RecitationBoxWithGrade("revision");
         revisionBox.toAyaCallback(toAya ->
@@ -82,7 +75,7 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
             if (revisionBox.isEmpty())
                 return;
             updateNextRecitationBoxData(revisionBox.fetchRecitationInfo(), nextRevisionBox,
-                    student.getGroup().getGroupLevel().getRevisionRecitationInVerses().intValue());
+                    student.getGroup().getGroupLevel().getRevisionRecitationInVerses());
         });
         nextRecitationBox = new RecitationBox("nextRecitation");
         nextRevisionBox = new RecitationBox("nextRevision");
@@ -92,7 +85,7 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
         return headerPane;
     }
 
-    private void updateSurahs(GroupLevel groupLevel)
+    private void updateSurahsComboBoxes(GroupLevel groupLevel)
     {
         recitationBox.updateSurahs(SurahsUtil.fetchRecitationSurahsOfLevel(groupLevel));
         revisionBox.updateSurahs(SurahsUtil.fetchRevisionSurahsOfLevel(groupLevel));

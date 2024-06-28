@@ -25,4 +25,15 @@ public class RecitationInfoWithGrade extends AbsRecitationInfo
     {
         return super.isEmpty() || ObjectChecker.isEmptyOrZeroOrNull(grade);
     }
+
+    //factory method very useful in this case
+    public static RecitationInfoWithGrade fromRecitationInfo(RecitationInfo recitationInfo)
+    {
+        RecitationInfoWithGrade recitationInfoWithGrade = new RecitationInfoWithGrade();
+        recitationInfoWithGrade.setFromSurah(recitationInfo.getFromSurah());
+        recitationInfoWithGrade.setFromAya(recitationInfo.getFromAya());
+        recitationInfoWithGrade.setToSurah(recitationInfo.getToSurah());
+        recitationInfoWithGrade.setToAya(recitationInfo.getToAya());
+        return recitationInfoWithGrade;
+    }
 }

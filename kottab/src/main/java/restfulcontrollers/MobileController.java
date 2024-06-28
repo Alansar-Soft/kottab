@@ -140,6 +140,14 @@ public class MobileController
         return "done";
     }
 
+    @GetMapping("/recitationEntry/{studentId}")
+    public RecitationEntry fetchRecitationEntry(@PathVariable Long studentId)
+    {
+        Student st = Persister.findById(Student.class, studentId);
+        RecitationEntry entry = RecitationUtil.createRecitationEntryForStudent(st);
+        return entry;
+    }
+
     @GetMapping()
     public String get()
     {
