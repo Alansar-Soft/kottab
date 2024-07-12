@@ -22,7 +22,7 @@ public class RecitationUtil
     public static RecitationEntry createRecitationEntryForStudent(Student student)
     {
         RecitationEntry lastEntry = Persister.getSingleResult(
-                "FROM RecitationEntry WHERE student_id = :studentId ORDER BY creationDate DESC",
+                "FROM RecitationEntry WHERE student_id = :studentId ORDER BY creationDate DESC, creationTime DESC",
                 Persister.params("studentId", student.getId()));
         RecitationEntry entry = new RecitationEntry();
         entry.setStudent(student);
@@ -32,8 +32,6 @@ public class RecitationUtil
         entry.setNextRecitation(calcNextRecitationInfo(entry.getRecitation(), student.getGroup().getGroupLevel().getDailyRecitationInVerses()));
         entry.setNextRevision(calcNextRecitationInfo(entry.getRevision(),
                 student.getGroup().getGroupLevel().getRevisionRecitationInVerses()));
-        if (ObjectChecker.areEqual(LocalDate.now(), lastEntry.getCreationDate()))
-            entry.setRemark(lastEntry.getRemark());
         return entry;
     }
 }

@@ -78,7 +78,7 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
     }
 
     @Override
-    public AnsarTable<T> createTableView()
+    public AnsarTable<T> createListView()
     {
         table = new AnsarTable<>();
         table.setRowFactory(t ->

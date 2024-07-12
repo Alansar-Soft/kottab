@@ -74,7 +74,7 @@ public class UserScreen implements IFileScreen<AnsarUser> {
 	}
 
 	@Override
-	public AnsarTable<AnsarUser> createTableView() {
+	public AnsarTable<AnsarUser> createListView() {
 		table = new AnsarTable<>();
 		table.setRowFactory(r -> {
 			AnsarTableRow<AnsarUser> row = new AnsarTableRow<>();

@@ -51,8 +51,8 @@ public class StudentScreen extends AbsPersonScreen<Student> {
 	}
 
 	@Override
-	public AnsarTable<Student> createTableView() {
-		AnsarTable<Student> table = super.createTableView();
+	public AnsarTable<Student> createListView() {
+		AnsarTable<Student> table = super.createListView();
 		parentFirstPhoneNoCol = new AnsarTableColumn<>("parentFirstPhoneNo");
 		parentFirstPhoneNoCol.config("parentsFirstPhoneNo");
 		parentSecondPhoneNoCol = new AnsarTableColumn<>("parentSecondPhoneNo");

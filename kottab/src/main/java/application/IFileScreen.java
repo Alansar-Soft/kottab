@@ -54,10 +54,11 @@ public interface IFileScreen<T> extends IAnsarScreen<T>
         newBtn.setOnAction(e -> reset());
         btnsBox.getChildren().addAll(saveBtn, newBtn);
         contentBox.getChildren().add(btnsBox);
+        contentBox.getChildren().add(new AnsarSearchableTable<>(fetchDocumentClass(), createListView()));
         return contentBox;
     }
 
-    AnsarTable<T> createTableView();
+    AnsarTable<T> createListView();
 
     void selectRowAction(T item);
 

@@ -7,8 +7,6 @@ import javafx.scene.layout.Pane;
 import model.Persister;
 import utilities.*;
 
-import java.time.LocalDate;
-
 public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry>
 {
     private AnsarScene scene;
@@ -141,12 +139,9 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
         RecitationInfo nextRecitation = (RecitationInfo) nextRecitationBox.fetchRecitationInfo();
         RecitationInfo nextRevision = (RecitationInfo) nextRevisionBox.fetchRecitationInfo();
 
-        RecitationEntry entry = Persister.getSingleResult(
-                "FROM RecitationEntry WHERE student=:student AND creationDate=:creationDate",
-                Persister.params("student", student, "creationDate", LocalDate.now()));
-        if (entry == null)
-            entry = new RecitationEntry();
+        RecitationEntry entry = new RecitationEntry();
         entry.setStudent(student);
+        entry.setGroup(student.getGroup());
         entry.setRecitation(recitation);
         entry.setRevision(revision);
         entry.setNextRecitation(nextRecitation);
