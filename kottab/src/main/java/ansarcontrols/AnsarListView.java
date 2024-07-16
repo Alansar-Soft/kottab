@@ -24,7 +24,7 @@ public class AnsarListView extends Dialog<ButtonType>
         });
         AnsarSearchableTable<T> searchableTable = new AnsarSearchableTable<>(klass, table);
         getDialogPane().setContent(searchableTable);
-        getDialogPane().getButtonTypes().addAll(ButtonType.APPLY, ButtonType.CANCEL);
+        getDialogPane().getButtonTypes().addAll(ButtonType.CANCEL, ButtonType.APPLY);
         ((Button) getDialogPane().lookupButton(ButtonType.APPLY)).setText(Translator.translate("Ok"));
         ((Button) getDialogPane().lookupButton(ButtonType.CANCEL)).setText(Translator.translate("Cancel"));
         initOwner(ResourceUtility.fetchStage());
