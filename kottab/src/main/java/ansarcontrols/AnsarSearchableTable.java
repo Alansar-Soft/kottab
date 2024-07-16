@@ -114,7 +114,7 @@ public class AnsarSearchableTable<T> extends AnsarVBox
 
     private void setUpTable()
     {
-        paginationData = new PaginationData(0, 15, Persister.countOf(searchableClass));
+        paginationData = new PaginationData(0, 2, Persister.countOf(searchableClass));
         setTableItems("", new HashMap<>());
     }
 

@@ -111,7 +111,7 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel>
     }
 
     @Override
-    public AnsarTable<GroupLevel> createListView()
+    public AnsarTable<GroupLevel> createListViewTable()
     {
         table = new AnsarTable<>();
         table.setRowFactory(c ->

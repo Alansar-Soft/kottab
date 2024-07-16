@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import model.Persister;
 import utilities.*;
 
+
 public interface IFileScreen<T> extends IAnsarScreen<T>
 {
 
@@ -50,15 +51,17 @@ public interface IFileScreen<T> extends IAnsarScreen<T>
         AnsarHBox btnsBox = new AnsarHBox();
         AnsarButton saveBtn = new AnsarButton("save");
         AnsarButton newBtn = new AnsarButton("new");
+        AnsarButton listViewBtn = new AnsarButton("listView");
         saveBtn.setOnAction(e -> submit());
         newBtn.setOnAction(e -> reset());
-        btnsBox.getChildren().addAll(saveBtn, newBtn);
+        AnsarListView listView = new AnsarListView(fetchDocumentClass(), createListViewTable());
+        listViewBtn.setOnAction(e -> listView.showAndWait());
+        btnsBox.getChildren().addAll(saveBtn, newBtn, listViewBtn);
         contentBox.getChildren().add(btnsBox);
-        contentBox.getChildren().add(new AnsarSearchableTable<>(fetchDocumentClass(), createListView()));
         return contentBox;
     }
 
-    AnsarTable<T> createListView();
+    AnsarTable<T> createListViewTable();
 
     void selectRowAction(T item);
 

@@ -98,7 +98,7 @@ public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	}
 
 	@Override
-	public AnsarTable<MemorizationGroup> createListView() {
+	public AnsarTable<MemorizationGroup> createListViewTable() {
 		table = new AnsarTable<>();
 		table.setRowFactory(c -> {
 			AnsarTableRow<MemorizationGroup> row = new AnsarTableRow<>();
