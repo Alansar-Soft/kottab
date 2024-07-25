@@ -79,10 +79,10 @@ public class GroupLevelScreen implements IFileScreen<GroupLevel>
         headerPane.add(nameBox, 0, 1);
         headerPane.add(fromSurah, 0, 2);
         headerPane.add(toSurah, 1, 2);
-        headerPane.add(dailyRecitationInVerses, 2, 2);
-        headerPane.add(revisionFromSurah, 0, 3);
-        headerPane.add(revisionToSurah, 1, 3);
-        headerPane.add(revisionRecitationInVerses, 2, 3);
+        headerPane.add(dailyRecitationInVerses, 0, 3);
+        headerPane.add(revisionFromSurah, 0, 4);
+        headerPane.add(revisionToSurah, 1, 4);
+        headerPane.add(revisionRecitationInVerses, 0, 5);
         return headerPane;
     }
 

@@ -4,6 +4,10 @@ import javafx.scene.control.CheckBox;
 import utilities.ObjectChecker;
 
 public class AnsarCheckBox extends CheckBox implements IAnsarControl<Boolean> {
+	public AnsarCheckBox()
+	{
+		getStyleClass().add("btn");
+	}
 
 	@Override
 	public Boolean fetchValue() {

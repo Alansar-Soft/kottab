@@ -8,6 +8,7 @@ import javafx.scene.text.FontWeight;
 
 public class AnsarDatePicker extends DatePicker implements IAnsarControl<LocalDate> {
 	public AnsarDatePicker() {
+		getStyleClass().add("textfield");
 		setPrefWidth(200);
 		getEditor().setFont(Font.font("Times New Roman", FontWeight.BLACK, 14));
 		setValue(LocalDate.now());

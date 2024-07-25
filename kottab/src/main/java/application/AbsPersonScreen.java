@@ -68,12 +68,12 @@ public abstract class AbsPersonScreen<T extends Person> implements IFileScreen<T
         headerContentPane.add(registrationDateBox, 1, 0);
         headerContentPane.add(name, 0, 1);
         headerContentPane.add(birthdateDP, 1, 1);
-        headerContentPane.add(studyInAzharBox, 2, 1);
-        headerContentPane.add(country, 0, 2);
-        headerContentPane.add(city, 1, 2);
-        headerContentPane.add(town, 2, 2);
-        headerContentPane.add(firstPhoneNo, 0, 3);
-        headerContentPane.add(secondPhoneNo, 1, 3);
+        headerContentPane.add(studyInAzharBox, 0, 2);
+        headerContentPane.add(country, 0, 3);
+        headerContentPane.add(city, 1, 3);
+        headerContentPane.add(town, 0, 4);
+        headerContentPane.add(firstPhoneNo, 0, 5);
+        headerContentPane.add(secondPhoneNo, 1, 5);
         return headerContentPane;
     }
 

@@ -37,9 +37,9 @@ public class StudentScreen extends AbsPersonScreen<Student> {
 		parentFirstPhoneNo = new AnsarLabeledControlHBox<>("parentFirstPhoneNo", ControlType.TextField);
 		parentSecondPhoneNo = new AnsarLabeledControlHBox<>("parentSecondPhoneNo", ControlType.TextField);
 		group = new AnsarLabeledControlHBox<>("group", ControlType.ComboBox);
-		int rowNo = headerPane.getRowCount() - 1;
-		headerPane.add(parentFirstPhoneNo, 2, rowNo);
-		headerPane.add(parentSecondPhoneNo, 3, rowNo);
+		int rowNo = headerPane.getRowCount();
+		headerPane.add(parentFirstPhoneNo, 0, rowNo);
+		headerPane.add(parentSecondPhoneNo, 1, rowNo);
 		headerPane.add(group, 0, ++rowNo);
 		return headerPane;
 	}

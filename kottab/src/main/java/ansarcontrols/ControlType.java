@@ -1,5 +1,6 @@
 package ansarcontrols;
 
-public enum ControlType {
-	TextField, DatePicker, ComboBox, CheckBox, Label, TextArea, PasswordField
+public enum ControlType
+{
+    TextField, DatePicker, ComboBox, CheckBox, Label, TextArea, PasswordField, IntegerField
 }

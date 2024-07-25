@@ -40,6 +40,8 @@ public class AnsarLabeledControlHBox<T> extends HBox implements IAnsarControl<T>
             return new AnsarLabel();
         if (ObjectChecker.areEqual(ControlType.TextArea, controlType))
             return new AnsarTextArea();
+        if (ObjectChecker.areEqual(ControlType.IntegerField, controlType))
+            return new AnsarIntegerField();
         return null;
     }
 

@@ -1,19 +1,16 @@
 package application;
 
-import java.util.HashMap;
-
-import com.sun.javafx.application.LauncherImpl;
+import javafx.application.*;
+import javafx.scene.image.Image;
 import javafx.stage.*;
+import model.Persister;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.ComponentScan;
-
-import javafx.application.Application;
-import javafx.application.Platform;
-import javafx.scene.image.Image;
-import model.Persister;
 import restfulcontrollers.MobileController;
 import utilities.*;
+
+import java.util.HashMap;
 
 @SpringBootApplication
 @ComponentScan(basePackageClasses = MobileController.class)
@@ -35,10 +32,9 @@ public class EntryPoint extends Application
         primaryStage.initStyle(StageStyle.UNIFIED);
         primaryStage.setTitle(Translator.translate("kotab"));
         primaryStage.setScene(LoginScreen.fetchScreen());
-        primaryStage.setWidth(ResourceUtility.fetchScreenWidth());
-        primaryStage.setHeight(ResourceUtility.fetchScreenHeight());
-        primaryStage.setMaximized(true);
         primaryStage.getIcons().add(new Image("/logo.jpg"));
+        primaryStage.setResizable(false);
+        primaryStage.setMaxHeight(ResourceUtility.fetchScreenHeight() - 100);
         primaryStage.setOnCloseRequest(e ->
         {
             Persister.stopDBConnection();

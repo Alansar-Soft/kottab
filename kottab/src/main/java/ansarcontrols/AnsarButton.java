@@ -11,7 +11,7 @@ public class AnsarButton extends Button
     public AnsarButton(String text)
     {
         super(Translator.translate(text));
-        setId("ansarBtn");
+        getStyleClass().add("btn");
         setFont(Font.font("Times New Roman", FontWeight.BLACK, 15));
     }
 

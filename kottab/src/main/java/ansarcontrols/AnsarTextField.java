@@ -1,30 +1,41 @@
 package ansarcontrols;
 
 import javafx.scene.control.TextField;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.text.*;
 import utilities.ObjectChecker;
 
-public class AnsarTextField extends TextField implements IAnsarControl<Object> {
-	public AnsarTextField() {
-		setPrefWidth(200);
-		setMinHeight(30);
-		setFont(Font.font("Times New Roman", FontWeight.BLACK, 14));
-	}
+public class AnsarTextField<T> extends TextField implements IAnsarControl<Object>
+{
+    public AnsarTextField()
+    {
+        this("");
+    }
 
-	@Override
-	public String fetchValue() {
-		return getText();
-	}
+    public AnsarTextField(String promptText)
+    {
+        setPrefWidth(200);
+        setMinHeight(30);
+        setFont(Font.font("Times New Roman", FontWeight.BLACK, 14));
+        getStyleClass().add("textfield");
+        setPromptText(promptText);
+    }
 
-	@Override
-	public void insertValue(Object val) {
-		setText(ObjectChecker.toStringOrEmpty(val));
-	}
+    @Override
+    public T fetchValue()
+    {
+        return (T) getText();
+    }
 
-	@Override
-	public void reset() {
-		clear();
-	}
+    @Override
+    public void insertValue(Object val)
+    {
+        setText(ObjectChecker.toStringOrEmpty(val));
+    }
+
+    @Override
+    public void reset()
+    {
+        clear();
+    }
 
 }

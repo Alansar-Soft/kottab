@@ -18,13 +18,13 @@ public interface IAnsarScreen<T>
 //        separator.setPrefHeight(15);
         separator.setValignment(VPos.BOTTOM);
         AnsarVBox node = new AnsarVBox(top, separator);
-        node.setStyle("-fx-background-color:#e4eee9;");
+        node.getStyleClass().add("nav-form");
 
         root.setTop(node);
 
         Pane contentBox = createContentBox();
         AnsarVBox.setVgrow(contentBox, Priority.ALWAYS);
-        contentBox.setStyle("-fx-background-color:#e4e4ee;");
+        contentBox.setStyle("-fx-background-color:#fff;");
         root.setCenter(contentBox);
 
         root.setRight(new SideBar());

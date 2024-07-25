@@ -1,0 +1,98 @@
+// controls css------------------------------
+    .textfield{
+        -fx-background-color:linear-gradient(to bottom, #efefef, #eee);
+        -fx-background-radius:5px;
+        -fx-border-color:#000;
+        -fx-border-width:.2px;
+        -fx-border-radius:5px;
+        -fx-font-size:13px;
+        -fx-font-family:"Tahoma";
+    }
+    .textfield:focused{
+        -fx-background-color:#fff;
+        -fx-border-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+        -fx-border-width:.8px;
+    }
+    .btn{
+        -fx-background-color:#2d7755;
+        -fx-background-radius:8px;
+        -fx-cursor:hand;
+        -fx-text-fill:#fff;
+        -fx-font-size:14px;
+        -fx-font-family:"Arial";
+    }
+    .btn:hover{
+        -fx-background-color:#22ad72;
+    }
+
+.table-view{
+    -fx-background-color:transparent;
+    -fx-padding:0px;
+    -fx-border-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+    -fx-border-width:2px;
+    -fx-border-radius:8px;
+}
+.table-view .table-column{
+    -fx-alignment: CENTER;
+}
+.table-view .column-header-background{
+    -fx-background-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+    -fx-background-radius:8px 8px 0px 0px;
+    -fx-background-inset: 0 0 0 0;
+}
+.table-view .column-header, .filter{
+    -fx-background-color:transparent;
+    -fx-size:40px;
+}
+.table-view .column-header .label{
+    -fx-text-fill:#fff;
+    -fx-font-family:"Arial";
+}
+//////////////////////////////----------------------------------------------------
+.nav-form{
+    -fx-background-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+}
+.nav-btn{
+    -fx-background-color:transparent;
+    -fx-cursor:hand;
+    -fx-text-fill:#fff;
+    -fx-font-size:15px;
+    -fx-font-family:"Arial";
+    -fx-alignment:CENTER-RIGHT;
+}
+.nav-btn:hover{
+   -fx-background-color:linear-gradient(to bottom right, #3f82ae, #26bf7d);
+}
+
+
+
+//login screen ---------------------------------------------------------------------
+
+.left-form{
+    -fx-background-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+    -fx-border-color:#000;
+    -fx-border-width:.4px 0px .4px .4px;
+    -fx-alignment:CENTER;
+}
+
+.right-form{
+    -fx-background-color:#fff;
+    -fx-border-color:#000;
+    -fx-border-width:.4px .4px .4px 0px;
+}
+
+.login-btn{
+    -fx-background-color:linear-gradient(to bottom, #2968a7, #14405d);
+    -fx-background-radius:4px;
+    -fx-cursor:hand;
+    -fx-text-fill:#fff;
+    -fx-font-size:14px;
+    -fx-font-family:"Arial";
+}
+.login-btn:hover{
+    -fx-background-color:linear-gradient(to bottom, #277bd0, #1b6fa4);
+    }
+
+
+
+

@@ -17,7 +17,7 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T>
 {
     public AnsarComboBox()
     {
-        setId("ansarComboBox");
+        getStyleClass().add("textfield");
         setPrefWidth(200);
         getEditor().setFont(Font.font("Times New Roman", FontWeight.BLACK, 14));
     }

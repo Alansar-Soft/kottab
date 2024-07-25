@@ -2,6 +2,7 @@ package application;
 
 import ansarcontrols.*;
 import javafx.geometry.*;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import utilities.*;
@@ -9,6 +10,8 @@ import utilities.*;
 public class SideBar extends AnsarVBox
 {
     private Stage stage;
+    private Scene scene;
+    private QuestionsDialog questionsDialog = new QuestionsDialog();
 
     public SideBar()
     {
@@ -16,37 +19,47 @@ public class SideBar extends AnsarVBox
         setPadding(new Insets(10));
         setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         setSpacing(20);
-        setStyle("-fx-border-style:solid; -fx-border-size: 2; -fx-border-color: black; -fx-background-color:#eeeee4; ");
-        if (stage == null)
-            stage = ResourceUtility.fetchStage();
+//        setStyle("-fx-border-style:solid; -fx-border-size: 2; -fx-border-color: black;  ");
+        getStyleClass().add("nav-form");
+        if (stage == null) stage = ResourceUtility.fetchStage();
         AnsarButton teacherBtn = new AnsarButton(Translator.translate("teachersScreen"));
-        teacherBtn.setOnAction(e ->
-                stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.TeacherScreen)));
+        teacherBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.TeacherScreen), teacherBtn));
         AnsarButton studentBtn = new AnsarButton(Translator.translate("studentsScreen"));
-        studentBtn.setOnAction(e ->
-                stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.StudentScreen)));
+        studentBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.StudentScreen), studentBtn));
         AnsarButton groupBtn = new AnsarButton(Translator.translate("groupsScreen"));
-        groupBtn.setOnAction(e ->
-                stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.GroupScreen)));
+        groupBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.GroupScreen), groupBtn));
         AnsarButton memorizationNoteBookBtn = new AnsarButton(Translator.translate("memorizationNoteBook"));
-        memorizationNoteBookBtn.setOnAction(e ->
-                stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.NoteBookScreen)));
+        memorizationNoteBookBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.NoteBookScreen), memorizationNoteBookBtn));
         AnsarButton groupLevelBtn = new AnsarButton(Translator.translate("levelsScreen"));
-        groupLevelBtn.setOnAction(e ->
-                stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.GroupLevelScreen)));
+        groupLevelBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.GroupLevelScreen), groupLevelBtn));
         AnsarButton userBtn = new AnsarButton(Translator.translate("usersScreen"));
-        userBtn.setOnAction(e ->
-                stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.UserScreen)));
+        userBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.UserScreen), userBtn));
         AnsarButton absenceBtn = new AnsarButton(Translator.translate("absence"));
-        absenceBtn.setOnAction(e ->
-                stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.AbsenceScreen)));
+        absenceBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.AbsenceScreen), absenceBtn));
         AnsarButton logoutBtn = new AnsarButton("logout");
-        logoutBtn.setOnAction(e -> stage.setScene(LoginScreen.fetchScreen()));
-        getChildren().addAll(teacherBtn, studentBtn, groupBtn, memorizationNoteBookBtn, groupLevelBtn, userBtn,
-                absenceBtn, logoutBtn);
-        getChildren().forEach(child->{
-            Button btn = (Button) child;
-            btn.setPrefSize(130,40);
+        logoutBtn.setOnAction(e -> setOnAction(LoginScreen.fetchScreen(), logoutBtn));
+        AnsarButton viewReport = new AnsarButton("viewReports");
+        viewReport.setOnAction(e ->
+        {
+            questionsDialog.addQuestion("studentCode", ControlType.IntegerField);
+            questionsDialog.addQuestion("fromDate", ControlType.DatePicker);
+            questionsDialog.addQuestion("toDate", ControlType.DatePicker);
+            questionsDialog.showDialog();
         });
+        getChildren().addAll(teacherBtn, studentBtn, groupBtn, memorizationNoteBookBtn, groupLevelBtn, userBtn, absenceBtn, viewReport, logoutBtn);
+        getChildren().forEach(child ->
+        {
+            Button btn = (Button) child;
+//            btn.setId("sideBarBtn");
+            btn.getStyleClass().add("nav-btn");
+            btn.setPrefSize(130, 40);
+        });
+    }
+
+    private void setOnAction(Scene scene, AnsarButton btn)
+    {
+        btn.requestFocus();
+        this.scene = scene;
+        stage.setScene(scene);
     }
 }

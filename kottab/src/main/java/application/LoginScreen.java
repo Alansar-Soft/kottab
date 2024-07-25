@@ -5,14 +5,15 @@ import entities.AnsarUser;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.text.*;
 import model.Persister;
 import utilities.*;
 
 public class LoginScreen
 {
     private static AnsarScene scene;
-    private static AnsarLabeledControlHBox<String> username;
-    private static AnsarLabeledControlHBox<String> password;
+    private static AnsarTextField<String> username;
+    private static AnsarPasswordField password;
 
     public static AnsarScene fetchScreen()
     {
@@ -23,10 +24,16 @@ public class LoginScreen
 
     private static Parent constructRoot()
     {
-        AnsarVBoxRoot root = new AnsarVBoxRoot();
-        username = new AnsarLabeledControlHBox<>("userName", ControlType.TextField);
+        AnsarLabel sysName = new AnsarLabel("kotab");
+        sysName.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
+        sysName.setStyle("-fx-alignment: CENTER; -fx-text-fill: #fff");
+        AnsarVBox leftForm = new AnsarVBox(sysName);
+        leftForm.getStyleClass().add("left-form");
+        AnsarVBox rightForm = new AnsarVBox();
+        rightForm.getStyleClass().add("right-form");
+        username = new AnsarTextField<>("username");
         username.setAlignment(Pos.CENTER);
-        password = new AnsarLabeledControlHBox<>("password", ControlType.PasswordField);
+        password = new AnsarPasswordField("password");
         password.setAlignment(Pos.CENTER);
         password.setOnKeyPressed(e ->
         {
@@ -35,9 +42,16 @@ public class LoginScreen
             login();
         });
         AnsarButton loginBtn = new AnsarButton("login");
+        loginBtn.getStyleClass().add("login-btn");
         loginBtn.setOnAction(e -> login());
-        root.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(username, password, loginBtn);
+        rightForm.setAlignment(Pos.CENTER);
+        AnsarLabel welcome = new AnsarLabel("welcome");
+        welcome.setStyle("-fx-font-size:20; -fx-alignment:CENTER;");
+        rightForm.getChildren().addAll(welcome, username, password, loginBtn);
+        AnsarHBoxRoot root = new AnsarHBoxRoot(rightForm, leftForm);
+        root.setSpacing(0);
+        root.setPrefWidth(ResourceUtility.fetchLoginScreenWidth());
+        root.setPrefHeight(ResourceUtility.fetchLoginScreenHeight());
         return root;
     }
 

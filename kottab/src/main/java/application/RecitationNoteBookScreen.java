@@ -2,6 +2,7 @@ package application;
 
 import ansarcontrols.*;
 import entities.*;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import model.Persister;
@@ -34,7 +35,6 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
     @Override
     public Pane createContentBox()
     {
-        AnsarVBox headerPane = new AnsarVBox();
         creationDate = new AnsarLabeledControlHBox<>("creationDate", ControlType.Label);
         creationDate.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
         studentCode = new AnsarLabeledControlHBox<>("studentCode", ControlType.TextField);
@@ -78,9 +78,12 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
         nextRecitationBox = new RecitationBox("nextRecitation");
         nextRevisionBox = new RecitationBox("nextRevision");
         remark = new AnsarLabeledControlHBox<>("remark", ControlType.TextArea);
-        headerPane.getChildren().addAll(creationDate, new AnsarHBox(studentCode, studentName), recitationBox,
+        AnsarVBox contentPane = new AnsarVBox();
+        contentPane.getChildren().addAll(creationDate, new AnsarHBox(studentCode, studentName), recitationBox,
                 revisionBox, nextRecitationBox, nextRevisionBox, remark, createBtnsBox());
-        return headerPane;
+        AnsarScrollPane pane = new AnsarScrollPane(contentPane);
+        pane.setMaxHeight(ResourceUtility.fetchScreenHeight() - 150);
+        return new AnsarVBox(pane);
     }
 
     private void updateSurahsComboBoxes(GroupLevel groupLevel)

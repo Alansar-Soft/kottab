@@ -27,6 +27,16 @@ public class ResourceUtility
         return screenHeight;
     }
 
+    public static double fetchLoginScreenWidth()
+    {
+        return fetchScreenWidth() / 3;
+    }
+
+    public static double fetchLoginScreenHeight()
+    {
+        return fetchScreenHeight() / 2.2;
+    }
+
     private static Stage primaryStage;
 
     public static void cachePrimaryStage(Stage stage)

@@ -1,27 +1,36 @@
 package ansarcontrols;
 
-import java.util.List;
-
-import javafx.geometry.Insets;
-import javafx.geometry.NodeOrientation;
+import javafx.geometry.*;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 
-public class AnsarVBox extends VBox implements IAnsarParent {
+import java.util.*;
 
-	public AnsarVBox() {
-	}
+public class AnsarVBox extends VBox implements IAnsarParent
+{
 
-	public AnsarVBox(Node... nodes) {
-		getStyleClass().add("v-box");
-		setPadding(new Insets(5));
-		setSpacing(5);
-		setNodeOrientation(NodeOrientation.INHERIT);
-		getChildren().addAll(nodes);
-	}
+    public AnsarVBox()
+    {
+        this(new ArrayList<>());
+    }
 
-	@Override
-	public List<? extends Node> fetchChildren() {
-		return getChildren();
-	}
+    public AnsarVBox(Node... nodes)
+    {
+        this(Arrays.asList(nodes));
+    }
+
+    public AnsarVBox(List<Node> nodes)
+    {
+        getStyleClass().add("v-box");
+        setPadding(new Insets(5));
+        setSpacing(5);
+        setNodeOrientation(NodeOrientation.INHERIT);
+        getChildren().addAll(nodes);
+    }
+
+    @Override
+    public List<? extends Node> fetchChildren()
+    {
+        return getChildren();
+    }
 }
