@@ -16,7 +16,7 @@ public class AnsarSearchableTable<T> extends AnsarVBox
     private AnsarHBox header;
     private AnsarComboBox<String> filterField;
     private AnsarComboBox<String> operaters;
-    private AnsarTextField valTextField;
+    private AnsarTextField<String> valTextField;
     private AnsarButton searchBtn;
     private AnsarButton nextBtn;
     private AnsarButton previousBtn;

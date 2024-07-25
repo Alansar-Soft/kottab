@@ -95,7 +95,7 @@ public class Persister
     private static Session session = null;
     private static Transaction t = null;
 
-    private static Session openSession()
+    public static Session openSession()
     {
         if (session != null)
             return session;

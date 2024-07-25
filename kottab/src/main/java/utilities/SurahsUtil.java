@@ -179,4 +179,9 @@ public class SurahsUtil
         return surahs.subList(groupLevel.getRevisionFromSurah().getNumberOfSurah(),
                 groupLevel.getRevisionToSurah().getNumberOfSurah());
     }
+
+    public static String fetchSurahName(byte b)
+    {
+        return fetchSurah(b).nameByLang();
+    }
 }
