@@ -1,6 +1,6 @@
 package utilities;
 
-import entities.GroupLevel;
+import entities.files.GroupLevel;
 
 import java.util.*;
 

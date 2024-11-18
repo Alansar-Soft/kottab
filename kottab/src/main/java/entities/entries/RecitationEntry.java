@@ -1,4 +1,4 @@
-package entities;
+package entities.entries;
 
 import org.hibernate.annotations.Nationalized;
 import utilities.Result;
@@ -93,9 +93,9 @@ public class RecitationEntry extends StudentRelatedEntry
 
     @Override
     @Transient
-    public Result isValidForCommit()
+    public Result isValidForCommit(Result result)
     {
-        Result result = super.isValidForCommit();
+        super.isValidForCommit(result);
         if (recitation != null && recitation.isEmpty()) result.failure("You must enter all recitation data");
         if (revision != null && revision.isEmpty()) result.failure("You must enter all revision data");
         if (nextRecitation != null && nextRecitation.isEmpty())
@@ -103,11 +103,4 @@ public class RecitationEntry extends StudentRelatedEntry
         if (nextRevision != null && nextRevision.isEmpty()) result.failure("You must enter all next revision data");
         return result;
     }
-
-    @Override
-    public Result postCommit()
-    {
-        return new Result();
-    }
-
 }

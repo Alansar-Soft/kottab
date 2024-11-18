@@ -2,8 +2,8 @@ package application;
 
 import ansarcontrols.AnsarLabeledControlHBox;
 import ansarcontrols.ControlType;
-import entities.AbsRecitationInfo;
-import entities.RecitationInfoWithGrade;
+import entities.entries.AbsRecitationInfo;
+import entities.entries.RecitationInfoWithGrade;
 import utilities.ObjectChecker;
 
 public class RecitationBoxWithGrade extends RecitationBox

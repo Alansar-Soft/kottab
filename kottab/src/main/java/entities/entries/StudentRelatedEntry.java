@@ -1,5 +1,7 @@
-package entities;
+package entities.entries;
 
+import entities.entries.AnsarEntry;
+import entities.files.*;
 import utilities.Result;
 
 import javax.persistence.*;
@@ -35,9 +37,8 @@ public abstract class StudentRelatedEntry extends AnsarEntry
 
     @Override
     @Transient
-    public Result isValidForCommit()
+    public Result isValidForCommit(Result result)
     {
-        Result result = new Result();
         if (student == null)
             result.failure("You must enter student");
         return result;

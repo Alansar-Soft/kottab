@@ -1,7 +1,8 @@
 package application;
 
 import ansarcontrols.*;
-import entities.*;
+import entities.entries.AbsenceEntry;
+import entities.files.Student;
 import javafx.scene.control.TableCell;
 import javafx.scene.layout.Pane;
 import model.Persister;
@@ -10,7 +11,7 @@ import utilities.ObjectChecker;
 import java.time.LocalDate;
 import java.util.List;
 
-public class AbsenceScreen implements IDocumentScreen<AbsenceEntry>
+public class AbsenceScreen implements IAnsarScreen<AbsenceEntry>
 {
     private AnsarScene scene;
     private boolean absence;
@@ -38,6 +39,7 @@ public class AbsenceScreen implements IDocumentScreen<AbsenceEntry>
         studentCodeCol.config("code");
         AnsarTableColumn<Student, String> studentNameCol = new AnsarTableColumn<>("studentName");
         studentNameCol.config("name");
+        
         AnsarTableColumn<Student, String> groupNameCol = new AnsarTableColumn<>("groupName");
         groupNameCol.config("groupName");
         AnsarTableColumn<Student, String> absenceCol = new AnsarTableColumn<>("absence");

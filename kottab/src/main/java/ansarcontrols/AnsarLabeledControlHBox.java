@@ -1,9 +1,7 @@
 package ansarcontrols;
 
-import javafx.geometry.Insets;
-import javafx.geometry.NodeOrientation;
-import javafx.scene.control.Control;
-import javafx.scene.control.Label;
+import javafx.geometry.*;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import utilities.*;
 
@@ -42,6 +40,8 @@ public class AnsarLabeledControlHBox<T> extends HBox implements IAnsarControl<T>
             return new AnsarTextArea();
         if (ObjectChecker.areEqual(ControlType.IntegerField, controlType))
             return new AnsarIntegerField();
+        if (ObjectChecker.areEqual(ControlType.BigDecimalField, controlType))
+            return new AnsarBigDecimalField();
         return null;
     }
 

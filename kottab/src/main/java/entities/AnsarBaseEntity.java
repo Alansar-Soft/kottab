@@ -13,9 +13,7 @@ public abstract class AnsarBaseEntity implements IEntity
 {
     private Long id;
     private String code;
-    private String name;
     private LocalDateTime creationDate;
-    private Boolean preventUsage;
 
     @Id
     @GeneratedValue
@@ -40,16 +38,7 @@ public abstract class AnsarBaseEntity implements IEntity
         this.code = code;
     }
 
-    @Nationalized
-    public String getName()
-    {
-        return name;
-    }
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
 
     public LocalDateTime getCreationDate()
     {
@@ -61,29 +50,9 @@ public abstract class AnsarBaseEntity implements IEntity
         this.creationDate = creationDate;
     }
 
-    public Boolean getPreventUsage()
-    {
-        return preventUsage;
-    }
-
-    public void setPreventUsage(Boolean preventUsage)
-    {
-        this.preventUsage = preventUsage;
-    }
-
     @Override
-    @Transient
-    public Result isValidForCommit()
+    public Result postCommit(Result result)
     {
-        Result result = new Result();
-        if (ObjectChecker.isEmptyOrZeroOrNull(name))
-            result.accmulate(Result.createFailureResult("You must enter name"));
         return result;
-    }
-
-    @Override
-    public Result postCommit()
-    {
-        return new Result();
     }
 }

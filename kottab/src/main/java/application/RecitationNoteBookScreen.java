@@ -1,14 +1,14 @@
 package application;
 
 import ansarcontrols.*;
-import entities.*;
-import javafx.scene.control.ScrollPane;
+import entities.entries.*;
+import entities.files.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import model.Persister;
 import utilities.*;
 
-public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry>
+public class RecitationNoteBookScreen implements IAnsarScreen<RecitationEntry>
 {
     private AnsarScene scene;
     private AnsarLabeledControlHBox<String> creationDate;
@@ -123,7 +123,7 @@ public class RecitationNoteBookScreen implements IDocumentScreen<RecitationEntry
     @Override
     public void reset()
     {
-        IDocumentScreen.super.reset();
+        IAnsarScreen.super.reset();
         student = null;
         creationDate.insertValue(DateTimeUtility.fetchFormatedCurrentDateTime());
     }

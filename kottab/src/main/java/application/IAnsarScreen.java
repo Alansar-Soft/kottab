@@ -86,6 +86,5 @@ public interface IAnsarScreen<T>
 
     default void updateRefFieldsData()
     {
-        return;
     }
 }

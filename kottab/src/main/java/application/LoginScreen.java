@@ -1,11 +1,12 @@
 package application;
 
 import ansarcontrols.*;
-import entities.AnsarUser;
+import entities.files.AnsarUser;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.text.*;
+import javafx.stage.Stage;
 import model.Persister;
 import utilities.*;
 
@@ -59,8 +60,15 @@ public class LoginScreen
     {
         Result result = validateCredentials();
         if (result.isFailed())
+        {
             ResourceUtility.showError(result);
-        else ResourceUtility.fetchStage().setScene(ResourceUtility.fetchCachedScreen(ScreensNames.NoteBookScreen));
+        } else
+        {
+            Stage stage = ResourceUtility.fetchStage();
+            stage.setScene(ResourceUtility.fetchCachedScreen(ScreensNames.NoteBookScreen));
+            stage.sizeToScene();
+            stage.centerOnScreen();
+        }
     }
 
     private static Result validateCredentials()

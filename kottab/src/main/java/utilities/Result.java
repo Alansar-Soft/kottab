@@ -52,6 +52,8 @@ public class Result
 
     public void accmulate(Result result)
     {
+        if (result == null)
+            return;
         if (failed == false)
             failed = result.isFailed();
         String resultMessage = result.getMessage();

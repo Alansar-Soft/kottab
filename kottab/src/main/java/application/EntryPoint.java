@@ -1,5 +1,6 @@
 package application;
 
+import entities.*;
 import javafx.application.*;
 import javafx.scene.image.Image;
 import javafx.stage.*;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import restfulcontrollers.MobileController;
 import utilities.*;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 
 @SpringBootApplication
@@ -33,8 +35,9 @@ public class EntryPoint extends Application
         primaryStage.setTitle(Translator.translate("kotab"));
         primaryStage.setScene(LoginScreen.fetchScreen());
         primaryStage.getIcons().add(new Image("/logo.jpg"));
+        primaryStage.sizeToScene();
+        primaryStage.centerOnScreen();
         primaryStage.setResizable(false);
-        primaryStage.setMaxHeight(ResourceUtility.fetchScreenHeight() - 100);
         primaryStage.setOnCloseRequest(e ->
         {
             Persister.stopDBConnection();
@@ -46,6 +49,8 @@ public class EntryPoint extends Application
 
     public static void main(String[] args)
     {
+        System.setProperty("prism.lcdtext", "false");
+        System.setProperty("prism.text", "t2k");
         launch(args);
     }
 }

@@ -2,7 +2,7 @@ package ansarcontrols;
 
 import java.util.function.Function;
 
-import entities.AnsarBaseEntity;
+import entities.files.AnsarFile;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,7 +18,7 @@ public class AnsarTableColumn<S, T> extends TableColumn<S, T>
 
     public void useBaseEntityConfiguration(String propertyName)
     {
-        config(new PropertyValueFactory<>(propertyName), e -> ((AnsarBaseEntity) e).getName());
+        config(new PropertyValueFactory<>(propertyName), e -> ((AnsarFile) e).getName());
     }
 
     public void config(String propertyName)

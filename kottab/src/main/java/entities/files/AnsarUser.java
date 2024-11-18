@@ -1,4 +1,4 @@
-package entities;
+package entities.files;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -8,7 +8,7 @@ import model.Persister;
 import utilities.*;
 
 @Entity
-public class AnsarUser extends AnsarBaseEntity
+public class AnsarUser extends AnsarFile
 {
     private String username;
     private String password;
@@ -59,9 +59,8 @@ public class AnsarUser extends AnsarBaseEntity
 
     @Override
     @Transient
-    public Result isValidForCommit()
+    public Result isValidForCommit(Result result)
     {
-        Result result = new Result();
         if (userDetails == null || ObjectChecker.isEmptyOrZeroOrNull(userDetails.getPersonType()))
             result.failure("you must select person type");
         if (userDetails == null || ObjectChecker.isEmptyOrZeroOrNull(userDetails.getPersonCode()))

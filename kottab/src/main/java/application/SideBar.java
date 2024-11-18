@@ -15,7 +15,7 @@ public class SideBar extends AnsarVBox
 
     public SideBar()
     {
-        setPrefWidth(150);
+        setPrefWidth(stage.getWidth() / 4);
         setPadding(new Insets(10));
         setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         setSpacing(20);
@@ -36,6 +36,13 @@ public class SideBar extends AnsarVBox
         userBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.UserScreen), userBtn));
         AnsarButton absenceBtn = new AnsarButton(Translator.translate("absence"));
         absenceBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.AbsenceScreen), absenceBtn));
+        AnsarButton paymentVoucherBtn = new AnsarButton(Translator.translate("paymentVoucher"));
+        paymentVoucherBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.PaymentVoucher), paymentVoucherBtn));
+        AnsarButton receiptVoucherBtn = new AnsarButton(Translator.translate("receiptVoucher"));
+        receiptVoucherBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.ReceiptVoucher), receiptVoucherBtn));
+        AnsarButton membershipBtn = new AnsarButton(Translator.translate("membership"));
+        membershipBtn.setOnAction(e -> setOnAction(ResourceUtility.fetchCachedScreen(ScreensNames.Membership),
+                membershipBtn));
         AnsarButton logoutBtn = new AnsarButton("logout");
         logoutBtn.setOnAction(e -> setOnAction(LoginScreen.fetchScreen(), logoutBtn));
         AnsarButton viewReport = new AnsarButton("viewReports");
@@ -46,11 +53,11 @@ public class SideBar extends AnsarVBox
             questionsDialog.addQuestion("toDate", ControlType.DatePicker);
             questionsDialog.showDialog();
         });
-        getChildren().addAll(teacherBtn, studentBtn, groupBtn, memorizationNoteBookBtn, groupLevelBtn, userBtn, absenceBtn, viewReport, logoutBtn);
+        getChildren().addAll(teacherBtn, studentBtn, groupBtn, memorizationNoteBookBtn, groupLevelBtn, userBtn,
+                absenceBtn, paymentVoucherBtn, receiptVoucherBtn, membershipBtn, viewReport, logoutBtn);
         getChildren().forEach(child ->
         {
             Button btn = (Button) child;
-//            btn.setId("sideBarBtn");
             btn.getStyleClass().add("nav-btn");
             btn.setPrefSize(130, 40);
         });
@@ -61,5 +68,7 @@ public class SideBar extends AnsarVBox
         btn.requestFocus();
         this.scene = scene;
         stage.setScene(scene);
+        stage.sizeToScene();
+        stage.centerOnScreen();
     }
 }

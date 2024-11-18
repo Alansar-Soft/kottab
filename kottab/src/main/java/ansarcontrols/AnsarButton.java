@@ -7,12 +7,10 @@ import utilities.*;
 
 public class AnsarButton extends Button
 {
-
     public AnsarButton(String text)
     {
         super(Translator.translate(text));
         getStyleClass().add("btn");
-        setFont(Font.font("Times New Roman", FontWeight.BLACK, 15));
+//        setFont(Font.font("Times New Roman", FontWeight.EXTRA_BOLD, 25));
     }
-
 }

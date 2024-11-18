@@ -1,12 +1,9 @@
-package entities;
+package entities.entries;
 
+import utilities.*;
+
+import javax.persistence.*;
 import java.time.LocalDate;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-
-import utilities.IEntity;
 
 @MappedSuperclass
 public abstract class AnsarEntry implements IEntity
@@ -39,5 +36,11 @@ public abstract class AnsarEntry implements IEntity
     public void setCreationDate(LocalDate creationDate)
     {
         this.creationDate = creationDate;
+    }
+
+    @Override
+    public Result postCommit(Result result)
+    {
+        return result;
     }
 }

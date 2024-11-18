@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import entities.AnsarUser;
-import entities.GroupLevel;
-import entities.MemorizationGroup;
-import entities.MemorizationTeacher;
-import entities.Student;
+import entities.files.AnsarUser;
+import entities.files.GroupLevel;
+import entities.files.MemorizationGroup;
+import entities.files.MemorizationTeacher;
+import entities.files.Student;
 
 public class Entities {
 	public static final String MemorizationTeacher = MemorizationTeacher.class.getSimpleName();

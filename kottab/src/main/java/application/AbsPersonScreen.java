@@ -11,8 +11,9 @@ import ansarcontrols.AnsarTable;
 import ansarcontrols.AnsarTableColumn;
 import ansarcontrols.AnsarTableRow;
 import ansarcontrols.ControlType;
-import entities.Address;
-import entities.Person;
+import entities.files.Address;
+import entities.files.Person;
+import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import utilities.*;
 

@@ -1,17 +1,14 @@
 package ansarcontrols;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
-
-import entities.AnsarBaseEntity;
+import entities.files.AnsarFile;
 import javafx.collections.FXCollections;
 import javafx.scene.control.ComboBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.scene.text.*;
 import javafx.util.StringConverter;
 import utilities.*;
+
+import java.util.*;
+import java.util.function.Function;
 
 public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T>
 {
@@ -57,8 +54,8 @@ public class AnsarComboBox<T> extends ComboBox<T> implements IAnsarControl<T>
     {
         if (ObjectChecker.isEmptyOrZeroOrNull(items))
             return;
-        if (items.get(0) instanceof AnsarBaseEntity)
-            applyStringConverter(entity -> ((AnsarBaseEntity) entity).getName());
+        if (items.get(0) instanceof AnsarFile)
+            applyStringConverter(entity -> ((AnsarFile) entity).getName());
         else if (items.get(0) instanceof String)
             applyStringConverter(i -> Translator.translate((String) i));
         else if (items.get(0) instanceof Enum)

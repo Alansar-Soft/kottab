@@ -1,5 +1,6 @@
-package entities;
+package entities.files;
 
+import entities.entries.*;
 import model.Persister;
 import utilities.*;
 
@@ -65,9 +66,8 @@ public class Student extends Person
     }
 
     @Override
-    public Result postCommit()
+    public Result postCommit(Result result)
     {
-        Result result = new Result();
         if (Persister.countOf(RecitationEntry.class, " WHERE student_id = " + getId()) > 0)
             return result;
         RecitationEntry entry = new RecitationEntry();
@@ -101,17 +101,16 @@ public class Student extends Person
 
     @Override
     @Transient
-    public Result isValidForCommit()
+    public Result isValidForCommit(Result result)
     {
-        Result result = super.isValidForCommit();
+        super.isValidForCommit(result);
         LocalDate todayDate = LocalDate.now();
         if (getBirthdate() != null && todayDate.getYear() - getBirthdate().getYear() < 5)
-            result.accmulate(
-                    Result.createFailureResult("Student should have at least 5 years. Please check birthdate"));
+            result.failure("Student should have at least 5 years. Please check birthdate");
         validatePhoneNumber(parentsFirstPhoneNo, "Parents first", result);
         validatePhoneNumber(parentsSecondPhoneNo, "Parents second", result);
         if (getGroup() == null)
-            result.accmulate(Result.createFailureResult("You must choose group"));
+            result.failure("You must choose group");
         return result;
     }
 

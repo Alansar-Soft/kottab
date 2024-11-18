@@ -15,15 +15,13 @@ public class ResourceUtility
 
     public static double fetchScreenWidth()
     {
-        if (screenWidth == 0)
-            screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
+        if (screenWidth == 0) screenWidth = Screen.getPrimary().getVisualBounds().getWidth();
         return screenWidth;
     }
 
     public static double fetchScreenHeight()
     {
-        if (screenHeight == 0)
-            screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
+        if (screenHeight == 0) screenHeight = Screen.getPrimary().getVisualBounds().getHeight();
         return screenHeight;
     }
 
@@ -99,6 +97,24 @@ public class ResourceUtility
             AbsenceScreen absenceScreen = new AbsenceScreen();
             cachedScreens.put(screen, absenceScreen);
             return absenceScreen.fetchScene();
+        }
+        if (ObjectChecker.areEqual(screen, ScreensNames.PaymentVoucher))
+        {
+            PaymentVoucherScreen paymentVoucherScreen = new PaymentVoucherScreen();
+            cachedScreens.put(screen, paymentVoucherScreen);
+            return paymentVoucherScreen.fetchScene();
+        }
+        if (ObjectChecker.areEqual(screen, ScreensNames.ReceiptVoucher))
+        {
+            ReceiptVoucherScreen paymentVoucherScreen = new ReceiptVoucherScreen();
+            cachedScreens.put(screen, paymentVoucherScreen);
+            return paymentVoucherScreen.fetchScene();
+        }
+        if (ObjectChecker.areEqual(screen, ScreensNames.Membership))
+        {
+            MembershipScreen membershipScreen = new MembershipScreen();
+            cachedScreens.put(screen, membershipScreen);
+            return membershipScreen.fetchScene();
         }
         return null;
     }

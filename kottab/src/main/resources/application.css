@@ -1,12 +1,16 @@
 // controls css------------------------------
+    .root{
+     -fx-font-size:17px;
+     -fx-font-family: Readex Pro;
+    -fx-font-weight:BOLD;
+    }
+
     .textfield{
         -fx-background-color:linear-gradient(to bottom, #efefef, #eee);
         -fx-background-radius:5px;
         -fx-border-color:#000;
         -fx-border-width:.2px;
         -fx-border-radius:5px;
-        -fx-font-size:13px;
-        -fx-font-family:"Tahoma";
     }
     .textfield:focused{
         -fx-background-color:#fff;
@@ -18,8 +22,6 @@
         -fx-background-radius:8px;
         -fx-cursor:hand;
         -fx-text-fill:#fff;
-        -fx-font-size:14px;
-        -fx-font-family:"Arial";
     }
     .btn:hover{
         -fx-background-color:#22ad72;
@@ -46,7 +48,6 @@
 }
 .table-view .column-header .label{
     -fx-text-fill:#fff;
-    -fx-font-family:"Arial";
 }
 //////////////////////////////----------------------------------------------------
 .nav-form{
@@ -56,8 +57,6 @@
     -fx-background-color:transparent;
     -fx-cursor:hand;
     -fx-text-fill:#fff;
-    -fx-font-size:15px;
-    -fx-font-family:"Arial";
     -fx-alignment:CENTER-RIGHT;
 }
 .nav-btn:hover{
@@ -86,8 +85,6 @@
     -fx-background-radius:4px;
     -fx-cursor:hand;
     -fx-text-fill:#fff;
-    -fx-font-size:14px;
-    -fx-font-family:"Arial";
 }
 .login-btn:hover{
     -fx-background-color:linear-gradient(to bottom, #277bd0, #1b6fa4);

@@ -1,18 +1,14 @@
-package entities;
-
-import java.util.List;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
+package entities.files;
 
 import utilities.*;
 
+import javax.persistence.*;
+import java.util.List;
+
+import static utilities.ValidatorUtil.isEmptyRequired;
+
 @Entity
-public class GroupLevel extends AnsarBaseEntity
+public class GroupLevel extends AnsarFile
 {
     private Surah fromSurah;
     private Surah toSurah;
@@ -107,9 +103,9 @@ public class GroupLevel extends AnsarBaseEntity
 
     @Override
     @Transient
-    public Result isValidForCommit()
+    public Result isValidForCommit(Result result)
     {
-        Result result = super.isValidForCommit();
+        super.isValidForCommit(result);
         isEmptyRequired(fromSurah, "You must choose from surah", result);
         isEmptyRequired(toSurah, "You must choose to surah", result);
         isEmptyRequired(dailyRecitationInVerses, "You must enter count of verses of recitation", result);
@@ -117,11 +113,5 @@ public class GroupLevel extends AnsarBaseEntity
         isEmptyRequired(revisionToSurah, "You must choose revision to surah", result);
         isEmptyRequired(revisionRecitationInVerses, "You must enter count of verses of revision", result);
         return result;
-    }
-
-    public void isEmptyRequired(Object field, String message, Result result)
-    {
-        if (ObjectChecker.isEmptyOrZeroOrNull(field))
-            result.accmulate(Result.createFailureResult(message));
     }
 }

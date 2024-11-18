@@ -1,25 +1,13 @@
 package application;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import ansarcontrols.AnsarComboBox;
-import ansarcontrols.AnsarGridPane;
-import ansarcontrols.AnsarHBox;
-import ansarcontrols.AnsarLabeledControlHBox;
-import ansarcontrols.AnsarScene;
-import ansarcontrols.AnsarTable;
-import ansarcontrols.AnsarTableColumn;
-import ansarcontrols.AnsarTableRow;
-import ansarcontrols.ControlType;
-import entities.GroupLevel;
-import entities.MemorizationGroup;
-import entities.MemorizationTeacher;
+import ansarcontrols.*;
+import entities.files.*;
 import javafx.scene.layout.Pane;
 import model.Persister;
-import utilities.DateTimeUtility;
-import utilities.ObjectChecker;
+import utilities.*;
+
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class MemorizationGroupScreen implements IFileScreen<MemorizationGroup> {
 	private AnsarScene scene;

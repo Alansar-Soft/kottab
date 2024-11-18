@@ -1,30 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
-"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <!-- Main configuration file -->
 <hibernate-configuration>
-	<session-factory>
-		<property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
-		<property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=kotab;trustServerCertificate=true</property>
-		<property name="hibernate.connection.username">sa</property>
-		<property name="hibernate.connection.password">@Aa01102137154</property>
-		<property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
-		<property name="show_sql">true</property>
-		<property name="format_sql">true</property>
-		<property name="hbm2ddl.auto">update </property>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+        <property name="hibernate.connection.url">
+            jdbc:sqlserver://localhost:1433;databaseName=kotab;trustServerCertificate=true
+        </property>
+        <property name="hibernate.connection.username">sa</property>
+        <property name="hibernate.connection.password">@Aa01102137154</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServer2008Dialect</property>
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+        <property name="hbm2ddl.auto">update</property>
 
-		<mapping class="entities.Address" />
-		<mapping class="entities.MemorizationTeacher" />
-		<mapping class="entities.Student" />
-		<mapping class="entities.MemorizationGroup" />
-		<mapping class="utilities.Surah" />
-		<mapping class="entities.RecitationInfo" />
-		<mapping class="entities.RecitationInfoWithGrade" />
-		<mapping class="entities.RecitationEntry" />
-		<mapping class="entities.GroupLevel" />
-		<mapping class="entities.AnsarUser" />
-		<mapping class="entities.AbsenceEntry" />
+        <mapping class="entities.files.Address"/>
+        <mapping class="entities.files.MemorizationTeacher"/>
+        <mapping class="entities.files.Student"/>
+        <mapping class="entities.files.MemorizationGroup"/>
+        <mapping class="utilities.Surah"/>
+        <mapping class="entities.entries.RecitationInfo"/>
+        <mapping class="entities.entries.RecitationInfoWithGrade"/>
+        <mapping class="entities.entries.RecitationEntry"/>
+        <mapping class="entities.files.GroupLevel"/>
+        <mapping class="entities.files.AnsarUser"/>
+        <mapping class="entities.entries.AbsenceEntry"/>
+        <mapping class="entities.documents.ReceiptVoucher"/>
+        <mapping class="entities.documents.PaymentVoucher"/>
+        <mapping class="entities.documents.Membership"/>
 
-	</session-factory>
+    </session-factory>
 </hibernate-configuration>

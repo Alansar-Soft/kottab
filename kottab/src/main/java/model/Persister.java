@@ -1,30 +1,15 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import entities.Student;
-import org.hibernate.FlushMode;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.query.NativeQuery;
+import org.hibernate.*;
+import org.hibernate.boot.*;
+import org.hibernate.boot.registry.*;
 import org.hibernate.query.Query;
+import org.hibernate.query.*;
+import utilities.*;
 
-import utilities.CollectionsUtility;
-import utilities.IEntity;
-import utilities.ObjectChecker;
-import utilities.ObjectWrapper;
-import utilities.Result;
+import java.util.*;
+import java.util.Map.Entry;
+import java.util.function.*;
 
 public class Persister
 {
@@ -111,12 +96,12 @@ public class Persister
         execute((r) ->
         {
             if (obj instanceof IEntity)
-                r.accmulate(((IEntity) obj).isValidForCommit());
+                ((IEntity) obj).isValidForCommit(r);
             if (r.isFailed())
                 return;
             session.saveOrUpdate(obj);
             if (obj instanceof IEntity)
-                r.accmulate(((IEntity) obj).postCommit());
+                ((IEntity) obj).postCommit(r);
         }, result);
         return result;
     }

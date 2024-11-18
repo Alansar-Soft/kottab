@@ -1,8 +1,8 @@
 package application;
 
 import ansarcontrols.AnsarScene;
-import entities.MemorizationTeacher;
-import entities.Person;
+import entities.files.MemorizationTeacher;
+import entities.files.Person;
 
 public class TeacherScreen extends AbsPersonScreen<MemorizationTeacher> {
 

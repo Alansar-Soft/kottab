@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.function.Consumer;
 
 import ansarcontrols.*;
-import entities.*;
+import entities.entries.*;
 import utilities.*;
 
 public class RecitationBox extends AnsarVBox

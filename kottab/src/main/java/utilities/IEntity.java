@@ -2,9 +2,10 @@ package utilities;
 
 import javax.persistence.Transient;
 
-public interface IEntity {
-	@Transient
-	Result isValidForCommit();
+public interface IEntity
+{
+    @Transient
+    Result isValidForCommit(Result result);
 
-	Result postCommit();
+    Result postCommit(Result result);
 }
