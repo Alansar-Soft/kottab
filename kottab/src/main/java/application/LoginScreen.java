@@ -25,9 +25,9 @@ public class LoginScreen
 
     private static Parent constructRoot()
     {
-        AnsarLabel sysName = new AnsarLabel("kotab");
-        sysName.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
-        sysName.setStyle("-fx-alignment: CENTER; -fx-text-fill: #fff");
+        AnsarLabel sysName = new AnsarLabel("Project");
+//        sysName.setFont(Font.font("Times New Roman", FontWeight.BOLD, 20));
+//        sysName.setStyle("-fx-alignment: CENTER; -fx-text-fill: #fff");
         AnsarVBox leftForm = new AnsarVBox(sysName);
         leftForm.getStyleClass().add("left-form");
         AnsarVBox rightForm = new AnsarVBox();
@@ -47,7 +47,6 @@ public class LoginScreen
         loginBtn.setOnAction(e -> login());
         rightForm.setAlignment(Pos.CENTER);
         AnsarLabel welcome = new AnsarLabel("welcome");
-        welcome.setStyle("-fx-font-size:20; -fx-alignment:CENTER;");
         rightForm.getChildren().addAll(welcome, username, password, loginBtn);
         AnsarHBoxRoot root = new AnsarHBoxRoot(rightForm, leftForm);
         root.setSpacing(0);

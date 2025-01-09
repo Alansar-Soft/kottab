@@ -1,13 +1,13 @@
 package ansarcontrols;
 
-import java.util.function.Function;
-
 import entities.files.AnsarFile;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.util.Callback;
+import javafx.util.*;
 import utilities.*;
+
+import java.util.function.Function;
 
 public class AnsarTableColumn<S, T> extends TableColumn<S, T>
 {
@@ -31,8 +31,7 @@ public class AnsarTableColumn<S, T> extends TableColumn<S, T>
         config(new PropertyValueFactory<>(propertyName), toStrFun);
     }
 
-    public void config(Callback<CellDataFeatures<S, T>, ObservableValue<T>> cellValueFactory,
-                       Function<T, String> toStrFun)
+    public void config(Callback<CellDataFeatures<S, T>, ObservableValue<T>> cellValueFactory, Function<T, String> toStrFun)
     {
         setCellValueFactory(cellValueFactory);
         setCellFactory(c ->
@@ -53,6 +52,17 @@ public class AnsarTableColumn<S, T> extends TableColumn<S, T>
                 }
 
             };
+            return cell;
+        });
+    }
+
+    public void configEditableCol(String propertyName, StringConverter<T> converter)
+    {
+        setCellValueFactory(new PropertyValueFactory<>(propertyName));
+        setCellFactory(c ->
+        {
+            AnsarTextFieldTableCell<S, T> cell = new AnsarTextFieldTableCell<>();
+            cell.setConverter(converter);
             return cell;
         });
     }

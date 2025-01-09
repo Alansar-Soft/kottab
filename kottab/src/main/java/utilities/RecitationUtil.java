@@ -28,9 +28,9 @@ public class RecitationUtil
         entry.setGroup(student.getGroup());
         entry.setRecitation(RecitationInfoWithGrade.fromRecitationInfo(lastEntry.getNextRecitation()));
         entry.setRevision(RecitationInfoWithGrade.fromRecitationInfo(lastEntry.getNextRevision()));
-        entry.setNextRecitation(calcNextRecitationInfo(entry.getRecitation(), student.getGroup().getGroupLevel().getDailyRecitationInVerses()));
-        entry.setNextRevision(calcNextRecitationInfo(entry.getRevision(),
-                student.getGroup().getGroupLevel().getRevisionRecitationInVerses()));
+//        entry.setNextRecitation(calcNextRecitationInfo(entry.getRecitation(), student.getGroup().getGroupLevel().getDailyRecitationInVerses()));
+//        entry.setNextRevision(calcNextRecitationInfo(entry.getRevision(),
+//                student.getGroup().getGroupLevel().getRevisionRecitationInVerses()));
         return entry;
     }
 }

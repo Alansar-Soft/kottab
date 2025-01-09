@@ -1,5 +1,6 @@
 package entities.files;
 
+import entities.details.*;
 import utilities.*;
 
 import javax.persistence.*;
@@ -12,11 +13,11 @@ public class GroupLevel extends AnsarFile
 {
     private Surah fromSurah;
     private Surah toSurah;
-    private Short dailyRecitationInVerses;
     private Surah revisionFromSurah;
     private Surah revisionToSurah;
-    private Short revisionRecitationInVerses;
     private List<MemorizationGroup> groups;
+    private List<GroupLevelDetail> details;
+    private List<GroupLevelRevisionDetail> revisionDetails;
 
     @Embedded
     @AttributeOverride(name = "numberOfSurah", column = @Column(name = "fromSurah"))
@@ -40,18 +41,6 @@ public class GroupLevel extends AnsarFile
     public void setToSurah(Surah toSurah)
     {
         this.toSurah = toSurah;
-    }
-
-    public Short getDailyRecitationInVerses()
-    {
-        if (dailyRecitationInVerses == null)
-            dailyRecitationInVerses = NumbersUtility.castToShort(0);
-        return dailyRecitationInVerses;
-    }
-
-    public void setDailyRecitationInVerses(Short dailyRecitationInVerses)
-    {
-        this.dailyRecitationInVerses = dailyRecitationInVerses;
     }
 
     @Embedded
@@ -78,18 +67,6 @@ public class GroupLevel extends AnsarFile
         this.revisionToSurah = revisionToSurah;
     }
 
-    public Short getRevisionRecitationInVerses()
-    {
-        if (revisionRecitationInVerses == null)
-            revisionRecitationInVerses = NumbersUtility.castToShort(0);
-        return revisionRecitationInVerses;
-    }
-
-    public void setRevisionRecitationInVerses(Short revisionRecitationInVerses)
-    {
-        this.revisionRecitationInVerses = revisionRecitationInVerses;
-    }
-
     @OneToMany(mappedBy = "groupLevel")
     public List<MemorizationGroup> getGroups()
     {
@@ -101,6 +78,32 @@ public class GroupLevel extends AnsarFile
         this.groups = groups;
     }
 
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "level_id")
+    @OrderColumn(name = "line_number")
+    public List<GroupLevelDetail> getDetails()
+    {
+        return details;
+    }
+
+    public void setDetails(List<GroupLevelDetail> details)
+    {
+        this.details = details;
+    }
+
+    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "level_id")
+    @OrderColumn(name = "line_number")
+    public List<GroupLevelRevisionDetail> getRevisionDetails()
+    {
+        return revisionDetails;
+    }
+
+    public void setRevisionDetails(List<GroupLevelRevisionDetail> revisionDetails)
+    {
+        this.revisionDetails = revisionDetails;
+    }
+
     @Override
     @Transient
     public Result isValidForCommit(Result result)
@@ -108,10 +111,10 @@ public class GroupLevel extends AnsarFile
         super.isValidForCommit(result);
         isEmptyRequired(fromSurah, "You must choose from surah", result);
         isEmptyRequired(toSurah, "You must choose to surah", result);
-        isEmptyRequired(dailyRecitationInVerses, "You must enter count of verses of recitation", result);
         isEmptyRequired(revisionFromSurah, "You must choose revision from surah", result);
         isEmptyRequired(revisionToSurah, "You must choose revision to surah", result);
-        isEmptyRequired(revisionRecitationInVerses, "You must enter count of verses of revision", result);
+        isEmptyRequired(details, "Details can not be empty", result);
+        isEmptyRequired(revisionDetails, "Revision details can not be empty", result);
         return result;
     }
 }

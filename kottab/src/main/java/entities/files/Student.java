@@ -77,20 +77,20 @@ public class Student extends Person
         RecitationInfo nextRecitation = new RecitationInfo();
         nextRecitation.setFromSurah(level.getFromSurah());
         nextRecitation.setFromAya(1);
-        Integer dailyRecitationInVerses = level.getDailyRecitationInVerses().intValue() - 1;
-        nextRecitation.setToSurah(SurahsUtil.calcSurah(nextRecitation.getFromSurah(),
-                nextRecitation.getFromAya().intValue(), dailyRecitationInVerses));
-        nextRecitation.setToAya(SurahsUtil.calcAya(nextRecitation.getFromSurah(),
-                nextRecitation.getFromAya().intValue(), dailyRecitationInVerses));
+//        Integer dailyRecitationInVerses = level.getDailyRecitationInVerses().intValue() - 1;
+//        nextRecitation.setToSurah(SurahsUtil.calcSurah(nextRecitation.getFromSurah(),
+//                nextRecitation.getFromAya().intValue(), dailyRecitationInVerses));
+//        nextRecitation.setToAya(SurahsUtil.calcAya(nextRecitation.getFromSurah(),
+//                nextRecitation.getFromAya().intValue(), dailyRecitationInVerses));
 
         RecitationInfo nextRevision = new RecitationInfo();
         nextRevision.setFromSurah(level.getRevisionFromSurah());
         nextRevision.setFromAya(1);
-        Integer revisionRecitationInVerses = level.getRevisionRecitationInVerses() - 1;
-        nextRevision.setToSurah(SurahsUtil.calcSurah(nextRevision.getFromSurah(),
-                nextRevision.getFromAya().intValue(), revisionRecitationInVerses));
-        nextRevision.setToAya(SurahsUtil.calcAya(nextRevision.getFromSurah(), nextRevision.getFromAya().intValue(),
-                revisionRecitationInVerses));
+//        Integer revisionRecitationInVerses = level.getRevisionRecitationInVerses() - 1;
+//        nextRevision.setToSurah(SurahsUtil.calcSurah(nextRevision.getFromSurah(),
+//                nextRevision.getFromAya().intValue(), revisionRecitationInVerses));
+//        nextRevision.setToAya(SurahsUtil.calcAya(nextRevision.getFromSurah(), nextRevision.getFromAya().intValue(),
+//                revisionRecitationInVerses));
 
         entry.setNextRecitation(nextRecitation);
         entry.setNextRevision(nextRevision);

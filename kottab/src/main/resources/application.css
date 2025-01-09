@@ -68,7 +68,8 @@
 //login screen ---------------------------------------------------------------------
 
 .left-form{
-    -fx-background-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+  //  -fx-background-color:linear-gradient(to bottom right, #2d658c, #2ca772);
+    -fx-background-color: #2d658c;
     -fx-border-color:#000;
     -fx-border-width:.4px 0px .4px .4px;
     -fx-alignment:CENTER;
@@ -81,7 +82,7 @@
 }
 
 .login-btn{
-    -fx-background-color:linear-gradient(to bottom, #2968a7, #14405d);
+    -fx-background-color: #14405d;
     -fx-background-radius:4px;
     -fx-cursor:hand;
     -fx-text-fill:#fff;

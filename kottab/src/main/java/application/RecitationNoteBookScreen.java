@@ -64,16 +64,16 @@ public class RecitationNoteBookScreen implements IAnsarScreen<RecitationEntry>
         {
             if (recitationBox.isEmpty())
                 return;
-            updateNextRecitationBoxData(recitationBox.fetchRecitationInfo(), nextRecitationBox,
-                    student.getGroup().getGroupLevel().getDailyRecitationInVerses());
+//            updateNextRecitationBoxData(recitationBox.fetchRecitationInfo(), nextRecitationBox,
+//                    student.getGroup().getGroupLevel().getDailyRecitationInVerses());
         });
         revisionBox = new RecitationBoxWithGrade("revision");
         revisionBox.toAyaCallback(toAya ->
         {
-            if (revisionBox.isEmpty())
-                return;
-            updateNextRecitationBoxData(revisionBox.fetchRecitationInfo(), nextRevisionBox,
-                    student.getGroup().getGroupLevel().getRevisionRecitationInVerses());
+//            if (revisionBox.isEmpty())
+//                return;
+//            updateNextRecitationBoxData(revisionBox.fetchRecitationInfo(), nextRevisionBox,
+//                    student.getGroup().getGroupLevel().getRevisionRecitationInVerses());
         });
         nextRecitationBox = new RecitationBox("nextRecitation");
         nextRevisionBox = new RecitationBox("nextRevision");

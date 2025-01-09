@@ -1,6 +1,7 @@
 package utilities;
 
 import entities.files.GroupLevel;
+import javafx.util.StringConverter;
 
 import java.util.*;
 
@@ -183,5 +184,25 @@ public class SurahsUtil
     public static String fetchSurahName(byte b)
     {
         return fetchSurah(b).nameByLang();
+    }
+
+    public static StringConverter<Surah> stringConverter()
+    {
+        return new StringConverter<Surah>()
+        {
+            @Override
+            public String toString(Surah surah)
+            {
+                if (surah == null)
+                    return "";
+                return surah.nameByLang();
+            }
+
+            @Override
+            public Surah fromString(String s)
+            {
+                return SurahsUtil.fetchSurah(s);
+            }
+        };
     }
 }

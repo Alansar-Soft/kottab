@@ -112,8 +112,8 @@ public class MobileController
         recitation.setToAya(Short.valueOf(body.get("toAya").toString()));
         recitation.setGrade(Byte.valueOf(body.get("grade").toString()));
         entry.setRecitation(recitation);
-        entry.setNextRecitation(RecitationUtil.calcNextRecitationInfo(recitation,
-                student.getGroup().getGroupLevel().getDailyRecitationInVerses().intValue()));
+//        entry.setNextRecitation(RecitationUtil.calcNextRecitationInfo(recitation,
+//                student.getGroup().getGroupLevel().getDailyRecitationInVerses().intValue()));
         //-------------------------need to calculate next revision---------------------------//
         Persister.saveOrUpdate(entry);
         return "done";
@@ -134,8 +134,8 @@ public class MobileController
         revision.setToAya(Short.valueOf(body.get("toAya").toString()));
         revision.setGrade(Byte.valueOf(body.get("grade").toString()));
         entry.setRevision(revision);
-        entry.setNextRevision(RecitationUtil.calcNextRecitationInfo(revision,
-                student.getGroup().getGroupLevel().getRevisionRecitationInVerses().intValue()));
+//        entry.setNextRevision(RecitationUtil.calcNextRecitationInfo(revision,
+//                student.getGroup().getGroupLevel().getRevisionRecitationInVerses().intValue()));
         //-------------------------need to calculate next recitation---------------------------//
         Persister.saveOrUpdate(entry);
         return "done";

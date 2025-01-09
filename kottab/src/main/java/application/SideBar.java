@@ -15,8 +15,8 @@ public class SideBar extends AnsarVBox
 
     public SideBar()
     {
-        setPrefWidth(stage.getWidth() / 4);
         setPadding(new Insets(10));
+        setPrefWidth(200);
         setNodeOrientation(NodeOrientation.LEFT_TO_RIGHT);
         setSpacing(20);
 //        setStyle("-fx-border-style:solid; -fx-border-size: 2; -fx-border-color: black;  ");
@@ -59,7 +59,7 @@ public class SideBar extends AnsarVBox
         {
             Button btn = (Button) child;
             btn.getStyleClass().add("nav-btn");
-            btn.setPrefSize(130, 40);
+            btn.setPrefSize(200, 40);
         });
     }
 

@@ -25,6 +25,9 @@
         <mapping class="entities.entries.RecitationInfoWithGrade"/>
         <mapping class="entities.entries.RecitationEntry"/>
         <mapping class="entities.files.GroupLevel"/>
+        <mapping class="entities.details.AbsGroupLevelDetail"/>
+        <mapping class="entities.details.GroupLevelDetail"/>
+        <mapping class="entities.details.GroupLevelRevisionDetail"/>
         <mapping class="entities.files.AnsarUser"/>
         <mapping class="entities.entries.AbsenceEntry"/>
         <mapping class="entities.documents.ReceiptVoucher"/>

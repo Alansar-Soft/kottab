@@ -32,7 +32,7 @@ public class EntryPoint extends Application
         new SpringApplicationBuilder().properties(params).sources(EntryPoint.class).headless(false).run();
         ResourceUtility.cachePrimaryStage(primaryStage);
         primaryStage.initStyle(StageStyle.UNIFIED);
-        primaryStage.setTitle(Translator.translate("kotab"));
+        primaryStage.setTitle(Translator.translate("Project"));
         primaryStage.setScene(LoginScreen.fetchScreen());
         primaryStage.getIcons().add(new Image("/logo.jpg"));
         primaryStage.sizeToScene();
